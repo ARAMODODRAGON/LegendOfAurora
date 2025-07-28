@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1bcsql36d8di"]
+
+[ext_resource type="Script" uid="uid://tocnhxc35aui" path="res://objects/game_camera/game_camera.gd" id="1_cyajk"]
+
+[node name="GameCamera" type="Camera2D"]
+offset = Vector2(144, 128)
+zoom = Vector2(2.415, 2.415)
+script = ExtResource("1_cyajk")
+
+[node name="RightBorder" type="ColorRect" parent="."]
+visible = false
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 288.0
+offset_right = 372.0
+offset_bottom = 256.0
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="LeftBorder" type="ColorRect" parent="."]
+visible = false
+anchors_preset = -1
+anchor_left = -0.073
+anchor_bottom = 0.395
+offset_left = -84.0
+offset_bottom = 256.0
+color = Color(0, 0, 0, 1)
+
+[node name="ScreenSpace" type="Control" parent="."]
+layout_mode = 3
+anchor_right = 0.25
+anchor_bottom = 0.395
+offset_right = 288.0
+offset_bottom = 256.0
+
+[node name="ReferenceRect" type="ReferenceRect" parent="ScreenSpace"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+border_color = Color(0, 0.5306, 0.985134, 1)
+border_width = 3.0
+editor_only = false

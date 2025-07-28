@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=3 uid="uid://h3rrw4kqycjq"]
+
+[ext_resource type="Script" uid="uid://deelqijiqnh24" path="res://entities/player/player.gd" id="1_abrql"]
+[ext_resource type="Texture2D" uid="uid://dmsp27mkcl1b3" path="res://entities/player/player.png" id="1_symyc"]
+[ext_resource type="Script" uid="uid://i5cow50xxsu4" path="res://entities/player/player_body.gd" id="3_sglur"]
+[ext_resource type="Texture2D" uid="uid://cx7kcwfyil7up" path="res://entities/player/player_spirit_orb.png" id="4_bls4j"]
+[ext_resource type="Script" uid="uid://d22il8lglankw" path="res://entities/player/spirit_orb.gd" id="5_fkugw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_symyc"]
+size = Vector2(8, 8)
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_abrql")
+WALK_SPEED = 60.0
+SLOW_SPEED = 34.0
+
+[node name="BodySprite" type="Sprite2D" parent="."]
+position = Vector2(0, -3)
+texture = ExtResource("1_symyc")
+hframes = 4
+vframes = 3
+script = ExtResource("3_sglur")
+
+[node name="SpiritOrb" type="Sprite2D" parent="."]
+texture = ExtResource("4_bls4j")
+hframes = 8
+script = ExtResource("5_fkugw")
+ANIMATION_SPEED = 0.1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_symyc")
