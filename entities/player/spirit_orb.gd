@@ -1,12 +1,12 @@
 extends Sprite2D
 class_name SpiritOrb
 
-@export var ANIMATION_SPEED : float = 1.0
-@export var TRANSPARENCY : float = 0.5
-@export var CHANGE_TIME : float = 0.1
+@export var ANIMATION_SPEED: float = 1.0
+@export var TRANSPARENCY: float = 0.5
+@export var CHANGE_TIME: float = 0.1
 
-var _anim_frame_timer : float = 0.0
-var _last_slow_held
+var _anim_frame_timer: float = 0.0
+var _last_slow_held: bool = false
 
 func update_animation(delta: float, slow_held: bool) -> void:
 	

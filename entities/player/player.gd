@@ -7,6 +7,11 @@ class_name Player
 @onready var _player_body_sprite: PlayerBody = $BodySprite
 @onready var spirit_orb: SpiritOrb = $SpiritOrb
 
+## goes to the defined room
+func goto_room(screen_space: Rect2) -> void:
+	
+	pass
+
 func _get_input_dir() -> Vector2:
 	var _input_dir: Vector2 = Input.get_vector("LEFT", "RIGHT", "UP", "DOWN").normalized()
 	return _input_dir

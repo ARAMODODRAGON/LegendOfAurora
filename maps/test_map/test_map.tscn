@@ -7,7 +7,13 @@
 [node name="TestMap" node_paths=PackedStringArray("player") instance=ExtResource("1_40h2x")]
 player = NodePath("Player")
 
-[node name="Room[0,0]" parent="." index="0" instance=ExtResource("2_2q8rh")]
-
-[node name="Player" parent="." index="1" instance=ExtResource("3_dq0fv")]
+[node name="Player" parent="." index="0" instance=ExtResource("3_dq0fv")]
 position = Vector2(6, 125)
+
+[node name="Room[0,0]" parent="." index="2" instance=ExtResource("2_2q8rh")]
+
+[node name="Room[1,0]" parent="." index="3" instance=ExtResource("2_2q8rh")]
+position = Vector2(288, 0)
+
+[node name="Room[2,0]" parent="." index="4" instance=ExtResource("2_2q8rh")]
+position = Vector2(576, 0)

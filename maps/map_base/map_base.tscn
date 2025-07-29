@@ -7,6 +7,3 @@
 script = ExtResource("1_4du5l")
 
 [node name="GameCamera" parent="." instance=ExtResource("2_1illa")]
-
-[connection signal="begin_screen_movement" from="GameCamera" to="." method="_on_game_camera_begin_screen_movement"]
-[connection signal="unpause" from="GameCamera" to="." method="_on_game_camera_unpause"]
