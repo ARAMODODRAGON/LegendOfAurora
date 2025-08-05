@@ -1,26 +1,32 @@
 extends Node
 class_name MapBase
 
+@export var player_scene : PackedScene
+
 @export_category("Screen Transitions")
 @export var TRANSITION_TIME: float
-
-@export_category("Other")
-# TODO: spawn player manually instead of adding them in the inspector
-@export var player: Player = null
 
 ## base map references
 @onready var camera: Camera2D = $Camera
 @onready var entities_layer: Node = $"Layers/Entities Layer"
-@onready var spawners_layer: Node = $"Layers/Spawners Layer"
+@onready var objects_layer: Node = $"Layers/Objects Layer"
+@onready var default_spawn_point: Node2D = $DefaultSpawnPoint
 
 ## state
+var player: Player = null
 var tween: Tween = null
 var enemy_list: Array[EnemyBase] = []
 
 func _ready() -> void:
 	camera.visible = true
 	
-	## TODO: spawn player
+	## spawn player (TODO: check if there is a targeted spawn point for this map)
+	player = player_scene.instantiate()
+	if player == null:
+		assert(false, "player scene did not instantiate player")
+
+	objects_layer.add_child(player)
+	player.position = default_spawn_point.position
 
 	## set camera position
 	camera.position = (player.position / Util.SCREEN_SIZE).floor() * Util.SCREEN_SIZE
@@ -73,7 +79,7 @@ func _check_player_room_change() -> void:
 func _load_screen(screen_rect: Rect2) -> void:
 	## get spawners
 	var spawners: Array[EnemySpawner] = []
-	for node in spawners_layer.get_children():
+	for node in objects_layer.get_children():
 		var spawner: EnemySpawner = node as EnemySpawner
 		if spawner != null:
 			if screen_rect.has_point(spawner.global_position):

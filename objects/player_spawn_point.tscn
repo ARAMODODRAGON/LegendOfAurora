@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bowvniwwfjnvr"]
+
+[node name="PlayerSpawnPoint" type="Node2D" groups=["player_spawns"]]
+
+[node name="ReferenceRect" type="ReferenceRect" parent="."]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+border_color = Color(0, 0.616686, 0.584043, 1)
