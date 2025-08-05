@@ -7,15 +7,3 @@
 script = ExtResource("1_4du5l")
 
 [node name="GameCamera" parent="." instance=ExtResource("2_1illa")]
-offset = Vector2(128, 112)
-zoom = Vector2(1, 1)
-
-[node name="Layers" type="Node" parent="."]
-
-[node name="Background Layer" type="TileMapLayer" parent="Layers"]
-
-[node name="Solid Layer" type="TileMapLayer" parent="Layers"]
-
-[node name="Entities Layer" type="Node" parent="Layers"]
-
-[node name="Foreground Layer" type="TileMapLayer" parent="Layers"]
