@@ -5,9 +5,12 @@
 
 [node name="MapBase" type="Node"]
 script = ExtResource("1_4du5l")
+TRANSITION_TIME = 1.0
 
 [node name="GameCamera" parent="." instance=ExtResource("2_1illa")]
-offset = Vector2(128, 112)
+visible = false
+offset = Vector2(0, 0)
+anchor_mode = 0
 zoom = Vector2(1, 1)
 
 [node name="Layers" type="Node" parent="."]
