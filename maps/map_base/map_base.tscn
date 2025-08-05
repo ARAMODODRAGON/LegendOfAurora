@@ -17,4 +17,6 @@ anchor_mode = 0
 
 [node name="Entities Layer" type="Node" parent="Layers"]
 
+[node name="Spawners Layer" type="Node" parent="Layers"]
+
 [node name="Foreground Layer" type="TileMapLayer" parent="Layers"]
