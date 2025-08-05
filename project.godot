@@ -11,13 +11,15 @@ config_version=5
 [application]
 
 config/name="LegendOfAurora"
-run/main_scene="uid://bp5hde2587777"
+run/main_scene="uid://dfvuuc1tshaut"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Util="*res://scripts/util.gd"
+Groups="*res://scripts/groups.gd"
+SceneManager="*res://scene_manager/scene_manager.gd"
 
 [debug]
 
@@ -35,6 +37,10 @@ window/size/viewport_height=224
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="viewport"
+
+[global_group]
+
+warp_point="a location that the player can warp to"
 
 [input]
 
@@ -79,6 +85,7 @@ SECONDARY={
 2d_physics/layer_1="Solid"
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Enemy"
+2d_physics/layer_4="Warps"
 
 [rendering]
 

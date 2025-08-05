@@ -1,11 +1,14 @@
 extends CharacterBody2D
 class_name Player
 
+signal entered_warp(wapr: WarpPoint)
+
 @export var WALK_SPEED: float
 @export var SLOW_SPEED: float
 
 @onready var body_sprite: PlayerBody = $BodySprite
 @onready var spirit_orb: SpiritOrb = $SpiritOrb
+@onready var timer: Timer = $Timer
 
 func _get_input_dir() -> Vector2:
 	var input_dir: Vector2 = Input.get_vector("LEFT", "RIGHT", "UP", "DOWN").normalized()
@@ -27,3 +30,9 @@ func _physics_process(_delta: float) -> void:
 	
 	move_and_slide()
 	
+func _on_warp_entered(area: Area2D) -> void:
+	if timer.is_stopped() == false: return
+
+	var warp: WarpPoint = area as WarpPoint
+	if warp == null: return
+	entered_warp.emit(warp)

@@ -28,6 +28,8 @@ func _ready() -> void:
 	objects_layer.add_child(player)
 	player.position = default_spawn_point.position
 
+	player.entered_warp.connect(_on_player_warp)
+
 	## set camera position
 	camera.position = (player.position / Util.SCREEN_SIZE).floor() * Util.SCREEN_SIZE
 
@@ -35,6 +37,48 @@ func _ready() -> void:
 	var rect: Rect2 = camera.get_viewport_rect()
 	rect.position += camera.position
 	_load_screen(rect)
+
+func _on_player_warp(warp: WarpPoint) -> void:
+	if warp.target_map == null || warp.target_map.can_instantiate() == false:
+		printerr("could not load warp as the target map could not be instanced")
+		return
+	
+	if warp.target_warp_name == null || warp.target_warp_name == "":
+		print("could not load warp as the target name was not valid")
+		return
+	
+	SceneManager.load_map(warp.target_map, warp.target_warp_name)
+	
+func warp_player(target_warp: String) -> void:
+	var targeted_warp_point: Node2D = null
+
+	## find warp point
+	var warp_points: Array[Node] = get_tree().get_nodes_in_group(Groups.WARP_POINT)
+	for warp in warp_points:
+		if warp.name == target_warp:
+			targeted_warp_point = warp as Node2D
+			break
+	
+	## validate
+	if targeted_warp_point == null:
+		printerr("invalid warp point \"" + target_warp + "\"")
+		return
+
+	# set player position
+	player.position = targeted_warp_point.global_position
+
+	## set camera position
+	camera.position = (player.position / Util.SCREEN_SIZE).floor() * Util.SCREEN_SIZE
+	
+	## unload any enemies
+	for enemy in enemy_list:
+		enemy.free()
+
+	## load the screen we are on
+	var rect: Rect2 = camera.get_viewport_rect()
+	rect.position += camera.position
+	_load_screen(rect)
+
 
 func _process(_delta: float) -> void:
 	_check_player_room_change()

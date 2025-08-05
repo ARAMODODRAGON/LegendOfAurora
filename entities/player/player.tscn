@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://h3rrw4kqycjq"]
+[gd_scene load_steps=8 format=3 uid="uid://h3rrw4kqycjq"]
 
 [ext_resource type="Script" uid="uid://deelqijiqnh24" path="res://entities/player/player.gd" id="1_abrql"]
 [ext_resource type="Texture2D" uid="uid://dmsp27mkcl1b3" path="res://entities/player/player.png" id="1_symyc"]
@@ -8,6 +8,9 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_symyc"]
 size = Vector2(8, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fkugw"]
+size = Vector2(2, 2)
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 0
@@ -33,3 +36,17 @@ ANIMATION_SPEED = 0.1
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_symyc")
+
+[node name="WarpHitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WarpHitbox"]
+shape = SubResource("RectangleShape2D_fkugw")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[connection signal="area_entered" from="WarpHitbox" to="." method="_on_warp_entered"]
