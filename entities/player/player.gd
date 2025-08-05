@@ -4,7 +4,7 @@ class_name Player
 @export var WALK_SPEED: float
 @export var SLOW_SPEED: float
 
-@onready var player_body_sprite: PlayerBody = $BodySprite
+@onready var body_sprite: PlayerBody = $BodySprite
 @onready var spirit_orb: SpiritOrb = $SpiritOrb
 
 func _get_input_dir() -> Vector2:
@@ -14,7 +14,7 @@ func _get_input_dir() -> Vector2:
 func _process(delta: float) -> void:
 	var slow_held: bool = Input.is_action_pressed("SLOW")
 	
-	player_body_sprite.update_animation(delta, _get_input_dir(), slow_held)
+	body_sprite.update_animation(delta, _get_input_dir(), slow_held)
 	spirit_orb.update_animation(delta, slow_held)
 
 func _physics_process(_delta: float) -> void:

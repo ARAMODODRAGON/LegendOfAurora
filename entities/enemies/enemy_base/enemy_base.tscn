@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://g35b8f04ibnc"]
+
+[ext_resource type="Script" uid="uid://dp5qgjvlmaw78" path="res://entities/enemies/enemy_base/enemy_base.gd" id="1_varvw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1f1uu"]
+size = Vector2(16, 16)
+
+[node name="EnemyBase" type="CharacterBody2D"]
+collision_layer = 0
+motion_mode = 1
+platform_floor_layers = 0
+script = ExtResource("1_varvw")
+
+[node name="BodySprite" type="Sprite2D" parent="."]
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1f1uu")
