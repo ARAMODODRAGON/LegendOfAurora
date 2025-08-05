@@ -1,3 +1,3 @@
 extends Node
 
-const PLAYER_SPAWNS = "player_spawns"
+const PLAYER_SPAWNS: String = "player_spawns"
