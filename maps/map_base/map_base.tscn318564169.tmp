@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://cqqsdh7x70d5v"]
-
-[ext_resource type="Script" uid="uid://bjol60tlpayw8" path="res://maps/map_base/map_base.gd" id="1_4du5l"]
-[ext_resource type="PackedScene" uid="uid://c1bcsql36d8di" path="res://objects/game_camera/game_camera.tscn" id="2_1illa"]
-
-[node name="MapBase" type="Node"]
-script = ExtResource("1_4du5l")
-
-[node name="GameCamera" parent="." instance=ExtResource("2_1illa")]
