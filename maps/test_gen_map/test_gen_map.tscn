@@ -1,10 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://cx4620i8gekyn"]
+[gd_scene load_steps=8 format=3 uid="uid://cx4620i8gekyn"]
 
+[ext_resource type="Script" uid="uid://ditp5a5ovc26" path="res://maps/test_gen_map/test_gen_map.gd" id="1_0vmep"]
 [ext_resource type="Texture2D" uid="uid://be0o86fas6thi" path="res://textures/sand_test.png" id="1_8fvuy"]
 [ext_resource type="PackedScene" uid="uid://c1bcsql36d8di" path="res://objects/game_camera/game_camera.tscn" id="2_0vmep"]
+[ext_resource type="PackedScene" uid="uid://cgrsdsygqkiap" path="res://maps/test_gen_map/structures/test_structure_0.tscn" id="2_topur"]
 [ext_resource type="PackedScene" uid="uid://h3rrw4kqycjq" path="res://entities/player/player.tscn" id="3_qyyd5"]
+[ext_resource type="PackedScene" uid="uid://ccd5k23d38egq" path="res://maps/test_gen_map/structures/test_structure_1.tscn" id="3_tb4eg"]
+[ext_resource type="PackedScene" uid="uid://cboua1o2fk68h" path="res://maps/test_gen_map/structures/big_test_structure_0.tscn" id="4_tb4eg"]
 
 [node name="TestGenMap" type="Node"]
+script = ExtResource("1_0vmep")
+generic_structures = Array[PackedScene]([ExtResource("2_topur"), ExtResource("3_tb4eg"), ExtResource("4_tb4eg")])
 
 [node name="SandParallax" type="Parallax2D" parent="."]
 repeat_size = Vector2(16, 16)

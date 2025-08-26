@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=4 uid="uid://cgrsdsygqkiap"]
+
+[ext_resource type="PackedScene" uid="uid://b0lnk800wbirt" path="res://maps/structure_base/structure_base.tscn" id="1_b7ds1"]
+[ext_resource type="TileSet" uid="uid://onj3h02p2ql0" path="res://tilesets/test_structure_tileset/test_structure_tileset.tres" id="2_7xxww"]
+
+[node name="TestStructure0" instance=ExtResource("1_b7ds1")]
+
+[node name="Background" parent="." index="0"]
+tile_set = ExtResource("2_7xxww")
+
+[node name="Walls" parent="." index="1"]
+tile_map_data = PackedByteArray("AAAEAAgAAAABAAAAAAAEAAkAAAABAAEAAAAMAAcAAAACAAAAAAAMAAgAAAABAAEAAAANAAEAAAABAAAAAAANAAIAAAABAAEAAAALAAsAAAABAAAAAAALAAwAAAABAAEAAAACAAEAAAACAAAAAAACAAIAAAABAAEAAAAGAAQAAAABAAAAAAAGAAUAAAABAAEAAAAJAAIAAAACAAAAAAACAAYAAAABAAAAAAAPAAkAAAABAAAAAAA=")
+tile_set = ExtResource("2_7xxww")
+
+[node name="OrderedTiles" parent="." index="3"]
+tile_map_data = PackedByteArray("AAALAAUAAAAAAAEAAAAHAAkAAAAAAAEAAAA=")
+tile_set = ExtResource("2_7xxww")
+
+[node name="Foreground" parent="." index="4"]
+tile_set = ExtResource("2_7xxww")
+
+[node name="EffectiveSize" parent="." index="5"]
+offset_left = 32.0
+offset_top = 16.0
+offset_bottom = 208.0
