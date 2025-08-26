@@ -47,8 +47,8 @@ func _on_player_warp(warp: WarpPoint) -> void:
 		print("could not load warp as the target name was not valid")
 		return
 	
-	SceneManager.load_map(warp.target_map, warp.target_warp_name)
-	
+	#SceneManager.load_map(warp.target_map, warp.target_warp_name)
+
 func warp_player(target_warp: String) -> void:
 	var targeted_warp_point: Node2D = null
 
