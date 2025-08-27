@@ -39,15 +39,12 @@ func _ready() -> void:
 	_load_screen(rect)
 
 func _on_player_warp(warp: WarpPoint) -> void:
-	if warp.target_map == null || warp.target_map.can_instantiate() == false:
-		printerr("could not load warp as the target map could not be instanced")
-		return
-	
 	if warp.target_warp_name == null || warp.target_warp_name == "":
 		print("could not load warp as the target name was not valid")
 		return
 	
-	#SceneManager.load_map(warp.target_map, warp.target_warp_name)
+	# load target map index
+	Game.load_scene(warp.target_map_index)
 
 func warp_player(target_warp: String) -> void:
 	var targeted_warp_point: Node2D = null
