@@ -29,6 +29,7 @@ func _ready() -> void:
 	player.position = default_spawn_point.position
 
 	player.entered_warp.connect(_on_player_warp)
+	player.death_animation_end.connect(_on_player_dead)
 
 	## set camera position
 	camera.position = (player.position / Util.SCREEN_SIZE).floor() * Util.SCREEN_SIZE
@@ -37,6 +38,9 @@ func _ready() -> void:
 	var rect: Rect2 = camera.get_viewport_rect()
 	rect.position += camera.position
 	_load_screen(rect)
+
+func _on_player_dead() -> void:
+	Game.load_scene(Game.get_scene_index())
 
 func _on_player_warp(warp: WarpPoint) -> void:
 	if warp.target_warp_name == null || warp.target_warp_name == "":

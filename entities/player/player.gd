@@ -2,6 +2,7 @@ extends CharacterBody2D
 class_name Player
 
 signal entered_warp(warp: WarpPoint)
+signal death_animation_end()
 
 @export var WALK_SPEED: float
 
@@ -13,6 +14,9 @@ var _is_dead: bool = false
 
 func is_dead() -> bool:
 	return _is_dead
+
+func _ready() -> void:
+	body_sprite.death_animation_end.connect(death_animation_end.emit)
 
 func _get_input_dir() -> Vector2:
 	if _is_dead:

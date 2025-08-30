@@ -1,6 +1,8 @@
 extends Sprite2D
 class_name PlayerBody
 
+signal death_animation_end()
+
 enum FacingDirection {
 	NONE,
 	LEFT,
@@ -43,6 +45,7 @@ func die() -> void:
 	var tween: Tween = create_tween()
 	tween.tween_property(self, "rotation_degrees", 360.0*3.0, 2.0)
 	tween.parallel().tween_property(self, "scale", Vector2.ZERO, 2.0)
+	tween.tween_callback(death_animation_end.emit)
 
 func _update_direction(input_dir: Vector2) -> void:
 	var _facingh : FacingDirection = FacingDirection.NONE

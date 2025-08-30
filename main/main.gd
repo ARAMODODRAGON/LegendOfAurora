@@ -1,21 +1,26 @@
 extends Node
+class_name Main
 
 @export var DEFAULT_SCENE_INDEX: int
 @export var BUILD_INDEX: Array[PackedScene]
 
 var _current_scene: Node = null
+var _current_scene_index: int = -1
+
+func _get_scene_index() -> int:
+	return _current_scene_index
 
 func _ready() -> void:
 	# bind our load scene function
-	Game._load_scene_callable = _load_scene_index
+	Game._main_scene = self
 	# default load scene
 	_load_scene_index(DEFAULT_SCENE_INDEX)
 
 func _load_scene_index(index: int) -> void:
-	_load_scene(BUILD_INDEX[index])
+	_load_scene(BUILD_INDEX[index], index)
 
 # coroutine to load a packed scene
-func _load_scene(packed_scene: PackedScene) -> void:
+func _load_scene(packed_scene: PackedScene, index: int) -> void:
 	# check if we can instance the packed scene
 	if !packed_scene.can_instantiate():
 		printerr("Could not load scene: " + str(packed_scene))
@@ -29,9 +34,11 @@ func _load_scene(packed_scene: PackedScene) -> void:
 		remove_child(_current_scene)
 		_current_scene.free()
 		_current_scene = null
+		_current_scene_index = -1
 	
 	# load new scene
 	_current_scene = packed_scene.instantiate()
+	_current_scene_index = index
 
 	# attach and call _ready
 	add_child(_current_scene)
