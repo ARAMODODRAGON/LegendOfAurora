@@ -11,12 +11,11 @@ enum FacingDirection {
 
 var _facing_direction : FacingDirection = FacingDirection.DOWN
 
-func update_animation(delta: float, input_dir: Vector2, slow_held: bool) -> void:
+func update_animation(delta: float, input_dir: Vector2) -> void:
 	if input_dir.length_squared() > 0.01:
 		_update_direction(input_dir)
 	
-	if !slow_held: _update_idle_sprite()
-	else: _update_slow_sprite()
+	_update_idle_sprite()
 	
 
 func _update_direction(input_dir: Vector2) -> void:

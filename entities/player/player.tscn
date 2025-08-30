@@ -1,10 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://h3rrw4kqycjq"]
+[gd_scene load_steps=9 format=3 uid="uid://h3rrw4kqycjq"]
 
 [ext_resource type="Script" uid="uid://deelqijiqnh24" path="res://entities/player/player.gd" id="1_abrql"]
 [ext_resource type="Texture2D" uid="uid://dmsp27mkcl1b3" path="res://entities/player/player.png" id="1_symyc"]
 [ext_resource type="Script" uid="uid://i5cow50xxsu4" path="res://entities/player/player_body.gd" id="3_sglur"]
-[ext_resource type="Texture2D" uid="uid://cx7kcwfyil7up" path="res://entities/player/player_spirit_orb.png" id="4_bls4j"]
-[ext_resource type="Script" uid="uid://d22il8lglankw" path="res://entities/player/spirit_orb.gd" id="5_fkugw"]
+[ext_resource type="Script" uid="uid://gfncyw3nx8wl" path="res://scripts/components/hurtbox_component.gd" id="4_bls4j"]
+[ext_resource type="Script" uid="uid://ceb4u5be5p5rc" path="res://scripts/components/health_component.gd" id="5_fkugw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_symyc"]
 size = Vector2(8, 8)
@@ -12,13 +12,15 @@ size = Vector2(8, 8)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fkugw"]
 size = Vector2(2, 2)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_bls4j"]
+radius = 3.0
+
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 0
 motion_mode = 1
 platform_floor_layers = 0
 script = ExtResource("1_abrql")
 WALK_SPEED = 60.0
-SLOW_SPEED = 34.0
 
 [node name="BodySprite" type="Sprite2D" parent="."]
 position = Vector2(0, -3)
@@ -27,15 +29,12 @@ hframes = 4
 vframes = 3
 script = ExtResource("3_sglur")
 
-[node name="SpiritOrb" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0)
-texture = ExtResource("4_bls4j")
-hframes = 8
-script = ExtResource("5_fkugw")
-ANIMATION_SPEED = 0.1
-
-[node name="Collider" type="CollisionShape2D" parent="."]
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_symyc")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+autostart = true
 
 [node name="WarpHitbox" type="Area2D" parent="."]
 collision_layer = 0
@@ -45,8 +44,22 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WarpHitbox"]
 shape = SubResource("RectangleShape2D_fkugw")
 
-[node name="Timer" type="Timer" parent="."]
-one_shot = true
-autostart = true
+[node name="Components" type="Node2D" parent="."]
+
+[node name="HurtboxComponent" type="Area2D" parent="Components" node_paths=PackedStringArray("health_component")]
+collision_layer = 2
+collision_mask = 2
+priority = 1
+script = ExtResource("4_bls4j")
+health_component = NodePath("../HealthComponent")
+metadata/_custom_type_script = "uid://gfncyw3nx8wl"
+
+[node name="HurtboxShape" type="CollisionShape2D" parent="Components/HurtboxComponent"]
+shape = SubResource("CircleShape2D_bls4j")
+
+[node name="HealthComponent" type="Node" parent="Components"]
+script = ExtResource("5_fkugw")
+max_health = 3
+metadata/_custom_type_script = "uid://ceb4u5be5p5rc"
 
 [connection signal="area_entered" from="WarpHitbox" to="." method="_on_warp_entered"]
