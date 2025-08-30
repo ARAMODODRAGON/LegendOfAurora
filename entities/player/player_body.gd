@@ -11,12 +11,38 @@ enum FacingDirection {
 
 var _facing_direction : FacingDirection = FacingDirection.DOWN
 
+var _is_dead: bool = false
+
 func update_animation(delta: float, input_dir: Vector2) -> void:
-	if input_dir.length_squared() > 0.01:
-		_update_direction(input_dir)
+	if !_is_dead:
+		if input_dir.length_squared() > 0.01:
+			_update_direction(input_dir)
+		
+		_update_idle_sprite()
+	else:
+		frame = 12
 	
-	_update_idle_sprite()
+func take_damage() -> void:
+	const FULL = 0.3
+	const QUARTER = FULL/4
+	const HALF = FULL/2
+
+	var tween_a: Tween = create_tween()
+	tween_a.tween_property(self, "rotation_degrees", 45, QUARTER)
+	tween_a.tween_property(self, "rotation_degrees", -45, QUARTER)
+	tween_a.tween_property(self, "rotation_degrees", 45, QUARTER)
+	tween_a.tween_property(self, "rotation_degrees", 0, QUARTER)
 	
+	var tween_b: Tween = create_tween()
+	tween_b.tween_property(self, "modulate", Color.RED, HALF)
+	tween_b.tween_property(self, "modulate", Color.WHITE, HALF)
+	
+
+func die() -> void:
+	_is_dead = true
+	var tween: Tween = create_tween()
+	tween.tween_property(self, "rotation_degrees", 360.0*3.0, 2.0)
+	tween.parallel().tween_property(self, "scale", Vector2.ZERO, 2.0)
 
 func _update_direction(input_dir: Vector2) -> void:
 	var _facingh : FacingDirection = FacingDirection.NONE

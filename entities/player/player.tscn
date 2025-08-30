@@ -12,8 +12,8 @@ size = Vector2(8, 8)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fkugw"]
 size = Vector2(2, 2)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_bls4j"]
-radius = 3.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8fjmc"]
+size = Vector2(4, 4)
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 0
@@ -26,7 +26,7 @@ WALK_SPEED = 60.0
 position = Vector2(0, -3)
 texture = ExtResource("1_symyc")
 hframes = 4
-vframes = 3
+vframes = 4
 script = ExtResource("3_sglur")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
@@ -43,6 +43,7 @@ monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WarpHitbox"]
 shape = SubResource("RectangleShape2D_fkugw")
+debug_color = Color(0, 0.6, 0.701961, 0)
 
 [node name="Components" type="Node2D" parent="."]
 
@@ -55,7 +56,8 @@ health_component = NodePath("../HealthComponent")
 metadata/_custom_type_script = "uid://gfncyw3nx8wl"
 
 [node name="HurtboxShape" type="CollisionShape2D" parent="Components/HurtboxComponent"]
-shape = SubResource("CircleShape2D_bls4j")
+shape = SubResource("RectangleShape2D_8fjmc")
+debug_color = Color(0.705362, 0.26951, 1, 0.42)
 
 [node name="HealthComponent" type="Node" parent="Components"]
 script = ExtResource("5_fkugw")
@@ -63,3 +65,5 @@ max_health = 3
 metadata/_custom_type_script = "uid://ceb4u5be5p5rc"
 
 [connection signal="area_entered" from="WarpHitbox" to="." method="_on_warp_entered"]
+[connection signal="take_damage" from="Components/HurtboxComponent" to="." method="_on_take_damage"]
+[connection signal="die" from="Components/HealthComponent" to="." method="_on_die"]

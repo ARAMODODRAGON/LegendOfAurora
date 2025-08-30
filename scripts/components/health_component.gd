@@ -1,4 +1,4 @@
-@icon("res://icons/Heart.svg")
+@icon("res://editor/icons/heart.svg")
 extends Node
 class_name HealthComponent
 

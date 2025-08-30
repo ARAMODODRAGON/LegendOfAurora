@@ -7,10 +7,19 @@ signal entered_warp(warp: WarpPoint)
 
 @onready var body_sprite: PlayerBody = $BodySprite
 @onready var timer: Timer = $Timer
+@onready var health_component: HealthComponent = $Components/HealthComponent
+
+var _is_dead: bool = false
+
+func is_dead() -> bool:
+	return _is_dead
 
 func _get_input_dir() -> Vector2:
-	var input_dir: Vector2 = Input.get_vector("LEFT", "RIGHT", "UP", "DOWN").normalized()
-	return input_dir
+	if _is_dead:
+		return Vector2.ZERO
+	else:
+		var input_dir: Vector2 = Input.get_vector("LEFT", "RIGHT", "UP", "DOWN").normalized()
+		return input_dir
 
 func _process(delta: float) -> void:
 	body_sprite.update_animation(delta, _get_input_dir())
@@ -30,3 +39,11 @@ func _on_warp_entered(area: Area2D) -> void:
 	var warp: WarpPoint = area as WarpPoint
 	if warp == null: return
 	entered_warp.emit(warp)
+
+func _on_take_damage(damage: int) -> void:
+	if health_component.health > 0:
+		body_sprite.take_damage()
+
+func _on_die() -> void:
+	_is_dead = true
+	body_sprite.die()
