@@ -14,10 +14,11 @@ script = ExtResource("2_kob58")
 [node name="BodySprite" parent="." index="0"]
 texture = ExtResource("2_3epr5")
 
-[node name="HitboxComponent" type="Area2D" parent="." index="2"]
+[node name="HitboxComponent" type="Area2D" parent="." index="2" node_paths=PackedStringArray("root_node")]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("4_0h0qk")
+root_node = NodePath("..")
 metadata/_custom_type_script = "uid://f2f56nmugjm4"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" index="0"]

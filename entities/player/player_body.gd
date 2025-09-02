@@ -15,6 +15,19 @@ var _facing_direction : FacingDirection = FacingDirection.DOWN
 
 var _is_dead: bool = false
 
+func get_facing_vector() -> Vector2:
+	match _facing_direction:
+		FacingDirection.RIGHT:
+			return Vector2.RIGHT
+		FacingDirection.LEFT:
+			return Vector2.LEFT
+		FacingDirection.UP:
+			return Vector2.UP
+		FacingDirection.RIGHT:
+			return Vector2.RIGHT
+		FacingDirection.NONE, _:
+			return Vector2.ZERO
+
 func update_animation(delta: float, input_dir: Vector2) -> void:
 	if !_is_dead:
 		if input_dir.length_squared() > 0.01:
@@ -24,20 +37,20 @@ func update_animation(delta: float, input_dir: Vector2) -> void:
 	else:
 		frame = 12
 	
-func take_damage() -> void:
-	const FULL = 0.3
-	const QUARTER = FULL/4
-	const HALF = FULL/2
+func take_damage(time: float) -> void:
+	var full: float = time
+	var quarter: float = full * 0.25
+	var half: float = full * 0.5
 
 	var tween_a: Tween = create_tween()
-	tween_a.tween_property(self, "rotation_degrees", 45, QUARTER)
-	tween_a.tween_property(self, "rotation_degrees", -45, QUARTER)
-	tween_a.tween_property(self, "rotation_degrees", 45, QUARTER)
-	tween_a.tween_property(self, "rotation_degrees", 0, QUARTER)
+	tween_a.tween_property(self, "rotation_degrees", 45, quarter)
+	tween_a.tween_property(self, "rotation_degrees", -45, quarter)
+	tween_a.tween_property(self, "rotation_degrees", 45, quarter)
+	tween_a.tween_property(self, "rotation_degrees", 0, quarter)
 	
 	var tween_b: Tween = create_tween()
-	tween_b.tween_property(self, "modulate", Color.RED, HALF)
-	tween_b.tween_property(self, "modulate", Color.WHITE, HALF)
+	tween_b.tween_property(self, "modulate", Color.RED, half)
+	tween_b.tween_property(self, "modulate", Color.WHITE, half)
 	
 
 func die() -> void:
