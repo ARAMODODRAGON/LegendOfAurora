@@ -3,6 +3,22 @@ class_name PlayerBody
 
 signal death_animation_end()
 
+#@export_group("Frames")
+#
+#@export var DEATH_FRAME: int = 0
+#
+#@export_subgroup("Walk Frames")
+#@export var WALK_DOWN_FIRST_FRAME: int = 4
+#@export var WALK_UP_FIRST_FRAME: int = 8
+#@export var WALK_LEFT_FIRST_FRAME: int = 12
+#@export var WALK_RIGHT_FIRST_FRAME: int = 16
+#
+#@export_subgroup("Attack Frames")
+#@export var ATTACK_DOWN_FIRST_FRAME: int = 20
+#@export var ATTACK_UP_FIRST_FRAME: int = 24
+#@export var ATTACK_LEFT_FIRST_FRAME: int = 28
+#@export var ATTACK_RIGHT_FIRST_FRAME: int = 32
+
 enum FacingDirection {
 	NONE,
 	LEFT,

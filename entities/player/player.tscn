@@ -31,7 +31,8 @@ KNOCKBACK_SPEED = 120.0
 position = Vector2(0, -3)
 texture = ExtResource("1_symyc")
 hframes = 4
-vframes = 4
+vframes = 9
+frame = 4
 script = ExtResource("3_sglur")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
