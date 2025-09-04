@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://h3rrw4kqycjq"]
+[gd_scene load_steps=13 format=3 uid="uid://h3rrw4kqycjq"]
 
 [ext_resource type="Script" uid="uid://deelqijiqnh24" path="res://entities/player/player.gd" id="1_abrql"]
 [ext_resource type="SpriteFrames" uid="uid://djnpafkyppc4w" path="res://entities/player/player_sprite_frames.tres" id="2_8fjmc"]
@@ -6,18 +6,22 @@
 [ext_resource type="Script" uid="uid://gfncyw3nx8wl" path="res://scripts/components/hurtbox_component.gd" id="4_bls4j"]
 [ext_resource type="Script" uid="uid://ceb4u5be5p5rc" path="res://scripts/components/health_component.gd" id="5_fkugw"]
 [ext_resource type="Script" uid="uid://ctdaf0ke7ms68" path="res://scripts/components/interactor_component.gd" id="6_8fjmc"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_symyc"]
-size = Vector2(8, 8)
+[ext_resource type="Script" uid="uid://f2f56nmugjm4" path="res://scripts/components/hitbox_component.gd" id="7_qiwj3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fkugw"]
 size = Vector2(2, 2)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8fjmc"]
-size = Vector2(4, 4)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qiwj3"]
 size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_symyc"]
+size = Vector2(8, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_26q78"]
+size = Vector2(10, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8fjmc"]
+size = Vector2(4, 4)
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 0
@@ -27,8 +31,10 @@ script = ExtResource("1_abrql")
 WALK_SPEED = 60.0
 KNOCKBACK_SPEED = 120.0
 
-[node name="CollisionShape" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_symyc")
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("5_fkugw")
+max_health = 3
+metadata/_custom_type_script = "uid://ceb4u5be5p5rc"
 
 [node name="WarpHitbox" type="Area2D" parent="."]
 collision_layer = 0
@@ -39,41 +45,72 @@ monitorable = false
 shape = SubResource("RectangleShape2D_fkugw")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
-[node name="Components" type="Node2D" parent="."]
-
-[node name="HurtboxComponent" type="Area2D" parent="Components" node_paths=PackedStringArray("root_node", "health_component")]
-collision_layer = 2
-collision_mask = 2
-priority = 1
-script = ExtResource("4_bls4j")
-root_node = NodePath("../..")
-health_component = NodePath("../HealthComponent")
-metadata/_custom_type_script = "uid://gfncyw3nx8wl"
-
-[node name="HurtboxShape" type="CollisionShape2D" parent="Components/HurtboxComponent"]
-shape = SubResource("RectangleShape2D_8fjmc")
-debug_color = Color(0.705362, 0.26951, 1, 0.42)
-
-[node name="HealthComponent" type="Node" parent="Components"]
-script = ExtResource("5_fkugw")
-max_health = 3
-metadata/_custom_type_script = "uid://ceb4u5be5p5rc"
-
-[node name="InteractorComponent" type="Area2D" parent="Components"]
+[node name="InteractorComponent" type="Area2D" parent="."]
 script = ExtResource("6_8fjmc")
 metadata/_custom_type_script = "uid://ctdaf0ke7ms68"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Components/InteractorComponent"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractorComponent"]
 shape = SubResource("RectangleShape2D_qiwj3")
+debug_color = Color(0.945098, 0.572549, 0, 0.270588)
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_symyc")
 
 [node name="BodySprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -3)
 sprite_frames = ExtResource("2_8fjmc")
-animation = &"attack_up"
+animation = &"attack_down"
 autoplay = "walk_down"
-frame = 2
-frame_progress = 1.0
 script = ExtResource("3_sglur")
+
+[node name="SwordRightHitbox" type="Area2D" parent="BodySprite"]
+visible = false
+position = Vector2(10, 3)
+script = ExtResource("7_qiwj3")
+metadata/_custom_type_script = "uid://f2f56nmugjm4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/SwordRightHitbox"]
+shape = SubResource("RectangleShape2D_26q78")
+
+[node name="SwordDownHitbox" type="Area2D" parent="BodySprite"]
+visible = false
+position = Vector2(0, 13)
+script = ExtResource("7_qiwj3")
+metadata/_custom_type_script = "uid://f2f56nmugjm4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/SwordDownHitbox"]
+shape = SubResource("RectangleShape2D_26q78")
+
+[node name="SwordLeftHitbox" type="Area2D" parent="BodySprite"]
+visible = false
+position = Vector2(-10, 3)
+script = ExtResource("7_qiwj3")
+metadata/_custom_type_script = "uid://f2f56nmugjm4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/SwordLeftHitbox"]
+shape = SubResource("RectangleShape2D_26q78")
+
+[node name="SwordUpHitbox" type="Area2D" parent="BodySprite"]
+visible = false
+position = Vector2(0, -7)
+script = ExtResource("7_qiwj3")
+metadata/_custom_type_script = "uid://f2f56nmugjm4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/SwordUpHitbox"]
+shape = SubResource("RectangleShape2D_26q78")
+
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("root_node", "health_component")]
+collision_layer = 2
+collision_mask = 2
+priority = 1
+script = ExtResource("4_bls4j")
+root_node = NodePath("..")
+health_component = NodePath("../HealthComponent")
+metadata/_custom_type_script = "uid://gfncyw3nx8wl"
+
+[node name="HurtboxShape" type="CollisionShape2D" parent="HurtboxComponent"]
+shape = SubResource("RectangleShape2D_8fjmc")
+debug_color = Color(0.705362, 0.26951, 1, 0.42)
 
 [node name="Timers" type="Node" parent="."]
 
@@ -85,7 +122,8 @@ autostart = true
 process_callback = 0
 wait_time = 0.2
 
+[connection signal="die" from="HealthComponent" to="." method="_on_die"]
 [connection signal="area_entered" from="WarpHitbox" to="." method="_on_warp_entered"]
-[connection signal="take_damage" from="Components/HurtboxComponent" to="." method="_on_take_damage"]
-[connection signal="die" from="Components/HealthComponent" to="." method="_on_die"]
+[connection signal="animation_finished" from="BodySprite" to="BodySprite" method="_on_animation_finished"]
+[connection signal="take_damage" from="HurtboxComponent" to="." method="_on_take_damage"]
 [connection signal="timeout" from="Timers/KnockbackTimer" to="." method="_on_knockback_timer_timeout"]

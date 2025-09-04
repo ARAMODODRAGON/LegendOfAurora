@@ -11,12 +11,13 @@ signal death_animation_end()
 @onready var spawn_timer: Timer = $Timers/SpawnTimer
 @onready var knockback_timer: Timer = $Timers/KnockbackTimer
 
-@onready var health_component: HealthComponent = $Components/HealthComponent
-@onready var interactor_component: InteractorComponent = $Components/InteractorComponent
+@onready var health_component: HealthComponent = $HealthComponent
+@onready var interactor_component: InteractorComponent = $InteractorComponent
 
 enum MoveState {
 	DEFAULT,
 	KNOCKBACK,
+	ATTACKING,
 }
 
 var _move_state: MoveState = MoveState.DEFAULT
@@ -27,6 +28,11 @@ func is_dead() -> bool:
 
 func _ready() -> void:
 	body_sprite.death_animation_end.connect(death_animation_end.emit)
+	body_sprite.attack_end.connect(
+		func() -> void:
+			if _move_state == MoveState.ATTACKING:
+				_move_state = MoveState.DEFAULT
+	)
 
 func _get_input_dir() -> Vector2:
 	if _is_dead:
@@ -39,10 +45,21 @@ func _process(delta: float) -> void:
 	body_sprite.update_animation(delta, _get_input_dir())
 
 func _handle_interaction() -> void:
+	if _is_dead: 
+		return
+
 	var primary_action: bool = Input.is_action_just_pressed("PRIMARY")
 
-	if primary_action: 
-		interactor_component.trigger_interaction(body_sprite.get_facing_vector(), _on_interactable_triggered)
+	if primary_action and not body_sprite.is_attacking(): 
+		var did_interact: bool = interactor_component.trigger_interaction(
+			body_sprite.get_facing_vector(), 
+			_on_interactable_triggered
+		)
+
+		if !did_interact:
+			body_sprite.attack()
+			_move_state = MoveState.ATTACKING
+			velocity = Vector2.ZERO
 
 func _on_interactable_triggered(interactable: InteractableComponent) -> void:
 	pass
@@ -55,7 +72,7 @@ func _physics_process(delta: float) -> void:
 func _handle_physics(delta: float) -> void:
 	var input_dir: Vector2 = _get_input_dir()
 	match _move_state:
-		MoveState.KNOCKBACK:
+		MoveState.KNOCKBACK, MoveState.ATTACKING:
 			# run the set velocity
 			move_and_slide() 
 		MoveState.DEFAULT, _:
