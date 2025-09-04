@@ -54,6 +54,7 @@ folder_colors={
 "res://entities/": "purple",
 "res://entities/enemies/": "red",
 "res://entities/player/": "blue",
+"res://game/": "green",
 "res://maps/": "orange"
 }
 

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="QuestLine" load_steps=5 format=3 uid="uid://bfifvodkt7rqd"]
+
+[ext_resource type="Script" uid="uid://6t6oajhu1te1" path="res://scripts/quest_management/quest_event.gd" id="1_e1jd7"]
+[ext_resource type="Script" uid="uid://c6avd5s5fk62v" path="res://scripts/quest_management/quest_line.gd" id="2_fywfl"]
+
+[sub_resource type="Resource" id="Resource_e1jd7"]
+script = ExtResource("1_e1jd7")
+name = &"test_event_0"
+complete = false
+metadata/_custom_type_script = "uid://6t6oajhu1te1"
+
+[sub_resource type="Resource" id="Resource_fywfl"]
+script = ExtResource("1_e1jd7")
+name = &"test_event_1"
+complete = false
+metadata/_custom_type_script = "uid://6t6oajhu1te1"
+
+[resource]
+script = ExtResource("2_fywfl")
+_events = Array[ExtResource("1_e1jd7")]([SubResource("Resource_e1jd7"), SubResource("Resource_fywfl")])
+metadata/_custom_type_script = "uid://c6avd5s5fk62v"
