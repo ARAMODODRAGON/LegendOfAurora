@@ -7,8 +7,17 @@ class_name HitboxComponent
 ## can be 0
 @export var damage: int = 1
 
+## determines if the hitbox is always active
+## changing this at runtime shouldnt affect anything
+@export var _is_active: bool = true
+
 func _ready() -> void:
-	area_entered.connect(_on_area_entered)
+	if _is_active: area_entered.connect(_on_area_entered)
+
+## forceably triggers this hitbox for one step
+func trigger() -> void:
+	for area in get_overlapping_areas():
+		_on_area_entered(area)
 
 #func _make_4_directional(direction: Vector2) -> Vector2:
 #	var angle : float = rad_to_deg(direction.angle())

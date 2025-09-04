@@ -64,8 +64,8 @@ enemy_scene = ExtResource("5_kiek0")
 position = Vector2(176, 72)
 script = ExtResource("6_qu462")
 quest_condition = SubResource("Resource_1ffeq")
-false_string = "fuck me"
-true_string = "love me"
+false_string = "PEEP"
+true_string = "AAAAAAA"
 metadata/_custom_type_script = "uid://cahae22p3lom2"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Layers/Objects Layer/Test0" index="0"]
@@ -86,8 +86,8 @@ shape = SubResource("RectangleShape2D_x4gxx")
 position = Vector2(56, 72)
 script = ExtResource("6_qu462")
 quest_condition = SubResource("Resource_npc27")
-false_string = "fuck you"
-true_string = "love you"
+false_string = "poop"
+true_string = "AAAAAAAAA"
 metadata/_custom_type_script = "uid://cahae22p3lom2"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Layers/Objects Layer/Test1" index="0"]

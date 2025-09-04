@@ -1,12 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://bxc6tvy81hqru"]
+[gd_scene load_steps=9 format=3 uid="uid://bxc6tvy81hqru"]
 
 [ext_resource type="PackedScene" uid="uid://g35b8f04ibnc" path="res://entities/enemies/enemy_base/enemy_base.tscn" id="1_0vq3m"]
 [ext_resource type="Texture2D" uid="uid://c0daoehn5giax" path="res://entities/enemies/test_enemy_0/test_enemy_0.png" id="2_3epr5"]
 [ext_resource type="Script" uid="uid://dcx576jilf7fl" path="res://entities/enemies/test_enemy_0/test_enemy_0.gd" id="2_kob58"]
 [ext_resource type="Script" uid="uid://f2f56nmugjm4" path="res://scripts/components/hitbox_component.gd" id="4_0h0qk"]
+[ext_resource type="Script" uid="uid://gfncyw3nx8wl" path="res://scripts/components/hurtbox_component.gd" id="5_gf8y4"]
+[ext_resource type="Script" uid="uid://ceb4u5be5p5rc" path="res://scripts/components/health_component.gd" id="6_sujwp"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gf8y4"]
 radius = 8.06226
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sujwp"]
+radius = 11.0
 
 [node name="TestEnemy0" instance=ExtResource("1_0vq3m")]
 script = ExtResource("2_kob58")
@@ -23,3 +28,23 @@ metadata/_custom_type_script = "uid://f2f56nmugjm4"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" index="0"]
 shape = SubResource("CircleShape2D_gf8y4")
+
+[node name="HurtboxComponent" type="Area2D" parent="." index="3" node_paths=PackedStringArray("health_component")]
+collision_layer = 4
+collision_mask = 4
+monitoring = false
+script = ExtResource("5_gf8y4")
+health_component = NodePath("../HealthComponent")
+metadata/_custom_type_script = "uid://gfncyw3nx8wl"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" index="0"]
+shape = SubResource("CircleShape2D_sujwp")
+debug_color = Color(1, 0, 0.0333333, 0.176471)
+
+[node name="HealthComponent" type="Node" parent="." index="4"]
+script = ExtResource("6_sujwp")
+max_health = 5
+metadata/_custom_type_script = "uid://ceb4u5be5p5rc"
+
+[connection signal="take_damage" from="HurtboxComponent" to="." method="_on_take_damage"]
+[connection signal="die" from="HealthComponent" to="." method="_on_die"]

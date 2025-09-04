@@ -15,6 +15,7 @@ var _is_dead: bool = false
 var _is_attacking: bool = false
 var _last_position: Vector2 = Vector2.ZERO
 var _current_hitbox: HitboxComponent = null
+var _has_dealt_damage: bool = false
 
 func is_attacking() -> bool:
 	return _is_attacking
@@ -69,6 +70,7 @@ func attack() -> void:
 		return
 	
 	_is_attacking = true
+	_has_dealt_damage = false
 
 	speed_scale = 1.0
 	
@@ -103,6 +105,10 @@ func die() -> void:
 
 func _ready() -> void:
 	_last_position = global_position
+	sword_right_hitbox.visible = true
+	sword_down_hitbox.visible = true
+	sword_left_hitbox.visible = true
+	sword_up_hitbox.visible = true
 
 func _update_direction(input_dir: Vector2) -> void:
 	var _facingh: Enum.Direction = Enum.Direction.NONE
@@ -150,8 +156,9 @@ func _update_walk_sprite(is_walking: bool) -> void:
 		frame = 0
 
 func _update_attack_hitbox() -> void:
-	if frame == 2:
-		_current_hitbox.visible = true
+	if frame == 1 and not _has_dealt_damage:
+		_current_hitbox.trigger()
+		_has_dealt_damage = true
 	
 func _on_animation_finished() -> void:
 	if _is_attacking and _current_hitbox:
