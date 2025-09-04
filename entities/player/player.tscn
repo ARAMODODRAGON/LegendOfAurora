@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://h3rrw4kqycjq"]
 
 [ext_resource type="Script" uid="uid://deelqijiqnh24" path="res://entities/player/player.gd" id="1_abrql"]
-[ext_resource type="Texture2D" uid="uid://dmsp27mkcl1b3" path="res://entities/player/player.png" id="1_symyc"]
+[ext_resource type="SpriteFrames" uid="uid://djnpafkyppc4w" path="res://entities/player/player_sprite_frames.tres" id="2_8fjmc"]
 [ext_resource type="Script" uid="uid://i5cow50xxsu4" path="res://entities/player/player_body.gd" id="3_sglur"]
 [ext_resource type="Script" uid="uid://gfncyw3nx8wl" path="res://scripts/components/hurtbox_component.gd" id="4_bls4j"]
 [ext_resource type="Script" uid="uid://ceb4u5be5p5rc" path="res://scripts/components/health_component.gd" id="5_fkugw"]
@@ -26,14 +26,6 @@ platform_floor_layers = 0
 script = ExtResource("1_abrql")
 WALK_SPEED = 60.0
 KNOCKBACK_SPEED = 120.0
-
-[node name="BodySprite" type="Sprite2D" parent="."]
-position = Vector2(0, -3)
-texture = ExtResource("1_symyc")
-hframes = 4
-vframes = 9
-frame = 4
-script = ExtResource("3_sglur")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_symyc")
@@ -73,6 +65,15 @@ metadata/_custom_type_script = "uid://ctdaf0ke7ms68"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Components/InteractorComponent"]
 shape = SubResource("RectangleShape2D_qiwj3")
+
+[node name="BodySprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -3)
+sprite_frames = ExtResource("2_8fjmc")
+animation = &"attack_up"
+autoplay = "walk_down"
+frame = 2
+frame_progress = 1.0
+script = ExtResource("3_sglur")
 
 [node name="Timers" type="Node" parent="."]
 

@@ -1,4 +1,4 @@
-extends Sprite2D
+extends AnimatedSprite2D
 class_name PlayerBody
 
 signal death_animation_end()
@@ -19,39 +19,37 @@ signal death_animation_end()
 #@export var ATTACK_LEFT_FIRST_FRAME: int = 28
 #@export var ATTACK_RIGHT_FIRST_FRAME: int = 32
 
-enum FacingDirection {
-	NONE,
-	LEFT,
-	RIGHT,
-	UP,
-	DOWN,
-}
-
-var _facing_direction : FacingDirection = FacingDirection.DOWN
+var _facing_direction : Enum.Direction = Enum.Direction.DOWN
 
 var _is_dead: bool = false
+var _last_position: Vector2 = Vector2.ZERO
 
 func get_facing_vector() -> Vector2:
 	match _facing_direction:
-		FacingDirection.RIGHT:
-			return Vector2.RIGHT
-		FacingDirection.LEFT:
+		Enum.Direction.DOWN:
+			return Vector2.DOWN
+		Enum.Direction.LEFT:
 			return Vector2.LEFT
-		FacingDirection.UP:
+		Enum.Direction.UP:
 			return Vector2.UP
-		FacingDirection.RIGHT:
+		Enum.Direction.RIGHT:
 			return Vector2.RIGHT
-		FacingDirection.NONE, _:
+		Enum.Direction.NONE, _:
 			return Vector2.ZERO
 
 func update_animation(delta: float, input_dir: Vector2) -> void:
-	if !_is_dead:
-		if input_dir.length_squared() > 0.01:
-			_update_direction(input_dir)
+	if _is_dead:
+		return
+
+	var is_walking: bool = not _last_position.is_equal_approx(global_position)
+
+	if is_walking:
+		_update_direction(input_dir)
 		
-		_update_idle_sprite()
-	else:
-		frame = 12
+	_update_walk_sprite(is_walking)
+
+	_last_position = global_position
+
 	
 func take_damage(time: float) -> void:
 	var full: float = time
@@ -71,53 +69,60 @@ func take_damage(time: float) -> void:
 
 func die() -> void:
 	_is_dead = true
+	# spriteframes
+	animation = &"dead"
+
+	# tween animation
 	var tween: Tween = create_tween()
 	tween.tween_property(self, "rotation_degrees", 360.0*3.0, 2.0)
 	tween.parallel().tween_property(self, "scale", Vector2.ZERO, 2.0)
 	tween.tween_callback(death_animation_end.emit)
 
+func _ready() -> void:
+	_last_position = global_position
+
 func _update_direction(input_dir: Vector2) -> void:
-	var _facingh : FacingDirection = FacingDirection.NONE
-	var _facingv : FacingDirection = FacingDirection.NONE
+	var _facingh : Enum.Direction = Enum.Direction.NONE
+	var _facingv : Enum.Direction = Enum.Direction.NONE
 	
 	if abs(input_dir.x) > 0.001:
 		if input_dir.x > 0.0:
-			_facingh = FacingDirection.RIGHT
+			_facingh = Enum.Direction.RIGHT
 		else:
-			_facingh = FacingDirection.LEFT
+			_facingh = Enum.Direction.LEFT
 	
 	if abs(input_dir.y) > 0.001:
 		if input_dir.y > 0.0:
-			_facingv = FacingDirection.DOWN
+			_facingv = Enum.Direction.DOWN
 		else:
-			_facingv = FacingDirection.UP
+			_facingv = Enum.Direction.UP
 	
+	var last_facing_direction: Enum.Direction = _facing_direction
+
 	if _facing_direction != _facingh && _facing_direction != _facingv:
-		if _facingh != FacingDirection.NONE:
+		if _facingh != Enum.Direction.NONE:
 			_facing_direction = _facingh
-		elif _facingv != FacingDirection.NONE:
+		elif _facingv != Enum.Direction.NONE:
 			_facing_direction = _facingv
+	
+	if last_facing_direction != _facing_direction:
+		_change_walk_animation_direction()
 
-func _update_idle_sprite() -> void:
+func _change_walk_animation_direction() -> void:
 	match _facing_direction:
-		FacingDirection.LEFT:
-			frame = 3
-		FacingDirection.RIGHT:
-			frame = 2
-		FacingDirection.UP:
-			frame = 1
-		FacingDirection.DOWN:
-			frame = 0
-		_: pass
+		Enum.Direction.RIGHT:
+			animation = &"walk_right"
+		Enum.Direction.LEFT:
+			animation = &"walk_left"
+		Enum.Direction.UP:
+			animation = &"walk_up"
+		Enum.Direction.DOWN, Enum.Direction.NONE, _:
+			animation = &"walk_down"
 
-func _update_slow_sprite() -> void:
-	match _facing_direction:
-		FacingDirection.LEFT:
-			frame = 11
-		FacingDirection.RIGHT:
-			frame = 10
-		FacingDirection.UP:
-			frame = 9
-		FacingDirection.DOWN:
-			frame = 8
-		_: pass
+func _update_walk_sprite(is_walking: bool) -> void:
+	if is_walking:
+		speed_scale = 1.0
+	else:
+		speed_scale = 0.0
+		frame = 0
+	
