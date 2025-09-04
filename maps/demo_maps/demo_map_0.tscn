@@ -1,17 +1,40 @@
-[gd_scene load_steps=10 format=4 uid="uid://c8r7ng8j2gsgk"]
+[gd_scene load_steps=17 format=4 uid="uid://c8r7ng8j2gsgk"]
 
 [ext_resource type="PackedScene" uid="uid://cqqsdh7x70d5v" path="res://maps/map_base/map_base.tscn" id="1_b7wyl"]
 [ext_resource type="TileSet" uid="uid://xv57c3cq5pnc" path="res://tilesets/test_tileset/test_tileset.tres" id="2_og57n"]
 [ext_resource type="PackedScene" uid="uid://d1kticblcq5yu" path="res://objects/warp_point/warp_point.tscn" id="3_fnxf8"]
 [ext_resource type="PackedScene" uid="uid://d03gpw3xxgth5" path="res://objects/enemy_spawner/enemy_spawner.tscn" id="4_fnxf8"]
 [ext_resource type="PackedScene" uid="uid://bxc6tvy81hqru" path="res://entities/enemies/test_enemy_0/test_enemy_0.tscn" id="5_kiek0"]
-[ext_resource type="Script" uid="uid://cahae22p3lom2" path="res://scripts/components/interactable_component.gd" id="6_x4gxx"]
+[ext_resource type="Script" uid="uid://ca2ee76j7mh5p" path="res://maps/demo_maps/test_0_interaction.gd" id="6_qu462"]
+[ext_resource type="Resource" uid="uid://bfifvodkt7rqd" path="res://game/quests/TestQuest.tres" id="7_1ffeq"]
+[ext_resource type="Script" uid="uid://mwiiacw2emc4" path="res://scripts/quest_management/quest_event_condition.gd" id="7_npc27"]
 [ext_resource type="Texture2D" uid="uid://rqcf184asd2j" path="res://tilesets/test_tileset/test_tileset.png" id="7_qu462"]
+[ext_resource type="Script" uid="uid://cxs52grobpg26" path="res://maps/demo_maps/progress_questline_object.gd" id="11_cfqdx"]
+
+[sub_resource type="Resource" id="Resource_1ffeq"]
+script = ExtResource("7_npc27")
+quest_line = ExtResource("7_1ffeq")
+event_name = &"test_event_0"
+completion = true
+metadata/_custom_type_script = "uid://mwiiacw2emc4"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_npc27"]
 size = Vector2(16, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x4gxx"]
+size = Vector2(16, 16)
+
+[sub_resource type="Resource" id="Resource_npc27"]
+script = ExtResource("7_npc27")
+quest_line = ExtResource("7_1ffeq")
+event_name = &"test_event_1"
+completion = true
+metadata/_custom_type_script = "uid://mwiiacw2emc4"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_udtq2"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m4s88"]
 size = Vector2(16, 16)
 
 [node name="DemoMap0" instance=ExtResource("1_b7wyl")]
@@ -39,8 +62,10 @@ enemy_scene = ExtResource("5_kiek0")
 
 [node name="Test0" type="Area2D" parent="Layers/Objects Layer" index="3"]
 position = Vector2(176, 72)
-script = ExtResource("6_x4gxx")
-my_string = "test0"
+script = ExtResource("6_qu462")
+quest_condition = SubResource("Resource_1ffeq")
+false_string = "fuck me"
+true_string = "love me"
 metadata/_custom_type_script = "uid://cahae22p3lom2"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Layers/Objects Layer/Test0" index="0"]
@@ -59,8 +84,10 @@ shape = SubResource("RectangleShape2D_x4gxx")
 
 [node name="Test1" type="Area2D" parent="Layers/Objects Layer" index="4"]
 position = Vector2(56, 72)
-script = ExtResource("6_x4gxx")
-my_string = "test1"
+script = ExtResource("6_qu462")
+quest_condition = SubResource("Resource_npc27")
+false_string = "fuck you"
+true_string = "love you"
 metadata/_custom_type_script = "uid://cahae22p3lom2"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Layers/Objects Layer/Test1" index="0"]
@@ -76,6 +103,27 @@ frame = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Layers/Objects Layer/Test1/StaticBody2D" index="0"]
 shape = SubResource("RectangleShape2D_x4gxx")
+
+[node name="ProgressQuestline" type="Area2D" parent="Layers/Objects Layer" index="5"]
+position = Vector2(200, 160)
+script = ExtResource("11_cfqdx")
+quest_line = ExtResource("7_1ffeq")
+quest_events = Array[StringName]([&"test_event_0", &"test_event_1"])
+metadata/_custom_type_script = "uid://cahae22p3lom2"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Layers/Objects Layer/ProgressQuestline" index="0"]
+shape = SubResource("RectangleShape2D_udtq2")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Layers/Objects Layer/ProgressQuestline" index="1"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Layers/Objects Layer/ProgressQuestline/StaticBody2D" index="0"]
+shape = SubResource("RectangleShape2D_m4s88")
+
+[node name="Sprite2D" type="Sprite2D" parent="Layers/Objects Layer/ProgressQuestline" index="2"]
+texture = ExtResource("7_qu462")
+hframes = 3
+vframes = 3
+frame = 2
 
 [node name="Foreground Layer" parent="Layers" index="4"]
 tile_set = ExtResource("2_og57n")

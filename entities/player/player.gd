@@ -45,7 +45,7 @@ func _handle_interaction() -> void:
 		interactor_component.trigger_interaction(body_sprite.get_facing_vector(), _on_interactable_triggered)
 
 func _on_interactable_triggered(interactable: InteractableComponent) -> void:
-	print(interactable.my_string)
+	pass
 
 func _physics_process(delta: float) -> void:
 	_handle_interaction()

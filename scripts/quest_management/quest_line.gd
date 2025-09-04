@@ -7,7 +7,9 @@ func get_event(name: StringName) -> QuestEvent:
 	var index: int = _get_event_index(name)
 	return _events[index] if (index != -1) else null
 
-func check_event(name: StringName) -> bool: return false
+func check_event(name: StringName) -> bool: 
+	var event: QuestEvent = get_event(name)
+	return event.complete if event != null else false
 
 ## attempts to mark the event as complete
 ## confirms that the previous event has been completed

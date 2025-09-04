@@ -4,8 +4,7 @@ class_name InteractorComponent
 @export var MAX_INTERACTION_ANGLE: float = 30.0
 
 ## checks for interactables in the area
-## expects callback with params (interactable: InteractableComponent)
-func trigger_interaction(facing: Vector2, callback: Callable) -> bool:
+func trigger_interaction(facing: Vector2, callback: Callable = Callable()) -> bool:
 	if callback == null:
 		return false
 
@@ -23,8 +22,10 @@ func trigger_interaction(facing: Vector2, callback: Callable) -> bool:
 			var angle: float = rad_to_deg(direction.angle_to(facing))
 
 			if absf(angle) < MAX_INTERACTION_ANGLE:
-				# count and invoke callback
+				# count and invoke interaction
 				count += 1
-				callback.call(interactable)
+				interactable._on_interact()
+				if callback.is_valid():
+					callback.call(interactable)
 	
 	return count > 0
