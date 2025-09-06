@@ -35,7 +35,7 @@ platform_floor_layers = 0
 script = ExtResource("1_abrql")
 WALK_SPEED = 60.0
 KNOCKBACK_SPEED = 120.0
-SHOCKWAVE_TIME = 0.3
+SHOCKWAVE_TIME = 0.2
 
 [node name="HealthComponent" type="Node" parent="."]
 script = ExtResource("5_fkugw")
@@ -86,10 +86,13 @@ process_callback = 0
 wait_time = 0.2
 
 [node name="BodySprite" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -3)
+z_index = 1
+y_sort_enabled = true
+position = Vector2(0, 4)
 sprite_frames = ExtResource("2_8fjmc")
 animation = &"walk_down"
 autoplay = "walk_down"
+offset = Vector2(0, -7)
 script = ExtResource("3_sglur")
 
 [node name="SwordRightHitbox" type="Area2D" parent="BodySprite"]
@@ -141,8 +144,6 @@ metadata/_custom_type_script = "uid://f2f56nmugjm4"
 shape = SubResource("RectangleShape2D_26q78")
 
 [node name="BongoShockwave" type="Area2D" parent="."]
-collision_layer = 16
-collision_mask = 16
 
 [node name="ShockwavePivot" type="Node2D" parent="BongoShockwave"]
 modulate = Color(1, 1, 1, 0)

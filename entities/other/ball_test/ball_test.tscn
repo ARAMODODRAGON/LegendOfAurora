@@ -15,8 +15,6 @@ motion_mode = 1
 script = ExtResource("1_61frt")
 
 [node name="BongoListenerComponent" type="Area2D" parent="."]
-collision_layer = 16
-collision_mask = 16
 script = ExtResource("2_n5ise")
 metadata/_custom_type_script = "uid://ljroc5o8ykd1"
 

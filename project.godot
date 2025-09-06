@@ -55,7 +55,8 @@ folder_colors={
 "res://entities/enemies/": "red",
 "res://entities/player/": "blue",
 "res://game/": "green",
-"res://maps/": "orange"
+"res://maps/": "orange",
+"res://scripts/": "pink"
 }
 
 [global_group]
@@ -97,7 +98,7 @@ SECONDARY={
 
 [layer_names]
 
-2d_physics/layer_1="Solid / Interactable"
+2d_physics/layer_1="Solid / Interactable / Shockwave"
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Enemy"
 2d_physics/layer_4="Warps"

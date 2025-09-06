@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://b0p0qw7nvak0h"]
+
+[ext_resource type="Script" uid="uid://b5xikqa6k7k7x" path="res://objects/triggers/torch_trigger/torch_trigger.gd" id="1_o05f0"]
+[ext_resource type="Texture2D" uid="uid://bspptnxn5o6ye" path="res://objects/triggers/torch_trigger/torch_trigger.png" id="1_utrwb"]
+[ext_resource type="Script" uid="uid://ljroc5o8ykd1" path="res://scripts/components/bongo_listener_component.gd" id="2_bhuk0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_utrwb"]
+size = Vector2(4, 4)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bhuk0"]
+radius = 3.16228
+
+[node name="TorchTrigger" type="StaticBody2D"]
+z_index = 1
+y_sort_enabled = true
+script = ExtResource("1_o05f0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -5)
+texture = ExtResource("1_utrwb")
+vframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_utrwb")
+
+[node name="BongoListenerComponent" type="Area2D" parent="."]
+script = ExtResource("2_bhuk0")
+metadata/_custom_type_script = "uid://ljroc5o8ykd1"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BongoListenerComponent"]
+shape = SubResource("CircleShape2D_bhuk0")
+
+[connection signal="bongo_hit" from="BongoListenerComponent" to="." method="_on_bongo_listener_component_bongo_hit"]
