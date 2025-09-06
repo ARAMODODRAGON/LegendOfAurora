@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://c8r7ng8j2gsgk"]
+[gd_scene load_steps=19 format=4 uid="uid://c8r7ng8j2gsgk"]
 
 [ext_resource type="PackedScene" uid="uid://cqqsdh7x70d5v" path="res://maps/map_base/map_base.tscn" id="1_b7wyl"]
 [ext_resource type="TileSet" uid="uid://xv57c3cq5pnc" path="res://tilesets/test_tileset/test_tileset.tres" id="2_og57n"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://mwiiacw2emc4" path="res://scripts/quest_management/quest_event_condition.gd" id="7_npc27"]
 [ext_resource type="Texture2D" uid="uid://rqcf184asd2j" path="res://tilesets/test_tileset/test_tileset.png" id="7_qu462"]
 [ext_resource type="Script" uid="uid://cxs52grobpg26" path="res://maps/demo_maps/progress_questline_object.gd" id="11_cfqdx"]
+[ext_resource type="Script" uid="uid://c2s2faw16bnco" path="res://maps/demo_maps/shockwave_touch.gd" id="11_udtq2"]
 
 [sub_resource type="Resource" id="Resource_1ffeq"]
 script = ExtResource("7_npc27")
@@ -35,6 +36,9 @@ metadata/_custom_type_script = "uid://mwiiacw2emc4"
 size = Vector2(16, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m4s88"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ffeq"]
 size = Vector2(16, 16)
 
 [node name="DemoMap0" instance=ExtResource("1_b7wyl")]
@@ -130,3 +134,20 @@ tile_set = ExtResource("2_og57n")
 
 [node name="DefaultSpawnPoint" parent="." index="2"]
 position = Vector2(120, 120)
+
+[node name="Area2D" type="Area2D" parent="." index="3"]
+position = Vector2(104, 160)
+collision_layer = 16
+collision_mask = 16
+script = ExtResource("11_udtq2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
+shape = SubResource("RectangleShape2D_1ffeq")
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D" index="1"]
+texture = ExtResource("7_qu462")
+hframes = 3
+vframes = 3
+frame = 2
+
+[connection signal="area_entered" from="Area2D" to="Area2D" method="_on_area_entered"]

@@ -6,6 +6,7 @@ signal death_animation_end()
 
 @export var WALK_SPEED: float
 @export var KNOCKBACK_SPEED: float
+@export var SHOCKWAVE_TIME: float
 
 @onready var body_sprite: PlayerBody = $BodySprite
 @onready var spawn_timer: Timer = $Timers/SpawnTimer
@@ -13,6 +14,9 @@ signal death_animation_end()
 
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var interactor_component: InteractorComponent = $InteractorComponent
+
+@onready var shockwave_pivot: Node2D = $BongoShockwave/ShockwavePivot
+@onready var shockwave_shape: CollisionShape2D = $BongoShockwave/ShockwaveShape
 
 enum MoveState {
 	DEFAULT,
@@ -27,6 +31,7 @@ enum ActionState {
 
 var _move_state: MoveState = MoveState.DEFAULT
 var _action_state: ActionState = ActionState.DEFAULT
+var _bongo_shockwave_active: bool = false
 
 func is_dead() -> bool:
 	return _action_state == ActionState.DEAD
@@ -69,11 +74,33 @@ func _handle_action() -> void:
 					velocity = Vector2.ZERO
 				
 			elif secondary_action:
-				#_action_state = ActionState.FLUTE
-				pass
+				_trigger_shockwave()
 			
 		_: pass
 
+func _trigger_shockwave() -> void:
+	if _bongo_shockwave_active:
+		return
+
+	_bongo_shockwave_active = true
+	shockwave_shape.set_deferred("disabled", false)
+
+	var tween0: Tween = create_tween()
+
+	shockwave_pivot.modulate = Color.TRANSPARENT
+	tween0.tween_property(shockwave_pivot, "modulate", Color.WHITE, SHOCKWAVE_TIME * 0.5)
+	tween0.tween_property(shockwave_pivot, "modulate", Color.TRANSPARENT, SHOCKWAVE_TIME * 0.5)
+
+	tween0.tween_callback(
+		func() -> void:
+			_bongo_shockwave_active = false
+			shockwave_shape.set_deferred("disabled", true)
+	)
+
+	var tween1: Tween = create_tween()	
+	shockwave_pivot.scale = Vector2.ZERO
+	tween1.tween_property(shockwave_pivot, "scale", Vector2.ONE, SHOCKWAVE_TIME)
+	
 func _on_interactable_triggered(interactable: InteractableComponent) -> void:
 	pass
 

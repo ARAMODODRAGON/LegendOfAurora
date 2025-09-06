@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://h3rrw4kqycjq"]
+[gd_scene load_steps=15 format=3 uid="uid://h3rrw4kqycjq"]
 
 [ext_resource type="Script" uid="uid://deelqijiqnh24" path="res://entities/player/player.gd" id="1_abrql"]
 [ext_resource type="SpriteFrames" uid="uid://djnpafkyppc4w" path="res://entities/player/player_sprite_frames.tres" id="2_8fjmc"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://ceb4u5be5p5rc" path="res://scripts/components/health_component.gd" id="5_fkugw"]
 [ext_resource type="Script" uid="uid://ctdaf0ke7ms68" path="res://scripts/components/interactor_component.gd" id="6_8fjmc"]
 [ext_resource type="Script" uid="uid://f2f56nmugjm4" path="res://scripts/components/hitbox_component.gd" id="7_qiwj3"]
+[ext_resource type="Texture2D" uid="uid://cuvmprdu0s2sd" path="res://entities/player/items/bongo/shockwave.png" id="8_26q78"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fkugw"]
 size = Vector2(2, 2)
@@ -17,11 +18,14 @@ size = Vector2(16, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_symyc"]
 size = Vector2(8, 8)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8fjmc"]
+size = Vector2(4, 4)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_26q78"]
 size = Vector2(10, 10)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8fjmc"]
-size = Vector2(4, 4)
+[sub_resource type="CircleShape2D" id="CircleShape2D_26q78"]
+radius = 40.0125
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 0
@@ -30,6 +34,7 @@ platform_floor_layers = 0
 script = ExtResource("1_abrql")
 WALK_SPEED = 60.0
 KNOCKBACK_SPEED = 120.0
+SHOCKWAVE_TIME = 0.3
 
 [node name="HealthComponent" type="Node" parent="."]
 script = ExtResource("5_fkugw")
@@ -55,6 +60,29 @@ debug_color = Color(0.945098, 0.572549, 0, 0.270588)
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_symyc")
+
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("root_node", "health_component")]
+collision_layer = 2
+collision_mask = 2
+priority = 1
+script = ExtResource("4_bls4j")
+root_node = NodePath("..")
+health_component = NodePath("../HealthComponent")
+metadata/_custom_type_script = "uid://gfncyw3nx8wl"
+
+[node name="HurtboxShape" type="CollisionShape2D" parent="HurtboxComponent"]
+shape = SubResource("RectangleShape2D_8fjmc")
+debug_color = Color(0.705362, 0.26951, 1, 0.42)
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="SpawnTimer" type="Timer" parent="Timers"]
+one_shot = true
+autostart = true
+
+[node name="KnockbackTimer" type="Timer" parent="Timers"]
+process_callback = 0
+wait_time = 0.2
 
 [node name="BodySprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -3)
@@ -111,31 +139,24 @@ metadata/_custom_type_script = "uid://f2f56nmugjm4"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/SwordUpHitbox"]
 shape = SubResource("RectangleShape2D_26q78")
 
-[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("root_node", "health_component")]
-collision_layer = 2
-collision_mask = 2
-priority = 1
-script = ExtResource("4_bls4j")
-root_node = NodePath("..")
-health_component = NodePath("../HealthComponent")
-metadata/_custom_type_script = "uid://gfncyw3nx8wl"
+[node name="BongoShockwave" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 16
 
-[node name="HurtboxShape" type="CollisionShape2D" parent="HurtboxComponent"]
-shape = SubResource("RectangleShape2D_8fjmc")
-debug_color = Color(0.705362, 0.26951, 1, 0.42)
+[node name="ShockwavePivot" type="Node2D" parent="BongoShockwave"]
+modulate = Color(1, 1, 1, 0)
 
-[node name="Timers" type="Node" parent="."]
+[node name="ShockwaveSprite" type="Sprite2D" parent="BongoShockwave/ShockwavePivot"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("8_26q78")
 
-[node name="SpawnTimer" type="Timer" parent="Timers"]
-one_shot = true
-autostart = true
-
-[node name="KnockbackTimer" type="Timer" parent="Timers"]
-process_callback = 0
-wait_time = 0.2
+[node name="ShockwaveShape" type="CollisionShape2D" parent="BongoShockwave"]
+shape = SubResource("CircleShape2D_26q78")
+disabled = true
+debug_color = Color(0.87, 0, 0.8555, 0.184314)
 
 [connection signal="die" from="HealthComponent" to="." method="_on_die"]
 [connection signal="area_entered" from="WarpHitbox" to="." method="_on_warp_entered"]
-[connection signal="animation_finished" from="BodySprite" to="BodySprite" method="_on_animation_finished"]
 [connection signal="take_damage" from="HurtboxComponent" to="." method="_on_take_damage"]
 [connection signal="timeout" from="Timers/KnockbackTimer" to="." method="_on_knockback_timer_timeout"]
+[connection signal="animation_finished" from="BodySprite" to="BodySprite" method="_on_animation_finished"]
