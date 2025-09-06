@@ -13,6 +13,7 @@ signal death_animation_end()
 
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var interactor_component: InteractorComponent = $InteractorComponent
+@onready var flute_component: FluteComponent = $FluteComponent
 
 enum MoveState {
 	DEFAULT,
@@ -20,11 +21,17 @@ enum MoveState {
 	ATTACKING,
 }
 
+enum ActionState {
+	DEFAULT,
+	DEAD, 
+	FLUTE
+}
+
 var _move_state: MoveState = MoveState.DEFAULT
-var _is_dead: bool = false
+var _action_state: ActionState = ActionState.DEFAULT
 
 func is_dead() -> bool:
-	return _is_dead
+	return _action_state == ActionState.DEAD
 
 func _ready() -> void:
 	body_sprite.death_animation_end.connect(death_animation_end.emit)
@@ -35,37 +42,64 @@ func _ready() -> void:
 	)
 
 func _get_input_dir() -> Vector2:
-	if _is_dead:
-		return Vector2.ZERO
-	else:
-		var input_dir: Vector2 = Input.get_vector("LEFT", "RIGHT", "UP", "DOWN").normalized()
-		return input_dir
+	match _action_state:
+		ActionState.DEAD, ActionState.FLUTE:
+			return Vector2.ZERO
+		_:
+			var input_dir: Vector2 = Input.get_vector("LEFT", "RIGHT", "UP", "DOWN").normalized()
+			return input_dir
 
 func _process(delta: float) -> void:
 	body_sprite.update_animation(delta, _get_input_dir())
 
-func _handle_interaction() -> void:
-	if _is_dead: 
-		return
-
+func _handle_action() -> void:
 	var primary_action: bool = Input.is_action_just_pressed("PRIMARY")
+	var secondary_action: bool = Input.is_action_just_pressed("SECONDARY")
 
-	if primary_action and not body_sprite.is_attacking(): 
-		var did_interact: bool = interactor_component.trigger_interaction(
-			body_sprite.get_facing_vector(), 
-			_on_interactable_triggered
-		)
+	match _action_state:
+		ActionState.DEFAULT:
 
-		if !did_interact:
-			body_sprite.attack()
-			_move_state = MoveState.ATTACKING
-			velocity = Vector2.ZERO
+			if primary_action and not body_sprite.is_attacking(): 
+				var did_interact: bool = interactor_component.trigger_interaction(
+					body_sprite.get_facing_vector(), 
+					_on_interactable_triggered
+				)
+
+				if !did_interact:
+					body_sprite.attack()
+					_move_state = MoveState.ATTACKING
+					velocity = Vector2.ZERO
+				
+			elif secondary_action:
+				#_action_state = ActionState.FLUTE
+				pass
+			
+		ActionState.FLUTE:
+			var up_input: bool = Input.is_action_just_pressed("UP")
+			var down_input: bool = Input.is_action_just_pressed("DOWN")
+			var left_input: bool = Input.is_action_just_pressed("LEFT")
+			var right_input: bool = Input.is_action_just_pressed("RIGHT")
+			
+			if primary_action or secondary_action:
+				_action_state = ActionState.DEFAULT
+				return
+			
+			if up_input:
+				flute_component.try_play_note(Enum.Direction.UP)
+			elif down_input:
+				flute_component.try_play_note(Enum.Direction.DOWN)
+			elif left_input:
+				flute_component.try_play_note(Enum.Direction.LEFT)
+			elif right_input:
+				flute_component.try_play_note(Enum.Direction.RIGHT)
+
+		_: pass
 
 func _on_interactable_triggered(interactable: InteractableComponent) -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	_handle_interaction()
+	_handle_action()
 	_handle_physics(delta)
 
 	
@@ -128,5 +162,5 @@ func _on_take_damage(damage: int, direction: Vector2) -> void:
 
 
 func _on_die() -> void:
-	_is_dead = true
+	_action_state = ActionState.DEAD
 	body_sprite.die()

@@ -1,14 +1,6 @@
 extends Node
 ## Util class containing common constants / functionality
 
-enum Direction {
-	NONE,
-	LEFT,
-	RIGHT,
-	UP,
-	DOWN,
-}
-
 const TILE_SIZE : Vector2 = Vector2(16.0, 16.0)
 const SCREEN_SIZE : Vector2 = Vector2(256.0, 224.0)
 
