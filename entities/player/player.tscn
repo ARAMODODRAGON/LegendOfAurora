@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://h3rrw4kqycjq"]
+[gd_scene load_steps=16 format=3 uid="uid://h3rrw4kqycjq"]
 
 [ext_resource type="Script" uid="uid://deelqijiqnh24" path="res://entities/player/player.gd" id="1_abrql"]
 [ext_resource type="SpriteFrames" uid="uid://djnpafkyppc4w" path="res://entities/player/player_sprite_frames.tres" id="2_8fjmc"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://ctdaf0ke7ms68" path="res://scripts/components/interactor_component.gd" id="6_8fjmc"]
 [ext_resource type="Script" uid="uid://f2f56nmugjm4" path="res://scripts/components/hitbox_component.gd" id="7_qiwj3"]
 [ext_resource type="Texture2D" uid="uid://cuvmprdu0s2sd" path="res://entities/player/items/bongo/shockwave.png" id="8_26q78"]
+[ext_resource type="AudioStream" uid="uid://doqnndjfrxei5" path="res://entities/player/items/bongo/173025__seidhepriest__bongo-split-1.wav" id="9_bectd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fkugw"]
 size = Vector2(2, 2)
@@ -25,7 +26,7 @@ size = Vector2(4, 4)
 size = Vector2(10, 10)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_26q78"]
-radius = 40.0125
+radius = 27.0185
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 0
@@ -155,8 +156,12 @@ shape = SubResource("CircleShape2D_26q78")
 disabled = true
 debug_color = Color(0.87, 0, 0.8555, 0.184314)
 
+[node name="BongoHitSound" type="AudioStreamPlayer" parent="BongoShockwave"]
+stream = ExtResource("9_bectd")
+
 [connection signal="die" from="HealthComponent" to="." method="_on_die"]
 [connection signal="area_entered" from="WarpHitbox" to="." method="_on_warp_entered"]
 [connection signal="take_damage" from="HurtboxComponent" to="." method="_on_take_damage"]
 [connection signal="timeout" from="Timers/KnockbackTimer" to="." method="_on_knockback_timer_timeout"]
 [connection signal="animation_finished" from="BodySprite" to="BodySprite" method="_on_animation_finished"]
+[connection signal="area_entered" from="BongoShockwave" to="." method="_on_bongo_shockwave_area_entered"]

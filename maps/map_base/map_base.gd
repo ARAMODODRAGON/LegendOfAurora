@@ -7,7 +7,7 @@ class_name MapBase
 @export var TRANSITION_TIME: float
 
 ## base map references
-@onready var camera: Camera2D = $Camera
+@onready var camera: GameCamera = $GameCamera
 @onready var entities_layer: Node = $"Layers/Entities Layer"
 @onready var objects_layer: Node = $"Layers/Objects Layer"
 @onready var default_spawn_point: Node2D = $DefaultSpawnPoint
@@ -25,11 +25,12 @@ func _ready() -> void:
 	if player == null:
 		assert(false, "player scene did not instantiate player")
 
-	objects_layer.add_child(player)
+	entities_layer.add_child(player)
 	player.position = default_spawn_point.position
 
 	player.entered_warp.connect(_on_player_warp)
 	player.death_animation_end.connect(_on_player_dead)
+	player.shake_screen.connect(camera.shake_screen)
 
 	## set camera position
 	camera.position = (player.position / Util.SCREEN_SIZE).floor() * Util.SCREEN_SIZE

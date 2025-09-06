@@ -3,6 +3,7 @@ class_name Player
 
 signal entered_warp(warp: WarpPoint)
 signal death_animation_end()
+signal shake_screen(scale: float, duration: float)
 
 @export var WALK_SPEED: float
 @export var KNOCKBACK_SPEED: float
@@ -17,6 +18,7 @@ signal death_animation_end()
 
 @onready var shockwave_pivot: Node2D = $BongoShockwave/ShockwavePivot
 @onready var shockwave_shape: CollisionShape2D = $BongoShockwave/ShockwaveShape
+@onready var bongo_hit_sound: AudioStreamPlayer = $BongoShockwave/BongoHitSound
 
 enum MoveState {
 	DEFAULT,
@@ -26,15 +28,17 @@ enum MoveState {
 
 enum ActionState {
 	DEFAULT,
+	SHOCKWAVE,
 	DEAD, 
 }
 
 var _move_state: MoveState = MoveState.DEFAULT
 var _action_state: ActionState = ActionState.DEFAULT
-var _bongo_shockwave_active: bool = false
+
 
 func is_dead() -> bool:
 	return _action_state == ActionState.DEAD
+
 
 func _ready() -> void:
 	body_sprite.death_animation_end.connect(death_animation_end.emit)
@@ -44,6 +48,7 @@ func _ready() -> void:
 				_move_state = MoveState.DEFAULT
 	)
 
+
 func _get_input_dir() -> Vector2:
 	match _action_state:
 		ActionState.DEAD:
@@ -52,8 +57,10 @@ func _get_input_dir() -> Vector2:
 			var input_dir: Vector2 = Input.get_vector("LEFT", "RIGHT", "UP", "DOWN").normalized()
 			return input_dir
 
+
 func _process(delta: float) -> void:
 	body_sprite.update_animation(delta, _get_input_dir())
+
 
 func _handle_action() -> void:
 	var primary_action: bool = Input.is_action_just_pressed("PRIMARY")
@@ -73,17 +80,20 @@ func _handle_action() -> void:
 					_move_state = MoveState.ATTACKING
 					velocity = Vector2.ZERO
 				
-			elif secondary_action:
+			elif secondary_action and not body_sprite.is_attacking():
 				_trigger_shockwave()
 			
 		_: pass
 
+
 func _trigger_shockwave() -> void:
-	if _bongo_shockwave_active:
+	if _action_state == ActionState.SHOCKWAVE:
 		return
 
-	_bongo_shockwave_active = true
+	bongo_hit_sound.play()
+	_action_state = ActionState.SHOCKWAVE
 	shockwave_shape.set_deferred("disabled", false)
+	shake_screen.emit(0.6, SHOCKWAVE_TIME * 0.2)
 
 	var tween0: Tween = create_tween()
 
@@ -93,22 +103,24 @@ func _trigger_shockwave() -> void:
 
 	tween0.tween_callback(
 		func() -> void:
-			_bongo_shockwave_active = false
+			_action_state = ActionState.DEFAULT
 			shockwave_shape.set_deferred("disabled", true)
 	)
 
 	var tween1: Tween = create_tween()	
 	shockwave_pivot.scale = Vector2.ZERO
 	tween1.tween_property(shockwave_pivot, "scale", Vector2.ONE, SHOCKWAVE_TIME)
-	
+
+
 func _on_interactable_triggered(interactable: InteractableComponent) -> void:
 	pass
+
 
 func _physics_process(delta: float) -> void:
 	_handle_action()
 	_handle_physics(delta)
 
-	
+
 func _handle_physics(delta: float) -> void:
 	var input_dir: Vector2 = _get_input_dir()
 	match _move_state:
@@ -122,6 +134,7 @@ func _handle_physics(delta: float) -> void:
 			
 			move_and_slide()
 
+
 func _apply_regular_knockback(direction: Vector2) -> void:
 	if _move_state == MoveState.KNOCKBACK:
 		return
@@ -130,6 +143,7 @@ func _apply_regular_knockback(direction: Vector2) -> void:
 
 	knockback_timer.start()
 	velocity = direction * KNOCKBACK_SPEED
+
 
 func _apply_killing_knockback(direction: Vector2) -> void:
 	_apply_regular_knockback(direction)
@@ -141,9 +155,11 @@ func _apply_killing_knockback(direction: Vector2) -> void:
 	var t: Tween = create_tween()
 	t.tween_property(self, "velocity", Vector2.ZERO, knockback_timer.wait_time * 3.0)
 
+
 func _on_knockback_timer_timeout() -> void:
 	if _move_state == MoveState.KNOCKBACK:
 		_move_state = MoveState.DEFAULT
+
 
 func _on_warp_entered(area: Area2D) -> void:
 	if spawn_timer.is_stopped() == false: return
@@ -151,6 +167,7 @@ func _on_warp_entered(area: Area2D) -> void:
 	var warp: WarpPoint = area as WarpPoint
 	if warp == null: return
 	entered_warp.emit(warp)
+
 
 func _on_take_damage(damage: int, direction: Vector2) -> void:
 	if damage == 0:
@@ -170,3 +187,9 @@ func _on_take_damage(damage: int, direction: Vector2) -> void:
 func _on_die() -> void:
 	_action_state = ActionState.DEAD
 	body_sprite.die()
+
+
+func _on_bongo_shockwave_area_entered(area: Area2D) -> void:
+	var bongo_listener := area as BongoListenerComponent
+	if bongo_listener:
+		bongo_listener.bongo_hit.emit(area.global_position - global_position)

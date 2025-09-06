@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://cspg3rie38j5c"]
+
+[ext_resource type="Script" uid="uid://djtdqenwlaeee" path="res://entities/other/ball_test/ball_test.gd" id="1_61frt"]
+[ext_resource type="Texture2D" uid="uid://bjcle0ajtdy47" path="res://entities/other/ball_test/ball_test.png" id="1_xhttr"]
+[ext_resource type="Script" uid="uid://ljroc5o8ykd1" path="res://scripts/components/bongo_listener_component.gd" id="2_n5ise"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_n5ise"]
+radius = 19.0263
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xhttr"]
+radius = 14.0357
+
+[node name="BallTest" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_61frt")
+
+[node name="BongoListenerComponent" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 16
+script = ExtResource("2_n5ise")
+metadata/_custom_type_script = "uid://ljroc5o8ykd1"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BongoListenerComponent"]
+shape = SubResource("CircleShape2D_n5ise")
+debug_color = Color(4.25957e-06, 0.648571, 0.176312, 0.42)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_xhttr")
+debug_color = Color(0.881186, 0.000349814, 0.819774, 0.42)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_xhttr")
+
+[connection signal="bongo_hit" from="BongoListenerComponent" to="." method="_on_bongo_listener_component_bongo_hit"]

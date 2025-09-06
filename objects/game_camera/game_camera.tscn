@@ -3,6 +3,5 @@
 [ext_resource type="Script" uid="uid://tocnhxc35aui" path="res://objects/game_camera/game_camera.gd" id="1_cyajk"]
 
 [node name="GameCamera" type="Camera2D"]
-offset = Vector2(144, 128)
-zoom = Vector2(2.415, 2.415)
+anchor_mode = 0
 script = ExtResource("1_cyajk")
