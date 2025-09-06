@@ -166,6 +166,5 @@ func _on_animation_finished() -> void:
 		_is_attacking = false
 		_change_walk_animation_direction()
 		attack_end.emit()
-		print("FINISHHHHH")
 	
 

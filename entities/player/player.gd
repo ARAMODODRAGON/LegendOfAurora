@@ -13,7 +13,6 @@ signal death_animation_end()
 
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var interactor_component: InteractorComponent = $InteractorComponent
-@onready var flute_component: FluteComponent = $FluteComponent
 
 enum MoveState {
 	DEFAULT,
@@ -24,7 +23,6 @@ enum MoveState {
 enum ActionState {
 	DEFAULT,
 	DEAD, 
-	FLUTE
 }
 
 var _move_state: MoveState = MoveState.DEFAULT
@@ -43,7 +41,7 @@ func _ready() -> void:
 
 func _get_input_dir() -> Vector2:
 	match _action_state:
-		ActionState.DEAD, ActionState.FLUTE:
+		ActionState.DEAD:
 			return Vector2.ZERO
 		_:
 			var input_dir: Vector2 = Input.get_vector("LEFT", "RIGHT", "UP", "DOWN").normalized()
@@ -74,25 +72,6 @@ func _handle_action() -> void:
 				#_action_state = ActionState.FLUTE
 				pass
 			
-		ActionState.FLUTE:
-			var up_input: bool = Input.is_action_just_pressed("UP")
-			var down_input: bool = Input.is_action_just_pressed("DOWN")
-			var left_input: bool = Input.is_action_just_pressed("LEFT")
-			var right_input: bool = Input.is_action_just_pressed("RIGHT")
-			
-			if primary_action or secondary_action:
-				_action_state = ActionState.DEFAULT
-				return
-			
-			if up_input:
-				flute_component.try_play_note(Enum.Direction.UP)
-			elif down_input:
-				flute_component.try_play_note(Enum.Direction.DOWN)
-			elif left_input:
-				flute_component.try_play_note(Enum.Direction.LEFT)
-			elif right_input:
-				flute_component.try_play_note(Enum.Direction.RIGHT)
-
 		_: pass
 
 func _on_interactable_triggered(interactable: InteractableComponent) -> void:

@@ -1,17 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://h3rrw4kqycjq"]
+[gd_scene load_steps=13 format=3 uid="uid://h3rrw4kqycjq"]
 
 [ext_resource type="Script" uid="uid://deelqijiqnh24" path="res://entities/player/player.gd" id="1_abrql"]
 [ext_resource type="SpriteFrames" uid="uid://djnpafkyppc4w" path="res://entities/player/player_sprite_frames.tres" id="2_8fjmc"]
-[ext_resource type="Script" uid="uid://25jrn0j8g0wc" path="res://entities/player/flute_component.gd" id="2_26q78"]
-[ext_resource type="AudioStream" uid="uid://bq7fmoeceyyv5" path="res://entities/player/flute/flute_1.wav" id="3_j3ovn"]
 [ext_resource type="Script" uid="uid://i5cow50xxsu4" path="res://entities/player/player_body.gd" id="3_sglur"]
-[ext_resource type="AudioStream" uid="uid://bm2s4a6d6315x" path="res://entities/player/flute/flute_2.wav" id="4_afbqv"]
 [ext_resource type="Script" uid="uid://gfncyw3nx8wl" path="res://scripts/components/hurtbox_component.gd" id="4_bls4j"]
 [ext_resource type="Script" uid="uid://ceb4u5be5p5rc" path="res://scripts/components/health_component.gd" id="5_fkugw"]
-[ext_resource type="AudioStream" uid="uid://cb2t1ygkheecs" path="res://entities/player/flute/flute_3.wav" id="5_gx6sm"]
 [ext_resource type="Script" uid="uid://ctdaf0ke7ms68" path="res://scripts/components/interactor_component.gd" id="6_8fjmc"]
-[ext_resource type="AudioStream" uid="uid://dn6rj8vx23c2n" path="res://entities/player/flute/flute_4.wav" id="6_yqrof"]
-[ext_resource type="Texture2D" uid="uid://cjahce0laesyf" path="res://entities/player/flute/flute_notes.png" id="7_3wlsy"]
 [ext_resource type="Script" uid="uid://f2f56nmugjm4" path="res://scripts/components/hitbox_component.gd" id="7_qiwj3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fkugw"]
@@ -138,18 +132,6 @@ autostart = true
 
 [node name="KnockbackTimer" type="Timer" parent="Timers"]
 process_callback = 0
-wait_time = 0.2
-
-[node name="FluteComponent" type="Node2D" parent="."]
-visible = false
-script = ExtResource("2_26q78")
-stream_note_up = ExtResource("3_j3ovn")
-stream_note_down = ExtResource("4_afbqv")
-stream_note_left = ExtResource("5_gx6sm")
-stream_note_right = ExtResource("6_yqrof")
-note_texture = ExtResource("7_3wlsy")
-
-[node name="NoteDelay" type="Timer" parent="FluteComponent"]
 wait_time = 0.2
 
 [connection signal="die" from="HealthComponent" to="." method="_on_die"]
