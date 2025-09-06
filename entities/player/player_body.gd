@@ -95,7 +95,7 @@ func attack() -> void:
 func die() -> void:
 	_is_dead = true
 	# spriteframes
-	animation = &"dead"
+	play(&"dead")
 
 	# tween animation
 	var tween: Tween = create_tween()
@@ -140,13 +140,13 @@ func _update_direction(input_dir: Vector2) -> void:
 func _change_walk_animation_direction() -> void:
 	match _facing_direction:
 		Enum.Direction.RIGHT:
-			animation = &"walk_right"
+			play(&"walk_right")
 		Enum.Direction.LEFT:
-			animation = &"walk_left"
+			play(&"walk_left")
 		Enum.Direction.UP:
-			animation = &"walk_up"
+			play(&"walk_up")
 		Enum.Direction.DOWN, Enum.Direction.NONE, _:
-			animation = &"walk_down"
+			play(&"walk_down")
 
 func _update_walk_sprite(is_walking: bool) -> void:
 	if is_walking:
@@ -166,4 +166,6 @@ func _on_animation_finished() -> void:
 		_is_attacking = false
 		_change_walk_animation_direction()
 		attack_end.emit()
+		print("FINISHHHHH")
+	
 
