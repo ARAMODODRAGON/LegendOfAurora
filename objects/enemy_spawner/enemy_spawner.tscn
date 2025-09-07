@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cp71dq3utxrva" path="res://objects/enemy_spawner/enemy_spawner.gd" id="1_5e8sm"]
 
-[node name="EnemySpawner" type="Node2D"]
+[node name="EnemySpawner" type="Node2D" groups=["room_objects"]]
 script = ExtResource("1_5e8sm")
 
 [node name="ReferenceRect" type="ReferenceRect" parent="."]

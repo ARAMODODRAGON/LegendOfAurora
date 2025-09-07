@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://dsgfyhieuripy"]
+
+[ext_resource type="Script" uid="uid://dqg6wwmspiw7" path="res://entities/other/golem/golem.gd" id="1_iackm"]
+[ext_resource type="Texture2D" uid="uid://bmlvueqqldd1f" path="res://entities/other/golem/golem_test.png" id="1_x8v7t"]
+[ext_resource type="Script" uid="uid://ljroc5o8ykd1" path="res://scripts/components/bongo_listener_component.gd" id="3_0l1bg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4amxx"]
+size = Vector2(12, 12)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0l1bg"]
+radius = 6.0
+
+[node name="Golem" type="CharacterBody2D"]
+script = ExtResource("1_iackm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_4amxx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+y_sort_enabled = true
+texture = ExtResource("1_x8v7t")
+offset = Vector2(0, -4)
+hframes = 2
+vframes = 2
+
+[node name="BongoListenerComponent" type="Area2D" parent="."]
+script = ExtResource("3_0l1bg")
+metadata/_custom_type_script = "uid://ljroc5o8ykd1"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BongoListenerComponent"]
+z_index = 2
+shape = SubResource("CircleShape2D_0l1bg")
+debug_color = Color(0.952825, 3.27289e-06, 0.556686, 0.42)
+
+[connection signal="bongo_hit" from="BongoListenerComponent" to="." method="_on_bongo_hit"]

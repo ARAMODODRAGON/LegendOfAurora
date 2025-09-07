@@ -18,8 +18,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 Util="*res://scripts/autoloads/util.gd"
-Groups="*res://scripts/autoloads/groups.gd"
-Globals="*res://scripts/autoloads/globals.gd"
 GameEvents="*res://scripts/autoloads/game_events.gd"
 Game="*res://scripts/autoloads/game.gd"
 
@@ -62,6 +60,7 @@ folder_colors={
 [global_group]
 
 warp_point="a location that the player can warp to"
+room_objects="Objects within rooms that can reset "
 
 [input]
 

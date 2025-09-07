@@ -15,12 +15,15 @@ signal define_state(state: bool)
 
 var _timer: float = 0.0
 
+
 func get_state() -> bool:
 	return _sprite.frame == 1
+
 
 func set_state(state: bool) -> void:
 	if get_state() != state:
 		_change_state(state)
+
 
 func _change_state(state: bool) -> void:
 	if state:
@@ -30,22 +33,40 @@ func _change_state(state: bool) -> void:
 	
 	define_state.emit(state)
 
+
 func _ready() -> void:
+	_reset()
+
+
+## called to reset the torch
+func _reset() -> void:
 	_change_state(initial_state)
+	_sprite.flip_h = (randi() % 2) == 1
+
 
 func _process(delta: float) -> void:
 	if not get_state():
-		return 
-
-	const frame_rate: float = (5.0 / 60.0)
+		return
 
 	if _timer > 0.0:
 		_timer -= delta
 	else:
+		var frame_rate: float = (randf_range(3.0, 7.0) / 60.0)
 		_timer += frame_rate
 		_sprite.flip_h = not _sprite.flip_h
+
 
 func _on_bongo_listener_component_bongo_hit(direction:Vector2) -> void:
 	if get_state():
 		print("triggered!")
 	set_state(false)
+
+
+## called by map
+func _room_object_load(object_layer: Node) -> void:
+	_reset()
+
+
+## called by map
+func _room_object_unload(object_layer: Node) -> void:
+	pass

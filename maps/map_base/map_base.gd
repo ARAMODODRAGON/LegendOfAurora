@@ -8,14 +8,16 @@ class_name MapBase
 
 ## base map references
 @onready var camera: GameCamera = $GameCamera
-@onready var entities_layer: Node = $"Layers/Entities Layer"
+#@onready var entities_layer: Node = $"Layers/Entities Layer"
 @onready var objects_layer: Node = $"Layers/Objects Layer"
 @onready var default_spawn_point: Node2D = $DefaultSpawnPoint
 
 ## state
 var player: Player = null
 var tween: Tween = null
-var enemy_list: Array[EnemyBase] = []
+
+var _room_objects: Array[Node2D]
+
 
 func _ready() -> void:
 	camera.visible = true
@@ -25,7 +27,7 @@ func _ready() -> void:
 	if player == null:
 		assert(false, "player scene did not instantiate player")
 
-	entities_layer.add_child(player)
+	objects_layer.add_child(player)
 	player.position = default_spawn_point.position
 
 	player.entered_warp.connect(_on_player_warp)
@@ -35,13 +37,20 @@ func _ready() -> void:
 	## set camera position
 	camera.position = (player.position / Util.SCREEN_SIZE).floor() * Util.SCREEN_SIZE
 
+	## pause all room objects so they dont process
+	var all_room_objects: Array[Node] = Util.get_room_objects()
+	for node in all_room_objects:
+		node.process_mode = Node.PROCESS_MODE_DISABLED
+
 	## load the screen we are on
 	var rect: Rect2 = camera.get_viewport_rect()
 	rect.position += camera.position
-	_load_screen(rect)
+	_goto_screen(rect)
+
 
 func _on_player_dead() -> void:
 	Game.load_scene(Game.get_scene_index())
+
 
 func _on_player_warp(warp: WarpPoint) -> void:
 	if warp.target_warp_name == null || warp.target_warp_name == "":
@@ -51,11 +60,12 @@ func _on_player_warp(warp: WarpPoint) -> void:
 	# load target map index
 	Game.load_scene(warp.target_map_index)
 
+
 func warp_player(target_warp: String) -> void:
 	var targeted_warp_point: Node2D = null
 
 	## find warp point
-	var warp_points: Array[Node] = get_tree().get_nodes_in_group(Groups.WARP_POINT)
+	var warp_points: Array[Node] = Util.get_warp_points()
 	for warp in warp_points:
 		if warp.name == target_warp:
 			targeted_warp_point = warp as Node2D
@@ -69,21 +79,17 @@ func warp_player(target_warp: String) -> void:
 	# set player position
 	player.position = targeted_warp_point.global_position
 
-	## set camera position
-	camera.position = (player.position / Util.SCREEN_SIZE).floor() * Util.SCREEN_SIZE
-	
-	## unload any enemies
-	for enemy in enemy_list:
-		enemy.free()
-
-	## load the screen we are on
+	## set screen position
 	var rect: Rect2 = camera.get_viewport_rect()
-	rect.position += camera.position
-	_load_screen(rect)
+	rect.position = (player.position / Util.SCREEN_SIZE).floor() * Util.SCREEN_SIZE
+	
+	## load the screen we are on
+	_goto_screen(rect)
 
 
 func _process(_delta: float) -> void:
 	_check_player_room_change()
+
 
 func _check_player_room_change() -> void:
 	## sanity check
@@ -122,36 +128,63 @@ func _check_player_room_change() -> void:
 	## run coroutine
 	_move_screens_coroutine(direction, rect)
 
-func _load_screen(screen_rect: Rect2) -> void:
-	## get spawners
-	var spawners: Array[EnemySpawner] = []
-	for node in objects_layer.get_children():
-		var spawner: EnemySpawner = node as EnemySpawner
-		if spawner != null:
-			if screen_rect.has_point(spawner.global_position):
-				spawners.push_back(spawner)
-	
-	## spawn enemies
-	for spawner in spawners:
-		var enemy: EnemyBase = spawner.spawn()
-		if enemy != null:
-			entities_layer.add_child(enemy)
-			enemy_list.push_back(enemy)
+
+## call to load a new screen
+## returns a callable that must be called to unload the previous screen
+func _load_screen_unload_deferred(screen_rect: Rect2) -> Callable:
+
+	# filter used on the array to get only the room objects within the new screen
+	var room_object_filter: Callable = func(node: Node) -> bool:
+		var room_object: Node2D = node as Node2D
+		if room_object and screen_rect.has_point(room_object.global_position):
+			return true
+		return false
+
+	# store the current room objects in a new array to unload later
+	var objects_to_unload: Array[Node2D] = _room_objects.duplicate(true)
+	_room_objects.clear()
+
+	# get all nodes from room_objects group that are of type Node2D and 
+	# assign them to the _room_objects array
+	_room_objects.assign(Util.get_room_objects().filter(room_object_filter))
+
+	for node in _room_objects:
+		node.process_mode = Node.PROCESS_MODE_INHERIT
+		node.call_deferred(Util.ROOM_OBJECTS_LOAD_FUNC, objects_layer)
+		pass
+			
+
+	# exit early if there are no nodes to unload
+	if objects_to_unload.size() == 0: 
+		return func() -> void: pass
+
+	# enter
+	return func() -> void:
+		for node in objects_to_unload:
+			node.call(Util.ROOM_OBJECTS_UNLOAD_FUNC, objects_layer)
+			node.process_mode = Node.PROCESS_MODE_DISABLED
+
+
+## called to teleport camera to another screen while immediately loading/unloading rooms
+func _goto_screen(screen_rect: Rect2) -> void:
+	# move camera to position
+	camera.position = screen_rect.position
+
+	# load new screen and immediately call to unload the previous one
+	_load_screen_unload_deferred(screen_rect).call()
+
 
 ## called to move the camera + player to a new screen while spawning in entities and unloading the last screen
 func _move_screens_coroutine(direction: Vector2, screen_rect: Rect2) -> void:
-	## determine the camera and player's new position
+	# determine the camera and player's new position
 	var new_camera_position: Vector2 = camera.position + (direction * Util.SCREEN_SIZE)
 	var new_player_position: Vector2 = Util.nearest_point_within_rect(player.position, screen_rect) + (direction * Util.TILE_SIZE * 0.5)
 
-	## pre tween functionality
-	entities_layer.process_mode = PROCESS_MODE_DISABLED
+	# pre tween functionality
+	objects_layer.process_mode = PROCESS_MODE_DISABLED
 	
-	var previous_enemies: Array[EnemyBase] = enemy_list.duplicate()
-	enemy_list.clear()
-
 	screen_rect.position += (direction * Util.SCREEN_SIZE) ## move the screen rect over
-	_load_screen(screen_rect)
+	var unload_objects: Callable = _load_screen_unload_deferred(screen_rect)
 
 	#region tween logic
 
@@ -166,12 +199,13 @@ func _move_screens_coroutine(direction: Vector2, screen_rect: Rect2) -> void:
 
 	#endregion
 
-	## await this tween as to make this a coroutine
+	# await this tween as to make this a coroutine
 	await tween.finished
 	tween = null
 
-	## post tween functionality
-	entities_layer.process_mode = PROCESS_MODE_INHERIT
+	# post tween functionality
+	objects_layer.process_mode = PROCESS_MODE_INHERIT
 
-	for enemy in previous_enemies:
-		enemy.free()
+	# unload anything from the previous screen
+	
+	unload_objects.call()

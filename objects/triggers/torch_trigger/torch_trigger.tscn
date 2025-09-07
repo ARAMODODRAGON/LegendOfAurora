@@ -10,7 +10,7 @@ size = Vector2(4, 4)
 [sub_resource type="CircleShape2D" id="CircleShape2D_bhuk0"]
 radius = 3.16228
 
-[node name="TorchTrigger" type="StaticBody2D"]
+[node name="TorchTrigger" type="StaticBody2D" groups=["room_objects"]]
 z_index = 1
 y_sort_enabled = true
 script = ExtResource("1_o05f0")
