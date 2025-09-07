@@ -1,6 +1,9 @@
 extends AnimatedSprite2D
 class_name PlayerBody
 
+## enum reference
+const Direction := Enum.Direction
+
 signal death_animation_end()
 signal attack_end()
 
@@ -9,7 +12,7 @@ signal attack_end()
 @onready var sword_left_hitbox: HitboxComponent = $SwordLeftHitbox
 @onready var sword_up_hitbox: HitboxComponent = $SwordUpHitbox
 
-var _facing_direction: Enum.Direction = Enum.Direction.DOWN
+var _facing_direction: Direction = Direction.DOWN
 
 var _is_dead: bool = false
 var _is_attacking: bool = false
@@ -22,15 +25,15 @@ func is_attacking() -> bool:
 
 func get_facing_vector() -> Vector2:
 	match _facing_direction:
-		Enum.Direction.DOWN:
+		Direction.DOWN:
 			return Vector2.DOWN
-		Enum.Direction.LEFT:
+		Direction.LEFT:
 			return Vector2.LEFT
-		Enum.Direction.UP:
+		Direction.UP:
 			return Vector2.UP
-		Enum.Direction.RIGHT:
+		Direction.RIGHT:
 			return Vector2.RIGHT
-		Enum.Direction.NONE, _:
+		Direction.NONE, _:
 			return Vector2.ZERO
 
 func update_animation(delta: float, input_dir: Vector2) -> void:
@@ -75,19 +78,19 @@ func attack() -> void:
 	speed_scale = 1.0
 	
 	match _facing_direction:
-		Enum.Direction.RIGHT:
+		Direction.RIGHT:
 			play(&"attack_right")
 			_current_hitbox = sword_right_hitbox
 
-		Enum.Direction.LEFT:
+		Direction.LEFT:
 			play(&"attack_left")
 			_current_hitbox = sword_left_hitbox
 
-		Enum.Direction.UP:
+		Direction.UP:
 			play(&"attack_up")
 			_current_hitbox = sword_up_hitbox
 
-		Enum.Direction.DOWN, Enum.Direction.NONE, _:
+		Direction.DOWN, Direction.NONE, _:
 			play(&"attack_down")
 			_current_hitbox = sword_down_hitbox
 
@@ -111,27 +114,27 @@ func _ready() -> void:
 	sword_up_hitbox.visible = true
 
 func _update_direction(input_dir: Vector2) -> void:
-	var _facingh: Enum.Direction = Enum.Direction.NONE
-	var _facingv: Enum.Direction = Enum.Direction.NONE
+	var _facingh: Direction = Direction.NONE
+	var _facingv: Direction = Direction.NONE
 	
 	if abs(input_dir.x) > 0.001:
 		if input_dir.x > 0.0:
-			_facingh = Enum.Direction.RIGHT
+			_facingh = Direction.RIGHT
 		else:
-			_facingh = Enum.Direction.LEFT
+			_facingh = Direction.LEFT
 	
 	if abs(input_dir.y) > 0.001:
 		if input_dir.y > 0.0:
-			_facingv = Enum.Direction.DOWN
+			_facingv = Direction.DOWN
 		else:
-			_facingv = Enum.Direction.UP
+			_facingv = Direction.UP
 	
-	var last_facing_direction: Enum.Direction = _facing_direction
+	var last_facing_direction: Direction = _facing_direction
 
 	if _facing_direction != _facingh && _facing_direction != _facingv:
-		if _facingh != Enum.Direction.NONE:
+		if _facingh != Direction.NONE:
 			_facing_direction = _facingh
-		elif _facingv != Enum.Direction.NONE:
+		elif _facingv != Direction.NONE:
 			_facing_direction = _facingv
 	
 	if last_facing_direction != _facing_direction:
@@ -139,13 +142,13 @@ func _update_direction(input_dir: Vector2) -> void:
 
 func _change_walk_animation_direction() -> void:
 	match _facing_direction:
-		Enum.Direction.RIGHT:
+		Direction.RIGHT:
 			play(&"walk_right")
-		Enum.Direction.LEFT:
+		Direction.LEFT:
 			play(&"walk_left")
-		Enum.Direction.UP:
+		Direction.UP:
 			play(&"walk_up")
-		Enum.Direction.DOWN, Enum.Direction.NONE, _:
+		Direction.DOWN, Direction.NONE, _:
 			play(&"walk_down")
 
 func _update_walk_sprite(is_walking: bool) -> void:
