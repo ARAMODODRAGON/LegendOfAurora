@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://h3rrw4kqycjq"]
+[gd_scene load_steps=17 format=3 uid="uid://h3rrw4kqycjq"]
 
 [ext_resource type="Script" uid="uid://deelqijiqnh24" path="res://entities/player/player.gd" id="1_abrql"]
 [ext_resource type="SpriteFrames" uid="uid://djnpafkyppc4w" path="res://entities/player/player_sprite_frames.tres" id="2_8fjmc"]
@@ -28,8 +28,11 @@ size = Vector2(10, 10)
 [sub_resource type="CircleShape2D" id="CircleShape2D_26q78"]
 radius = 27.0185
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bectd"]
+size = Vector2(4, 4)
+
 [node name="Player" type="CharacterBody2D"]
-collision_layer = 0
+collision_layer = 2
 motion_mode = 1
 platform_floor_layers = 0
 script = ExtResource("1_abrql")
@@ -88,11 +91,10 @@ wait_time = 0.2
 [node name="BodySprite" type="AnimatedSprite2D" parent="."]
 z_index = 1
 y_sort_enabled = true
-position = Vector2(0, 4)
+position = Vector2(0, -3)
 sprite_frames = ExtResource("2_8fjmc")
 animation = &"walk_down"
 autoplay = "walk_down"
-offset = Vector2(0, -7)
 script = ExtResource("3_sglur")
 
 [node name="SwordRightHitbox" type="Area2D" parent="BodySprite"]
@@ -159,6 +161,14 @@ debug_color = Color(0.87, 0, 0.8555, 0.184314)
 
 [node name="BongoHitSound" type="AudioStreamPlayer" parent="BongoShockwave"]
 stream = ExtResource("9_bectd")
+
+[node name="CrushOverlapBox" type="Area2D" parent="."]
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CrushOverlapBox"]
+z_index = 2
+shape = SubResource("RectangleShape2D_bectd")
 
 [connection signal="die" from="HealthComponent" to="." method="_on_die"]
 [connection signal="area_entered" from="WarpHitbox" to="." method="_on_warp_entered"]

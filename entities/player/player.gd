@@ -19,6 +19,7 @@ signal shake_screen(scale: float, duration: float)
 @onready var shockwave_pivot: Node2D = $BongoShockwave/ShockwavePivot
 @onready var shockwave_shape: CollisionShape2D = $BongoShockwave/ShockwaveShape
 @onready var bongo_hit_sound: AudioStreamPlayer = $BongoShockwave/BongoHitSound
+@onready var _crush_overlap_box: Area2D = $CrushOverlapBox
 
 enum MoveState {
 	DEFAULT,
@@ -34,7 +35,7 @@ enum ActionState {
 
 var _move_state: MoveState = MoveState.DEFAULT
 var _action_state: ActionState = ActionState.DEFAULT
-
+var _overlapping_solid_frame_count: int = 0
 
 func is_dead() -> bool:
 	return _action_state == ActionState.DEAD
@@ -119,6 +120,7 @@ func _on_interactable_triggered(interactable: InteractableComponent) -> void:
 func _physics_process(delta: float) -> void:
 	_handle_action()
 	_handle_physics(delta)
+	_handle_crush()
 
 
 func _handle_physics(delta: float) -> void:
@@ -133,6 +135,20 @@ func _handle_physics(delta: float) -> void:
 			velocity = input_dir * speed
 			
 			move_and_slide()
+
+
+func _handle_crush() -> void:
+	if _action_state == ActionState.DEAD:
+		return
+
+	if not _crush_overlap_box.has_overlapping_bodies():
+		_overlapping_solid_frame_count = 0
+		return
+	
+	_overlapping_solid_frame_count += 1
+
+	if _overlapping_solid_frame_count > 3:
+		_on_die()
 
 
 func _apply_regular_knockback(direction: Vector2) -> void:

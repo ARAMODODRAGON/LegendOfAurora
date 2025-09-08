@@ -150,9 +150,8 @@ func _load_screen_unload_deferred(screen_rect: Rect2) -> Callable:
 
 	for node in _room_objects:
 		node.process_mode = Node.PROCESS_MODE_INHERIT
-		node.call_deferred(Util.ROOM_OBJECTS_LOAD_FUNC, objects_layer)
-		pass
-			
+		node.call(Util.ROOM_OBJECTS_LOAD_FUNC, objects_layer)
+		print("load called on " + node.name)
 
 	# exit early if there are no nodes to unload
 	if objects_to_unload.size() == 0: 
@@ -161,6 +160,7 @@ func _load_screen_unload_deferred(screen_rect: Rect2) -> Callable:
 	# enter
 	return func() -> void:
 		for node in objects_to_unload:
+			print("unload called on " + node.name)
 			node.call(Util.ROOM_OBJECTS_UNLOAD_FUNC, objects_layer)
 			node.process_mode = Node.PROCESS_MODE_DISABLED
 

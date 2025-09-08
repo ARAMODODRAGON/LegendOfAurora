@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://fw3dqsx73dd0"]
+
+[ext_resource type="Texture2D" uid="uid://bipln3mae77d7" path="res://objects/protruding_wall/protruding_wall.png" id="1_eqv63"]
+[ext_resource type="Script" uid="uid://d226w1a4vfv51" path="res://objects/protruding_wall/protruding_wall.gd" id="1_esl16"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eqv63"]
+size = Vector2(12, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_esl16"]
+size = Vector2(12, 12)
+
+[node name="ProtrudingWall" type="StaticBody2D" groups=["room_objects"]]
+collision_mask = 0
+script = ExtResource("1_esl16")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
+texture = ExtResource("1_eqv63")
+offset = Vector2(0, -4)
+hframes = 2
+frame = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_eqv63")
+
+[node name="Overlapping Solid" type="Area2D" parent="."]
+collision_layer = 3
+collision_mask = 3
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Overlapping Solid"]
+shape = SubResource("RectangleShape2D_esl16")

@@ -20,3 +20,16 @@ static func vector_from_direction(direction: Direction) -> Vector2:
 			return Vector2.DOWN
 		Direction.NONE, _:
 			return Vector2.ZERO
+
+static func flip_direction(direction: Direction) -> Direction:
+	match direction:
+		Direction.LEFT:
+			return Direction.RIGHT
+		Direction.RIGHT:
+			return Direction.LEFT
+		Direction.UP:
+			return Direction.DOWN
+		Direction.DOWN:
+			return Direction.UP
+		Direction.NONE, _:
+			return Direction.NONE

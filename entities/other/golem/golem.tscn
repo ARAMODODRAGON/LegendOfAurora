@@ -10,7 +10,7 @@ size = Vector2(12, 12)
 [sub_resource type="CircleShape2D" id="CircleShape2D_0l1bg"]
 radius = 6.0
 
-[node name="Golem" type="CharacterBody2D"]
+[node name="Golem" type="CharacterBody2D" groups=["room_objects"]]
 script = ExtResource("1_iackm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -31,6 +31,6 @@ metadata/_custom_type_script = "uid://ljroc5o8ykd1"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BongoListenerComponent"]
 z_index = 2
 shape = SubResource("CircleShape2D_0l1bg")
-debug_color = Color(0.952825, 3.27289e-06, 0.556686, 0.42)
+debug_color = Color(0.95, 0, 0.554166, 0.152941)
 
 [connection signal="bongo_hit" from="BongoListenerComponent" to="." method="_on_bongo_hit"]
