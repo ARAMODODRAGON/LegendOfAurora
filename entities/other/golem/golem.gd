@@ -6,6 +6,7 @@ const Direction := Enum.Direction
 ## exports
 @export var move_time: float = 0.3
 @export var initial_facing_direction: Direction = Direction.DOWN
+@export var can_turn_around_automatically: bool = false
 
 @onready var _sprite: Sprite2D = $Sprite2D
 
@@ -74,7 +75,7 @@ func _try_move_golem(direction: Direction, should_try_flip: bool = true) -> void
 
 	# if the movement can be blocked
 	if test_move(get_transform(), move_vector):
-		if should_try_flip:
+		if should_try_flip and can_turn_around_automatically:
 			_turn_around()
 			_try_move_golem(Enum.flip_direction(_facing_direction), false)
 
