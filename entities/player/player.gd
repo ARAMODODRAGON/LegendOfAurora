@@ -30,7 +30,7 @@ enum MoveState {
 enum ActionState {
 	DEFAULT,
 	SHOCKWAVE,
-	DEAD, 
+	DEAD,
 }
 
 var _move_state: MoveState = MoveState.DEFAULT
@@ -72,10 +72,9 @@ func _handle_action() -> void:
 
 	match _action_state:
 		ActionState.DEFAULT:
-
-			if primary_action and not body_sprite.is_attacking(): 
+			if primary_action and not body_sprite.is_attacking() and GameState.white_sword_unlock.is_unlocked():
 				var did_interact: bool = interactor_component.trigger_interaction(
-					body_sprite.get_facing_vector(), 
+					body_sprite.get_facing_vector(),
 					_on_interactable_triggered
 				)
 
@@ -84,7 +83,7 @@ func _handle_action() -> void:
 					_move_state = MoveState.ATTACKING
 					velocity = Vector2.ZERO
 				
-			elif secondary_action and not body_sprite.is_attacking():
+			elif secondary_action and not body_sprite.is_attacking() and GameState.bongo_unlock.is_unlocked():
 				_trigger_shockwave()
 			
 		_: pass
@@ -111,7 +110,7 @@ func _trigger_shockwave() -> void:
 			shockwave_shape.set_deferred("disabled", true)
 	)
 
-	var tween1: Tween = create_tween()	
+	var tween1: Tween = create_tween()
 	shockwave_pivot.scale = Vector2.ZERO
 	tween1.tween_property(shockwave_pivot, "scale", Vector2.ONE, SHOCKWAVE_TIME)
 
@@ -131,7 +130,7 @@ func _handle_physics(delta: float) -> void:
 	match _move_state:
 		MoveState.KNOCKBACK, MoveState.ATTACKING:
 			# run the set velocity
-			move_and_slide() 
+			move_and_slide()
 		MoveState.DEFAULT, _:
 			## determine the movement speed and apply it to velocity
 			var speed: float = WALK_SPEED
@@ -212,3 +211,16 @@ func _on_bongo_shockwave_area_entered(area: Area2D) -> void:
 	var bongo_listener := area as BongoListenerComponent
 	if bongo_listener:
 		bongo_listener.bongo_hit.emit(area.global_position - global_position)
+
+func _unhandled_input(event: InputEvent) -> void:
+	var key_event := event as InputEventKey
+	if key_event:
+		match key_event.keycode:
+			KEY_F1:
+				if GameState.white_sword_unlock.is_unlocked() == false:
+					print("Unlocked white sword!")
+				GameState.white_sword_unlock.unlock()
+			KEY_F2:
+				if GameState.bongo_unlock.is_unlocked() == false:
+					print("Unlocked bongo!")
+				GameState.bongo_unlock.unlock()
