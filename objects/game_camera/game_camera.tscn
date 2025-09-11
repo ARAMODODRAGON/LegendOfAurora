@@ -7,7 +7,6 @@ anchor_mode = 0
 script = ExtResource("1_cyajk")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-follow_viewport_enabled = true
 
 [node name="FadeRect" type="ColorRect" parent="CanvasLayer"]
 anchors_preset = 15

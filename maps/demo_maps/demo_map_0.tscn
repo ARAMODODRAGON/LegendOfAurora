@@ -322,10 +322,6 @@ target_warp_name = "WarpWithinSceneB"
 tile_set = ExtResource("2_og57n")
 
 [node name="DefaultSpawnPoint" parent="." index="1"]
-position = Vector2(120, 40)
-
-[node name="ReferenceRect" parent="DefaultSpawnPoint" index="0"]
-offset_left = 40.0
-offset_right = 56.0
+position = Vector2(376, 248)
 
 [connection signal="area_entered" from="Layers/Objects Layer/Room [0, 0]/Area2D" to="Layers/Objects Layer/Room [0, 0]/Area2D" method="_on_area_entered"]
