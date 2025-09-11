@@ -1,6 +1,10 @@
 extends Node
 
 var _main_scene: Main
+var _player_reference: Player
+
+func get_player() -> Player:
+	return _player_reference
 
 func get_scene_index() -> int:
 	if _main_scene:

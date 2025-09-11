@@ -4,11 +4,6 @@ extends EnemyBase
 ## enums
 const Direction := Enum.Direction
 
-enum Type {
-	SAND,
-	POISONED,
-}
-
 enum ActionState {
 	DEFAULT,
 	KNOCKBACK,
@@ -16,20 +11,10 @@ enum ActionState {
 }
 
 ## defaults
-@export var scorpion_type: Type = Type.SAND:
-	set(value):
-		scorpion_type = value
-		_update_type()
-	get:
-		return scorpion_type
 @export var move_speed: float = 10.0
 @export var animation_fps: float = 5.0
 @export var knockback_speed: float = 30.0
 @export var knockback_time: float = 0.5
-
-## alternate textures
-@export var _sand_scorpion_texture: Texture2D
-@export var _poisoned_scorpion_texture: Texture2D
 
 
 ## references
@@ -42,24 +27,15 @@ var _facing_state := Direction.DOWN
 var _first_frame: int = 0
 var _frame_timer: float = 0.0
 var _is_knocked_back: bool = true
+var _screen: Rect2 
 
 var _tween: Tween = null
 
 ## methods
 
 func _ready() -> void:
-	_update_type()
-
-
-func _update_type() -> void:
-	match scorpion_type:
-		Type.POISONED:
-			body_sprite.texture = _sand_scorpion_texture
-		Type.SAND, _: # default
-			body_sprite.texture = _sand_scorpion_texture
-	
-	body_sprite.hframes = 2
-	body_sprite.vframes = 4
+	_facing_state = (randi() % 4) as Direction
+	_screen = Util.screen_from_position(global_position)
 
 
 func _process(delta: float) -> void:
@@ -92,6 +68,8 @@ func _physics_process(delta: float) -> void:
 	
 	match _action_state:
 		ActionState.DEFAULT:
+			_detect_player()
+
 			var direction := Enum.vector_from_direction(_facing_state)
 
 			velocity = direction * move_speed
@@ -104,6 +82,34 @@ func _physics_process(delta: float) -> void:
 			pass
 	
 	move_and_slide()
+
+	## clamp and turn around
+	if not _screen.has_point(global_position) and (randi() % 7 == 1):
+		_facing_state = Enum.flip_direction(_facing_state)
+	
+	global_position.clamp(_screen.position, _screen.end)
+
+
+func _detect_player() -> void:
+	var player := Game.get_player()
+	if player == null:
+		return
+
+	var distance: float = (player.global_position - global_position).length()
+
+	if distance > 32.0:
+		return
+
+	var direction: Vector2 = (player.global_position - global_position).normalized()
+	var restricted_direction: Vector2 = Util.restrict_vector_four_directional(direction)
+
+	## cannot turn around
+	if Enum.direction_from_vector(restricted_direction) == Enum.flip_direction(_facing_state):
+		return
+
+	if (direction - restricted_direction).length() < 7.0:
+		_facing_state = Enum.direction_from_vector(restricted_direction)
+	
 
 
 func _change_direction(turn_left: bool) -> void:

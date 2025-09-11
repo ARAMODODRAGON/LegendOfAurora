@@ -48,8 +48,8 @@ func nearest_point_within_rect(point: Vector2, rect: Rect2) -> Vector2:
 	new_point.y = clampf(point.y, rect.position.y, rect.end.y)
 	return new_point
 
-func restrict_vector_four_directional(direction: Vector2) -> Vector2:
-	if direction.length_squared() < VERY_SMALL:
+func restrict_vector_four_directional(direction: Vector2, delta: float = VERY_SMALL) -> Vector2:
+	if direction.length_squared() < delta:
 		return Vector2.ZERO
 
 	var rotation: float = rad_to_deg(direction.angle())

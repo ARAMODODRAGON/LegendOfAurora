@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=4 uid="uid://cncnj5s7ny43e"]
+[gd_scene load_steps=7 format=4 uid="uid://cncnj5s7ny43e"]
 
 [ext_resource type="PackedScene" uid="uid://d3qdgxm5s7pas" path="res://maps/map_base/map_base.tscn" id="1_3u02f"]
 [ext_resource type="TileSet" uid="uid://ddui8fdb7n3ii" path="res://tilesets/oasis_tileset/oasis_tileset.tres" id="2_r5h15"]
 [ext_resource type="PackedScene" uid="uid://d1kticblcq5yu" path="res://objects/warp_point/warp_point.tscn" id="3_3m8yi"]
 [ext_resource type="PackedScene" uid="uid://d03gpw3xxgth5" path="res://objects/enemy_spawner/enemy_spawner.tscn" id="4_wcjye"]
 [ext_resource type="PackedScene" uid="uid://wv7w1f10535o" path="res://entities/enemies/scorpion/scorpion.tscn" id="5_drbcl"]
+[ext_resource type="PackedScene" uid="uid://v8t7tbiqj50g" path="res://entities/enemies/scorpion/poisoned_scorpion.tscn" id="6_drbcl"]
 
 [node name="DemoMap3" instance=ExtResource("1_3u02f")]
 
@@ -23,8 +24,28 @@ target_map_index = 4
 target_warp_name = "BlueDungeonEntrance"
 
 [node name="EnemySpawner" parent="Layers/Objects Layer" index="1" instance=ExtResource("4_wcjye")]
-position = Vector2(128, 112)
+position = Vector2(200, 112)
 enemy_scene = ExtResource("5_drbcl")
+
+[node name="EnemySpawner2" parent="Layers/Objects Layer" index="2" instance=ExtResource("4_wcjye")]
+position = Vector2(64, 112)
+enemy_scene = ExtResource("5_drbcl")
+
+[node name="EnemySpawner3" parent="Layers/Objects Layer" index="3" instance=ExtResource("4_wcjye")]
+position = Vector2(184, 24)
+enemy_scene = ExtResource("5_drbcl")
+
+[node name="EnemySpawner4" parent="Layers/Objects Layer" index="4" instance=ExtResource("4_wcjye")]
+position = Vector2(-200, 80)
+enemy_scene = ExtResource("6_drbcl")
+
+[node name="EnemySpawner5" parent="Layers/Objects Layer" index="5" instance=ExtResource("4_wcjye")]
+position = Vector2(-40, 40)
+enemy_scene = ExtResource("6_drbcl")
+
+[node name="EnemySpawner6" parent="Layers/Objects Layer" index="6" instance=ExtResource("4_wcjye")]
+position = Vector2(-40, 160)
+enemy_scene = ExtResource("6_drbcl")
 
 [node name="Foreground Layer" parent="Layers" index="3"]
 tile_set = ExtResource("2_r5h15")

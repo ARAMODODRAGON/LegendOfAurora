@@ -44,6 +44,16 @@ func is_dead() -> bool:
 func trigger_spawn_timer() -> void:
 	spawn_timer.start()
 
+
+func _enter_tree() -> void:
+	Game._player_reference = self
+
+
+func _exit_tree() -> void:
+	if Game._player_reference == self:
+		Game._player_reference = null
+
+
 func _ready() -> void:
 	body_sprite.death_animation_end.connect(death_animation_end.emit)
 	body_sprite.attack_end.connect(
@@ -127,7 +137,7 @@ func _physics_process(delta: float) -> void:
 
 func _handle_physics(delta: float) -> void:
 	var input_dir: Vector2 = Util.restrict_vector_four_directional(_get_input_dir())
-	
+
 	match _move_state:
 		MoveState.KNOCKBACK, MoveState.ATTACKING:
 			# run the set velocity

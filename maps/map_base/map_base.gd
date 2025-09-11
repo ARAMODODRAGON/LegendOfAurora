@@ -57,7 +57,7 @@ func _on_player_dead() -> void:
 
 func _on_player_warp(warp: WarpPoint) -> void:
 	if not warp.target_warp_name:
-		print("could not load warp as the target name was not valid")
+		#print("could not load warp as the target name was not valid")
 		return
 
 	# we have to wait so that when we pause the game there are no side effects
@@ -65,7 +65,7 @@ func _on_player_warp(warp: WarpPoint) -> void:
 	
 	if warp.target_map_index == -1 and warp.target_warp_name.length() != 0:
 		await _warp_transition_coroutine(true)
-		print("loading warp \"" + warp.target_warp_name)
+		#print("loading warp \"" + warp.target_warp_name)
 
 		warp_player(warp.target_warp_name)
 		await _warp_transition_coroutine(false)
@@ -73,12 +73,12 @@ func _on_player_warp(warp: WarpPoint) -> void:
 
 	elif warp.target_warp_name.length() != 0:
 		await _warp_transition_coroutine(true)
-		print("loading scene at index [" + str(warp.target_map_index) + "] with warp \"" + warp.target_warp_name)
+		#print("loading scene at index [" + str(warp.target_map_index) + "] with warp \"" + warp.target_warp_name)
 		Game.load_scene_with_warp_coroutine(warp.target_map_index, warp.target_warp_name)
 
 	elif warp.target_map_index != -1:
 		await _warp_transition_coroutine(true)
-		print("loading scene at index [" + str(warp.target_map_index) + "] with default spawn point")
+		#print("loading scene at index [" + str(warp.target_map_index) + "] with default spawn point")
 		Game.load_scene(warp.target_map_index)
 
 func _warp_transition_coroutine(fade_to_black: bool) -> void:
@@ -180,7 +180,7 @@ func _load_screen_unload_deferred(screen_rect: Rect2) -> Callable:
 		
 		node.process_mode = Node.PROCESS_MODE_INHERIT
 		node.call(Util.ROOM_OBJECTS_LOAD_FUNC, objects_layer)
-		print("load called on " + node.name)
+		#print("load called on " + node.name)
 
 	# exit early if there are no nodes to unload
 	if objects_to_unload.size() == 0: 
@@ -189,7 +189,7 @@ func _load_screen_unload_deferred(screen_rect: Rect2) -> Callable:
 	# enter
 	return func() -> void:
 		for node in objects_to_unload:
-			print("unload called on " + node.name)
+			#print("unload called on " + node.name)
 			node.call(Util.ROOM_OBJECTS_UNLOAD_FUNC, objects_layer)
 			node.process_mode = Node.PROCESS_MODE_DISABLED
 
