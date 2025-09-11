@@ -29,6 +29,13 @@ const VERY_SMALL : float = 0.001
 
 ## functions
 
+func screen_from_position(position: Vector2) -> Rect2:
+	const SCREEN_SIZE_INVERSE := Vector2.ONE / SCREEN_SIZE
+	var screen: Rect2
+	screen.position = (position * SCREEN_SIZE_INVERSE).floor() * SCREEN_SIZE
+	screen.size = SCREEN_SIZE
+	return screen
+
 func equalf(a: float, b: float, epsilon: float = VERY_SMALL) -> bool:
 	return abs(a - b) < epsilon
 
@@ -40,3 +47,18 @@ func nearest_point_within_rect(point: Vector2, rect: Rect2) -> Vector2:
 	new_point.x = clampf(point.x, rect.position.x, rect.end.x)
 	new_point.y = clampf(point.y, rect.position.y, rect.end.y)
 	return new_point
+
+func restrict_vector_four_directional(direction: Vector2) -> Vector2:
+	if direction.length_squared() < VERY_SMALL:
+		return Vector2.ZERO
+
+	var rotation: float = rad_to_deg(direction.angle())
+
+	if rotation > 45.0 and rotation <= 135.0:
+		return Vector2.DOWN
+	elif rotation > 135.0 and rotation <= 225.0:
+		return Vector2.LEFT
+	elif rotation > 225.0 and rotation <= 315.0:
+		return Vector2.DOWN
+	else:
+		return Vector2.RIGHT
