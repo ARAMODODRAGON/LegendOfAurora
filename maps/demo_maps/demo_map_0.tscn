@@ -1,7 +1,7 @@
 [gd_scene load_steps=31 format=4 uid="uid://c8r7ng8j2gsgk"]
 
 [ext_resource type="PackedScene" uid="uid://d3qdgxm5s7pas" path="res://maps/map_base/map_base.tscn" id="1_b7wyl"]
-[ext_resource type="TileSet" uid="uid://xv57c3cq5pnc" path="res://maps/tilesets/test_tileset/test_tileset.tres" id="2_og57n"]
+[ext_resource type="TileSet" uid="uid://xv57c3cq5pnc" path="res://tilesets/test_tileset/test_tileset.tres" id="2_og57n"]
 [ext_resource type="PackedScene" uid="uid://d1kticblcq5yu" path="res://objects/warp_point/warp_point.tscn" id="3_fnxf8"]
 [ext_resource type="PackedScene" uid="uid://d03gpw3xxgth5" path="res://objects/enemy_spawner/enemy_spawner.tscn" id="4_fnxf8"]
 [ext_resource type="PackedScene" uid="uid://bxc6tvy81hqru" path="res://entities/enemies/test_enemy_0/test_enemy_0.tscn" id="5_kiek0"]
@@ -10,7 +10,7 @@
 [ext_resource type="Resource" uid="uid://bfifvodkt7rqd" path="res://game/quests/TestQuest.tres" id="7_1ffeq"]
 [ext_resource type="Script" uid="uid://b0nj330mrf1rf" path="res://scripts/activation/trigger_rule.gd" id="7_4u73y"]
 [ext_resource type="Script" uid="uid://mwiiacw2emc4" path="res://scripts/quest_management/quest_event_condition.gd" id="7_npc27"]
-[ext_resource type="Texture2D" uid="uid://rqcf184asd2j" path="res://maps/tilesets/test_tileset/test_tileset.png" id="7_qu462"]
+[ext_resource type="Texture2D" uid="uid://rqcf184asd2j" path="res://tilesets/test_tileset/test_tileset.png" id="7_qu462"]
 [ext_resource type="Script" uid="uid://cxs52grobpg26" path="res://maps/demo_maps/progress_questline_object.gd" id="11_cfqdx"]
 [ext_resource type="PackedScene" uid="uid://cspg3rie38j5c" path="res://entities/other/ball_test/ball_test.tscn" id="11_m4s88"]
 [ext_resource type="Script" uid="uid://c2s2faw16bnco" path="res://maps/demo_maps/shockwave_touch.gd" id="11_udtq2"]
@@ -322,6 +322,6 @@ target_warp_name = "WarpWithinSceneB"
 tile_set = ExtResource("2_og57n")
 
 [node name="DefaultSpawnPoint" parent="." index="1"]
-position = Vector2(376, 248)
+position = Vector2(120, 48)
 
 [connection signal="area_entered" from="Layers/Objects Layer/Room [0, 0]/Area2D" to="Layers/Objects Layer/Room [0, 0]/Area2D" method="_on_area_entered"]

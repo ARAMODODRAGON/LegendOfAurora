@@ -13,7 +13,7 @@ TRANSITION_TIME = 0.7
 
 [node name="Background Layer" type="TileMapLayer" parent="Layers"]
 
-[node name="Solid Layer" type="TileMapLayer" parent="Layers"]
+[node name="Overlay Layer" type="TileMapLayer" parent="Layers"]
 
 [node name="Objects Layer" type="Node" parent="Layers"]
 

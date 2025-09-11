@@ -1,10 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://davrpc2xpv3b6"]
+[gd_scene load_steps=7 format=3 uid="uid://davrpc2xpv3b6"]
 
 [ext_resource type="Script" uid="uid://b0cdimkkykxno" path="res://game/main/main.gd" id="1_53q0u"]
 [ext_resource type="PackedScene" uid="uid://c8r7ng8j2gsgk" path="res://maps/demo_maps/demo_map_0.tscn" id="2_pjrb6"]
 [ext_resource type="PackedScene" uid="uid://qr5tgun4kvw" path="res://maps/demo_maps/demo_map_1.tscn" id="3_xwkvk"]
 [ext_resource type="PackedScene" uid="uid://3p1tr1soc5ac" path="res://maps/demo_maps/demo_map_2.tscn" id="4_8y833"]
+[ext_resource type="PackedScene" uid="uid://cncnj5s7ny43e" path="res://maps/demo_maps/demo_map_3.tscn" id="5_tkdpa"]
+[ext_resource type="PackedScene" uid="uid://b702ra7yiyoax" path="res://maps/demo_maps/demo_map_4.tscn" id="6_yymkh"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_53q0u")
-BUILD_INDEX = Array[PackedScene]([ExtResource("2_pjrb6"), ExtResource("3_xwkvk"), ExtResource("4_8y833")])
+DEFAULT_SCENE_INDEX = 3
+BUILD_INDEX = Array[PackedScene]([ExtResource("2_pjrb6"), ExtResource("3_xwkvk"), ExtResource("4_8y833"), ExtResource("5_tkdpa"), ExtResource("6_yymkh")])

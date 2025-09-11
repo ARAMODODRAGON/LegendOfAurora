@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=4 uid="uid://qr5tgun4kvw"]
 
 [ext_resource type="PackedScene" uid="uid://d3qdgxm5s7pas" path="res://maps/map_base/map_base.tscn" id="1_krgba"]
-[ext_resource type="TileSet" uid="uid://xv57c3cq5pnc" path="res://maps/tilesets/test_tileset/test_tileset.tres" id="2_flv14"]
+[ext_resource type="TileSet" uid="uid://xv57c3cq5pnc" path="res://tilesets/test_tileset/test_tileset.tres" id="2_flv14"]
 [ext_resource type="PackedScene" uid="uid://d1kticblcq5yu" path="res://objects/warp_point/warp_point.tscn" id="3_flv14"]
 
 [node name="DemoMap1" instance=ExtResource("1_krgba")]
