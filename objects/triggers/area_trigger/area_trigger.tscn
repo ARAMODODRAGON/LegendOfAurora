@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfvsybo62e0rg"]
+
+[ext_resource type="PackedScene" uid="uid://dhgrgvdc2ut13" path="res://objects/triggers/trigger_base/trigger_base.tscn" id="1_d43y0"]
+[ext_resource type="Script" uid="uid://qmsjh5dnaw3j" path="res://objects/triggers/area_trigger/area_trigger.gd" id="2_n8s84"]
+
+[node name="AreaTrigger" instance=ExtResource("1_d43y0")]
+script = ExtResource("2_n8s84")
+detect_body = true
+detect_area = false
+collision_mask = 0

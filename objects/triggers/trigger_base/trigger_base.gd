@@ -2,21 +2,25 @@ class_name TriggerBase
 extends Node2D
 
 ## enum
+
 const TriggerState := Enum.TriggerState
 signal on_state_change(state: TriggerState)
 
 
 ## default state
+
 @export var default_state: TriggerState
 @export var reset_on_room_load: bool = true
 @export var reverse_trigger_output: bool = false
 
 
 ## the rules attached to this node
+
 var trigger_rules: Array[TriggerRule]
 
 
 ## private
+
 var _state: TriggerState = TriggerState.OFF
 
 

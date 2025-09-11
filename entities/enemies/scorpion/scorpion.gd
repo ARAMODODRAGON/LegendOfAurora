@@ -2,27 +2,29 @@
 extends EnemyBase
 
 ## enums
+
 const Direction := Enum.Direction
 
 enum ActionState {
+	SPAWNING,
 	DEFAULT,
 	KNOCKBACK,
 	DYING,
 }
 
+
 ## defaults
+
+@export var spawn_time: float = 4.0 / 60.0
 @export var move_speed: float = 10.0
 @export var animation_fps: float = 5.0
 @export var knockback_speed: float = 30.0
 @export var knockback_time: float = 0.5
 
 
-## references
-@onready var health_component: HealthComponent = $HealthComponent
-
-
 ## state
-var _action_state := ActionState.DEFAULT
+
+var _action_state := ActionState.SPAWNING
 var _facing_state := Direction.DOWN
 var _first_frame: int = 0
 var _frame_timer: float = 0.0
@@ -31,14 +33,34 @@ var _screen: Rect2
 
 var _tween: Tween = null
 
+
 ## methods
 
 func _ready() -> void:
 	_facing_state = (randi() % 4) as Direction
 	_screen = Util.screen_from_position(global_position)
 
+	_tween = create_tween()
+
+	body_sprite.frame = 8
+
+	_tween.tween_interval(spawn_time * 0.5)
+	_tween.tween_callback(
+		func() -> void:
+			body_sprite.frame = 9
+	)
+	_tween.tween_interval(spawn_time * 0.5)
+	_tween.tween_callback(
+		func() -> void:
+			_action_state = ActionState.DEFAULT
+	)
+
+
 
 func _process(delta: float) -> void:
+	if _action_state == ActionState.SPAWNING:
+		return
+	
 	match _facing_state:
 		Direction.LEFT:
 			_first_frame = 4

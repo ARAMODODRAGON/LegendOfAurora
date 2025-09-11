@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bb5yerec0yvox"]
+
+[ext_resource type="PackedScene" uid="uid://dhgrgvdc2ut13" path="res://objects/triggers/trigger_base/trigger_base.tscn" id="1_atqt0"]
+[ext_resource type="Script" uid="uid://pa14c5mbc882" path="res://objects/triggers/room_entered_trigger/room_entered_trigger.gd" id="2_36vio"]
+
+[node name="RoomEnteredTrigger" instance=ExtResource("1_atqt0")]
+script = ExtResource("2_36vio")
+
+[node name="ReferenceRect" type="ReferenceRect" parent="." index="0"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0

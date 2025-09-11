@@ -1,11 +1,16 @@
-[gd_scene load_steps=7 format=4 uid="uid://cncnj5s7ny43e"]
+[gd_scene load_steps=10 format=4 uid="uid://cncnj5s7ny43e"]
 
 [ext_resource type="PackedScene" uid="uid://d3qdgxm5s7pas" path="res://maps/map_base/map_base.tscn" id="1_3u02f"]
 [ext_resource type="TileSet" uid="uid://ddui8fdb7n3ii" path="res://tilesets/oasis_tileset/oasis_tileset.tres" id="2_r5h15"]
 [ext_resource type="PackedScene" uid="uid://d1kticblcq5yu" path="res://objects/warp_point/warp_point.tscn" id="3_3m8yi"]
+[ext_resource type="PackedScene" uid="uid://bb5yerec0yvox" path="res://objects/triggers/room_entered_trigger/room_entered_trigger.tscn" id="4_wcjye"]
 [ext_resource type="Script" uid="uid://dne7bdh40747l" path="res://scripts/triggers_and_activators/spawn_trigger_rule.gd" id="5_drbcl"]
-[ext_resource type="PackedScene" uid="uid://b0p0qw7nvak0h" path="res://objects/triggers/torch_trigger/torch_trigger.tscn" id="5_wcjye"]
 [ext_resource type="PackedScene" uid="uid://wv7w1f10535o" path="res://entities/enemies/scorpion/scorpion.tscn" id="6_drbcl"]
+[ext_resource type="PackedScene" uid="uid://dfvsybo62e0rg" path="res://objects/triggers/area_trigger/area_trigger.tscn" id="7_85nn0"]
+[ext_resource type="PackedScene" uid="uid://v8t7tbiqj50g" path="res://entities/enemies/scorpion/poisoned_scorpion.tscn" id="8_aexjn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_85nn0"]
+size = Vector2(208, 176)
 
 [node name="DemoMap3" instance=ExtResource("1_3u02f")]
 
@@ -23,15 +28,70 @@ scale = Vector2(2, 1)
 target_map_index = 1
 target_warp_name = "BlueDungeonEntrance"
 
-[node name="TorchTrigger" parent="Layers/Objects Layer" index="1" instance=ExtResource("5_wcjye")]
-position = Vector2(88, 152)
-default_state = 1
-reverse_trigger_output = true
+[node name="RoomEnteredTrigger" parent="Layers/Objects Layer" index="1" instance=ExtResource("4_wcjye")]
+position = Vector2(72, 88)
 
-[node name="SpawnTriggerRule" type="Node" parent="Layers/Objects Layer/TorchTrigger" index="3"]
+[node name="SpawnTriggerRule" type="Node" parent="Layers/Objects Layer/RoomEnteredTrigger" index="1"]
 script = ExtResource("5_drbcl")
 enemy_scene = ExtResource("6_drbcl")
+respawn_if_dead = true
 metadata/_custom_type_script = "uid://dne7bdh40747l"
+
+[node name="RoomEnteredTrigger2" parent="Layers/Objects Layer" index="2" instance=ExtResource("4_wcjye")]
+position = Vector2(184, 88)
+
+[node name="SpawnTriggerRule" type="Node" parent="Layers/Objects Layer/RoomEnteredTrigger2" index="1"]
+script = ExtResource("5_drbcl")
+enemy_scene = ExtResource("6_drbcl")
+respawn_if_dead = true
+metadata/_custom_type_script = "uid://dne7bdh40747l"
+
+[node name="RoomEnteredTrigger3" parent="Layers/Objects Layer" index="3" instance=ExtResource("4_wcjye")]
+position = Vector2(216, 40)
+
+[node name="SpawnTriggerRule" type="Node" parent="Layers/Objects Layer/RoomEnteredTrigger3" index="1"]
+script = ExtResource("5_drbcl")
+enemy_scene = ExtResource("6_drbcl")
+respawn_if_dead = true
+metadata/_custom_type_script = "uid://dne7bdh40747l"
+
+[node name="AreaTrigger" parent="Layers/Objects Layer" index="4" instance=ExtResource("7_85nn0")]
+position = Vector2(-128, 112)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Layers/Objects Layer/AreaTrigger" index="0"]
+shape = SubResource("RectangleShape2D_85nn0")
+debug_color = Color(0, 0.595, 0.7, 0)
+
+[node name="SpawnTriggerRule" type="Node" parent="Layers/Objects Layer/AreaTrigger" index="1" node_paths=PackedStringArray("position_override")]
+script = ExtResource("5_drbcl")
+enemy_scene = ExtResource("8_aexjn")
+position_override = NodePath("Marker2D")
+metadata/_custom_type_script = "uid://dne7bdh40747l"
+
+[node name="Marker2D" type="Marker2D" parent="Layers/Objects Layer/AreaTrigger/SpawnTriggerRule" index="0"]
+position = Vector2(-216, 40)
+gizmo_extents = 8.0
+
+[node name="SpawnTriggerRule2" type="Node" parent="Layers/Objects Layer/AreaTrigger" index="2" node_paths=PackedStringArray("position_override")]
+script = ExtResource("5_drbcl")
+enemy_scene = ExtResource("8_aexjn")
+position_override = NodePath("Marker2D")
+metadata/_custom_type_script = "uid://dne7bdh40747l"
+
+[node name="Marker2D" type="Marker2D" parent="Layers/Objects Layer/AreaTrigger/SpawnTriggerRule2" index="0"]
+position = Vector2(-40, 40)
+gizmo_extents = 8.0
+
+[node name="SpawnTriggerRule3" type="Node" parent="Layers/Objects Layer/AreaTrigger" index="3" node_paths=PackedStringArray("position_override")]
+script = ExtResource("5_drbcl")
+enemy_scene = ExtResource("8_aexjn")
+position_override = NodePath("Marker2D")
+metadata/_custom_type_script = "uid://dne7bdh40747l"
+
+[node name="Marker2D" type="Marker2D" parent="Layers/Objects Layer/AreaTrigger/SpawnTriggerRule3" index="0"]
+position = Vector2(-80, 176)
+gizmo_extents = 8.0
 
 [node name="Foreground Layer" parent="Layers" index="3"]
 tile_set = ExtResource("2_r5h15")
