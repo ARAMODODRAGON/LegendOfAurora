@@ -23,11 +23,11 @@ target_map_index = 4
 target_warp_name = "BlueDungeonEntrance"
 
 [node name="EnemySpawner" parent="Layers/Objects Layer" index="1" instance=ExtResource("4_wcjye")]
-position = Vector2(72, 40)
+position = Vector2(128, 112)
 enemy_scene = ExtResource("5_drbcl")
 
 [node name="Foreground Layer" parent="Layers" index="3"]
 tile_set = ExtResource("2_r5h15")
 
 [node name="DefaultSpawnPoint" parent="." index="1"]
-position = Vector2(128, 112)
+position = Vector2(128, 192)

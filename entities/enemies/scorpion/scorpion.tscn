@@ -1,11 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://wv7w1f10535o"]
+[gd_scene load_steps=10 format=3 uid="uid://wv7w1f10535o"]
 
 [ext_resource type="Script" uid="uid://lksc557o3n7v" path="res://entities/enemies/scorpion/scorpion.gd" id="1_vntu7"]
 [ext_resource type="Texture2D" uid="uid://c5352rsy4rcov" path="res://entities/enemies/scorpion/sand_scorpion.png" id="1_xnpgg"]
 [ext_resource type="Texture2D" uid="uid://cuggy0sxkuy0e" path="res://entities/enemies/scorpion/poisoned_scorpion.png" id="3_g6u2h"]
 [ext_resource type="Script" uid="uid://f2f56nmugjm4" path="res://scripts/components/hitbox_component.gd" id="4_rrhao"]
+[ext_resource type="Script" uid="uid://gfncyw3nx8wl" path="res://scripts/components/hurtbox_component.gd" id="5_ab28n"]
+[ext_resource type="Script" uid="uid://ceb4u5be5p5rc" path="res://scripts/components/health_component.gd" id="6_jkdx4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xnpgg"]
+size = Vector2(14, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ab28n"]
 size = Vector2(14, 14)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rrhao"]
@@ -14,12 +19,26 @@ size = Vector2(12, 12)
 [node name="Scorpion" type="CharacterBody2D"]
 collision_layer = 0
 script = ExtResource("1_vntu7")
+knockback_speed = 100.0
+knockback_time = 0.3
 _sand_scorpion_texture = ExtResource("1_xnpgg")
 _poisoned_scorpion_texture = ExtResource("3_g6u2h")
 metadata/_custom_type_script = "uid://dp5qgjvlmaw78"
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_xnpgg")
+
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("root_node", "health_component")]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("5_ab28n")
+root_node = NodePath("..")
+health_component = NodePath("../HealthComponent")
+metadata/_custom_type_script = "uid://gfncyw3nx8wl"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+shape = SubResource("RectangleShape2D_ab28n")
+debug_color = Color(1.58831e-06, 0.621555, 0.553372, 0.42)
 
 [node name="HitboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("root_node")]
 collision_layer = 0
@@ -36,3 +55,11 @@ debug_color = Color(0.999843, 0, 0.0991533, 0.42)
 texture = ExtResource("1_xnpgg")
 hframes = 2
 vframes = 4
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("6_jkdx4")
+max_health = 4
+metadata/_custom_type_script = "uid://ceb4u5be5p5rc"
+
+[connection signal="take_damage" from="HurtboxComponent" to="." method="_on_take_damage"]
+[connection signal="die" from="HealthComponent" to="." method="_on_die"]

@@ -53,12 +53,16 @@ func restrict_vector_four_directional(direction: Vector2) -> Vector2:
 		return Vector2.ZERO
 
 	var rotation: float = rad_to_deg(direction.angle())
+	var length: float = direction.length()
+
+	if rotation < 0.0:
+		rotation += 360.0
 
 	if rotation > 45.0 and rotation <= 135.0:
-		return Vector2.DOWN
+		return Vector2.DOWN * length
 	elif rotation > 135.0 and rotation <= 225.0:
-		return Vector2.LEFT
+		return Vector2.LEFT * length
 	elif rotation > 225.0 and rotation <= 315.0:
-		return Vector2.DOWN
+		return Vector2.UP * length
 	else:
-		return Vector2.RIGHT
+		return Vector2.RIGHT * length

@@ -31,6 +31,6 @@ func _on_area_entered(area: Area2D) -> void:
 	if hurtbox:
 		if hurtbox.root_node and root_node:
 			var direction: Vector2 = hurtbox.root_node.global_position - root_node.global_position
-			hurtbox._take_damage(damage, direction.normalized())
+			hurtbox._take_damage(damage, Util.restrict_vector_four_directional(direction.normalized()))
 		else:
 			hurtbox._take_damage(damage, Vector2.ZERO)

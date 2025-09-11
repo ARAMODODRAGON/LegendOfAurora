@@ -14,6 +14,24 @@ enum Direction {
 	DOWN,
 }
 
+static func direction_from_vector(direction: Vector2) -> Direction:
+	if direction.length_squared() < Util.VERY_SMALL:
+		return Direction.NONE
+
+	var rotation: float = rad_to_deg(direction.angle())
+
+	if rotation < 0.0:
+		rotation += 360.0
+
+	if rotation > 45.0 and rotation <= 135.0:
+		return Direction.DOWN
+	elif rotation > 135.0 and rotation <= 225.0:
+		return Direction.LEFT
+	elif rotation > 225.0 and rotation <= 315.0:
+		return Direction.UP
+	else:
+		return Direction.RIGHT
+
 static func vector_from_direction(direction: Direction) -> Vector2:
 	match direction:
 		Direction.LEFT:

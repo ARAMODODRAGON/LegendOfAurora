@@ -126,7 +126,8 @@ func _physics_process(delta: float) -> void:
 
 
 func _handle_physics(delta: float) -> void:
-	var input_dir: Vector2 = _get_input_dir()
+	var input_dir: Vector2 = Util.restrict_vector_four_directional(_get_input_dir())
+	
 	match _move_state:
 		MoveState.KNOCKBACK, MoveState.ATTACKING:
 			# run the set velocity
