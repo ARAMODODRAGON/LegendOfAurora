@@ -2,10 +2,6 @@
 class_name ActivationRule
 extends Node
 
-## triggers are expected to have the following:
-# const TriggerState := Enum.TriggerState
-# signal on_state_change(state: TriggerState)
-
 ## activators are expected to have the following:
 # func _trigger_activator()
 
@@ -26,20 +22,15 @@ func _ready() -> void:
 	const signal_name: StringName = &"on_state_change"
 
 	for i in trigger_rules.size():
-		var trigger: Node = get_node(trigger_rules[i].trigger_reference)
-		
-		if trigger.has_signal(signal_name):
-			var state_change_signal: Signal = trigger.get(signal_name)
-			
-			var rule_index: int = i # lambda capture
-			trigger.connect(signal_name,
-				func(state: TriggerState) -> void:
-					_trigger_state_changed(rule_index, state)
-			)
+		var trigger := get_node(trigger_rules[i].trigger_reference) as TriggerBase
+	
+		var rule_index: int = i # lambda capture
+		trigger.on_state_change.connect(
+			func(state: TriggerState) -> void:
+				_trigger_state_changed(rule_index, state)
+		)
 
-			print("Connected ")
-		else:
-			printerr("Trigger did not have signal required to bind")
+		print("Connected ")
 
 
 func _trigger_state_changed(rule_index: int, state: TriggerState) -> void:

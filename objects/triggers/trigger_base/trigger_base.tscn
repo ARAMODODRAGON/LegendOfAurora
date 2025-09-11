@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dhgrgvdc2ut13"]
+
+[ext_resource type="Script" uid="uid://c6pofmcedvhn8" path="res://objects/triggers/trigger_base/trigger_base.gd" id="1_b58h6"]
+
+[node name="TriggerBase" type="Node2D"]
+script = ExtResource("1_b58h6")

@@ -1,7 +1,4 @@
-extends StaticBody2D
-
-const TriggerState := Enum.TriggerState
-signal on_state_change(state: TriggerState)
+extends TriggerBase
 
 ## the state that the torch will start in
 @export var initial_state: bool = false
