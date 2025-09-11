@@ -1,15 +1,10 @@
 extends StaticBody2D
 
-## called when the torch turns on/off and when the torch is initialized
-## state is true when the torch turns on and false when it turns off
-## this can be reversed using reverse_output
-signal define_state(state: bool)
+const TriggerState := Enum.TriggerState
+signal on_state_change(state: TriggerState)
 
 ## the state that the torch will start in
 @export var initial_state: bool = false
-
-## should we reverse the state_changed output
-@export var reverse_output: bool = false
 
 @onready var _sprite: Sprite2D = $Sprite2D
 
@@ -21,17 +16,19 @@ func get_state() -> bool:
 
 
 func set_state(state: bool) -> void:
-	if get_state() != state:
-		_change_state(state)
+	_change_state(state)
 
 
 func _change_state(state: bool) -> void:
+	if get_state() == state:
+		return
+
 	if state:
 		_sprite.frame = 1
 	else:
 		_sprite.frame = 0
 	
-	define_state.emit(state)
+	on_state_change.emit(TriggerState.ON if state else TriggerState.OFF)
 
 
 func _ready() -> void:

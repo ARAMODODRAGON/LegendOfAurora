@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://fw3dqsx73dd0"]
 
-[ext_resource type="Texture2D" uid="uid://bipln3mae77d7" path="res://objects/protruding_wall/protruding_wall.png" id="1_eqv63"]
-[ext_resource type="Script" uid="uid://d226w1a4vfv51" path="res://objects/protruding_wall/protruding_wall.gd" id="1_esl16"]
+[ext_resource type="Texture2D" uid="uid://bipln3mae77d7" path="res://objects/activators/protruding_wall/protruding_wall.png" id="1_eqv63"]
+[ext_resource type="Script" uid="uid://d226w1a4vfv51" path="res://objects/activators/protruding_wall/protruding_wall.gd" id="1_esl16"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eqv63"]
 size = Vector2(12, 12)

@@ -41,6 +41,9 @@ func is_dead() -> bool:
 	return _action_state == ActionState.DEAD
 
 
+func trigger_spawn_timer() -> void:
+	spawn_timer.start()
+
 func _ready() -> void:
 	body_sprite.death_animation_end.connect(death_animation_end.emit)
 	body_sprite.attack_end.connect(

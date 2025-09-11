@@ -7,18 +7,13 @@
 [node name="MapBase" type="Node"]
 script = ExtResource("1_4du5l")
 player_scene = ExtResource("2_7j02g")
-TRANSITION_TIME = 1.0
-
-[node name="GameCamera" parent="." instance=ExtResource("3_7j02g")]
+TRANSITION_TIME = 0.7
 
 [node name="Layers" type="Node" parent="."]
 
 [node name="Background Layer" type="TileMapLayer" parent="Layers"]
 
 [node name="Solid Layer" type="TileMapLayer" parent="Layers"]
-
-[node name="Entities Layer" type="Node" parent="Layers"]
-editor_description = "Stores the player and other entities like enemies"
 
 [node name="Objects Layer" type="Node" parent="Layers"]
 
@@ -32,3 +27,5 @@ offset_top = -8.0
 offset_right = 8.0
 offset_bottom = 8.0
 border_color = Color(0, 0.746321, 0.760015, 1)
+
+[node name="GameCamera" parent="." instance=ExtResource("3_7j02g")]

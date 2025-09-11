@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bipln3mae77d7"
-path="res://.godot/imported/protruding_wall.png-503f844e33153413f1269c0bf058dd54.ctex"
+path="res://.godot/imported/protruding_wall.png-41acfe4f0f219d807ded9894f5407b95.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://objects/protruding_wall/protruding_wall.png"
-dest_files=["res://.godot/imported/protruding_wall.png-503f844e33153413f1269c0bf058dd54.ctex"]
+source_file="res://objects/activators/protruding_wall/protruding_wall.png"
+dest_files=["res://.godot/imported/protruding_wall.png-41acfe4f0f219d807ded9894f5407b95.ctex"]
 
 [params]
 

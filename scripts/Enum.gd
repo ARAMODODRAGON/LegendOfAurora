@@ -1,5 +1,11 @@
 class_name Enum
 
+## boolean equivalent
+enum TriggerState {
+	ON = 1,
+	OFF = 0,
+}
+
 enum Direction {
 	NONE = -1,
 	LEFT,

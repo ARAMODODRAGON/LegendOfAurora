@@ -47,19 +47,44 @@ func _ready() -> void:
 	rect.position += camera.position
 	_goto_screen(rect)
 
+	## now we start by fading in
+	_warp_transition_coroutine(false)
+
 
 func _on_player_dead() -> void:
 	Game.load_scene(Game.get_scene_index())
 
 
 func _on_player_warp(warp: WarpPoint) -> void:
-	if warp.target_warp_name == null || warp.target_warp_name == "":
+	if not warp.target_warp_name:
 		print("could not load warp as the target name was not valid")
 		return
-	
-	# load target map index
-	Game.load_scene(warp.target_map_index)
 
+	# we have to wait so that when we pause the game there are no side effects
+	await get_tree().process_frame
+	
+	if warp.target_map_index == -1 and warp.target_warp_name.length() != 0:
+		await _warp_transition_coroutine(true)
+		print("loading warp \"" + warp.target_warp_name)
+
+		warp_player(warp.target_warp_name)
+		await _warp_transition_coroutine(false)
+		player.trigger_spawn_timer()
+
+	elif warp.target_warp_name.length() != 0:
+		await _warp_transition_coroutine(true)
+		print("loading scene at index [" + str(warp.target_map_index) + "] with warp \"" + warp.target_warp_name)
+		Game.load_scene_with_warp_coroutine(warp.target_map_index, warp.target_warp_name)
+
+	elif warp.target_map_index != -1:
+		await _warp_transition_coroutine(true)
+		print("loading scene at index [" + str(warp.target_map_index) + "] with default spawn point")
+		Game.load_scene(warp.target_map_index)
+
+func _warp_transition_coroutine(fade_to_black: bool) -> void:
+	objects_layer.process_mode = Node.PROCESS_MODE_DISABLED
+	await camera.transition_fade_coroutine(TRANSITION_TIME, fade_to_black)
+	objects_layer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func warp_player(target_warp: String) -> void:
 	var targeted_warp_point: Node2D = null
@@ -149,6 +174,10 @@ func _load_screen_unload_deferred(screen_rect: Rect2) -> Callable:
 	_room_objects.assign(Util.get_room_objects().filter(room_object_filter))
 
 	for node in _room_objects:
+		if objects_to_unload.has(node):
+			objects_to_unload.erase(node)
+			continue
+		
 		node.process_mode = Node.PROCESS_MODE_INHERIT
 		node.call(Util.ROOM_OBJECTS_LOAD_FUNC, objects_layer)
 		print("load called on " + node.name)

@@ -17,10 +17,13 @@ func _ready() -> void:
 	_load_scene_index(DEFAULT_SCENE_INDEX)
 
 func _load_scene_index(index: int) -> void:
-	_load_scene(BUILD_INDEX[index], index)
+	_load_scene_coroutine(BUILD_INDEX[index], index)
+
+func _load_scene_index_corountine(index: int) -> void:
+	await _load_scene_coroutine(BUILD_INDEX[index], index)
 
 # coroutine to load a packed scene
-func _load_scene(packed_scene: PackedScene, index: int) -> void:
+func _load_scene_coroutine(packed_scene: PackedScene, index: int) -> void:
 	# check if we can instance the packed scene
 	if !packed_scene.can_instantiate():
 		printerr("Could not load scene: " + str(packed_scene))

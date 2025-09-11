@@ -67,4 +67,5 @@ func _unhandled_input(event: InputEvent) -> void:
 	if key_event and key_event.keycode == KEY_D and key_event.pressed:
 		set_state(!_target_state)
 		
-		
+func _trigger_activator() -> void:
+	flip_state()

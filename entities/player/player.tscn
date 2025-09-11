@@ -81,6 +81,7 @@ debug_color = Color(0.705362, 0.26951, 1, 0.42)
 [node name="Timers" type="Node" parent="."]
 
 [node name="SpawnTimer" type="Timer" parent="Timers"]
+wait_time = 0.2
 one_shot = true
 autostart = true
 

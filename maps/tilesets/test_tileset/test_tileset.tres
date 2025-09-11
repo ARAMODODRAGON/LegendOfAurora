@@ -1,12 +1,18 @@
 [gd_resource type="TileSet" load_steps=3 format=3 uid="uid://xv57c3cq5pnc"]
 
-[ext_resource type="Texture2D" uid="uid://rqcf184asd2j" path="res://tilesets/test_tileset/test_tileset.png" id="1_cfvyb"]
+[ext_resource type="Texture2D" uid="uid://rqcf184asd2j" path="res://maps/tilesets/test_tileset/test_tileset.png" id="1_6nah8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rxsax"]
-texture = ExtResource("1_cfvyb")
+texture = ExtResource("1_6nah8")
+0:0/next_alternative_id = 2
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:0/1 = 1
+0:0/1/modulate = Color(0.843368, 0.310587, 0.560406, 1)
+0:0/1/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:0/next_alternative_id = 3
 1:0/0 = 0
+1:0/2 = 2
 2:0/0 = 0
 0:1/0 = 0
 1:1/0 = 0
