@@ -14,6 +14,14 @@ enum Direction {
 	DOWN,
 }
 
+
+static func reverse_trigger_state(state: TriggerState) -> TriggerState:
+	if state == TriggerState.ON:
+		return TriggerState.OFF
+	else:
+		return TriggerState.ON
+
+
 static func direction_from_vector(direction: Vector2) -> Direction:
 	if direction.length_squared() < Util.VERY_SMALL:
 		return Direction.NONE

@@ -11,16 +11,15 @@ radius = 3.16228
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_utrwb"]
 size = Vector2(4, 4)
 
-[node name="TorchTrigger" groups=["room_objects"] instance=ExtResource("1_wsaga")]
+[node name="TorchTrigger" instance=ExtResource("1_wsaga")]
 script = ExtResource("1_o05f0")
-initial_state = false
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="0"]
-position = Vector2(0, -5)
 texture = ExtResource("1_utrwb")
 vframes = 2
 
 [node name="BongoListenerComponent" type="Area2D" parent="." index="1"]
+position = Vector2(0, 5)
 script = ExtResource("2_bhuk0")
 metadata/_custom_type_script = "uid://ljroc5o8ykd1"
 
@@ -30,6 +29,7 @@ shape = SubResource("CircleShape2D_bhuk0")
 [node name="StaticBody2D" type="StaticBody2D" parent="." index="2"]
 z_index = 1
 y_sort_enabled = true
+position = Vector2(0, 5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" index="0"]
 shape = SubResource("RectangleShape2D_utrwb")

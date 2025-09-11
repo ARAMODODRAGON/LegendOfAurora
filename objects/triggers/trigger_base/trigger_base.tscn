@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" uid="uid://c6pofmcedvhn8" path="res://objects/triggers/trigger_base/trigger_base.gd" id="1_b58h6"]
 
-[node name="TriggerBase" type="Node2D"]
+[node name="TriggerBase" type="Node2D" groups=["room_objects"]]
 script = ExtResource("1_b58h6")

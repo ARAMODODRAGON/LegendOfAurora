@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=4 uid="uid://cncnj5s7ny43e"]
+[gd_scene load_steps=7 format=4 uid="uid://cncnj5s7ny43e"]
 
 [ext_resource type="PackedScene" uid="uid://d3qdgxm5s7pas" path="res://maps/map_base/map_base.tscn" id="1_3u02f"]
 [ext_resource type="TileSet" uid="uid://ddui8fdb7n3ii" path="res://tilesets/oasis_tileset/oasis_tileset.tres" id="2_r5h15"]
 [ext_resource type="PackedScene" uid="uid://d1kticblcq5yu" path="res://objects/warp_point/warp_point.tscn" id="3_3m8yi"]
+[ext_resource type="Script" uid="uid://dne7bdh40747l" path="res://scripts/triggers_and_activators/spawn_trigger_rule.gd" id="5_drbcl"]
+[ext_resource type="PackedScene" uid="uid://b0p0qw7nvak0h" path="res://objects/triggers/torch_trigger/torch_trigger.tscn" id="5_wcjye"]
+[ext_resource type="PackedScene" uid="uid://wv7w1f10535o" path="res://entities/enemies/scorpion/scorpion.tscn" id="6_drbcl"]
 
 [node name="DemoMap3" instance=ExtResource("1_3u02f")]
 
@@ -19,6 +22,16 @@ position = Vector2(448, 56)
 scale = Vector2(2, 1)
 target_map_index = 1
 target_warp_name = "BlueDungeonEntrance"
+
+[node name="TorchTrigger" parent="Layers/Objects Layer" index="1" instance=ExtResource("5_wcjye")]
+position = Vector2(88, 152)
+default_state = 1
+reverse_trigger_output = true
+
+[node name="SpawnTriggerRule" type="Node" parent="Layers/Objects Layer/TorchTrigger" index="3"]
+script = ExtResource("5_drbcl")
+enemy_scene = ExtResource("6_drbcl")
+metadata/_custom_type_script = "uid://dne7bdh40747l"
 
 [node name="Foreground Layer" parent="Layers" index="3"]
 tile_set = ExtResource("2_r5h15")
