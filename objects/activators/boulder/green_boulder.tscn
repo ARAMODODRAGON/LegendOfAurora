@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxjs236md4jv3"]
+
+[ext_resource type="PackedScene" uid="uid://cw0kfx6alm2v0" path="res://objects/activators/boulder/boulder.tscn" id="1_ahvif"]
+
+[node name="GreenBoulder" instance=ExtResource("1_ahvif")]
+
+[node name="Sprite2D" parent="." index="1"]
+frame = 1

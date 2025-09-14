@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://fh0v05ikrckv"]
+
+[ext_resource type="PackedScene" uid="uid://cw0kfx6alm2v0" path="res://objects/activators/boulder/boulder.tscn" id="1_fytsj"]
+
+[node name="PinkBoulder" instance=ExtResource("1_fytsj")]
+
+[node name="Sprite2D" parent="." index="1"]
+frame = 4

@@ -40,7 +40,6 @@ func _room_object_load(object_layer: Node) -> void:
 		_reset()
 	
 
-
 func _room_object_unload(object_layer: Node) -> void:
 	pass
 
@@ -59,7 +58,7 @@ func update_state(state: TriggerState) -> void:
 			output_state = Enum.reverse_trigger_state(output_state)
 
 		for rule in trigger_rules:
-			rule._update_state(output_state)
+			rule._update_state.call_deferred(output_state)
 		
 		if _state:
 			_on_triggered_on()

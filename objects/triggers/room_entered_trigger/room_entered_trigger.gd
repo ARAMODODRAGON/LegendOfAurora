@@ -1,4 +1,5 @@
 ## overrides trigger base functionality to only trigger ON/OFF upon loading/unloading room
+class_name RoomEnteredTrigger
 extends TriggerBase
 
 

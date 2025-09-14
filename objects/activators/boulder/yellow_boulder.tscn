@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://bi1jyiicvyhg0"]
+
+[ext_resource type="PackedScene" uid="uid://cw0kfx6alm2v0" path="res://objects/activators/boulder/boulder.tscn" id="1_mh4f4"]
+
+[node name="YellowBoulder" instance=ExtResource("1_mh4f4")]

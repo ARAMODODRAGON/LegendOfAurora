@@ -32,6 +32,9 @@ func _on_triggered_on() -> void:
 		return
 	
 	_parent.add_sibling(_enemy_ref) # _ready is called
+
+	await _enemy_ref.ready
+
 	_enemy_ref.health_component.die.connect(
 		func() -> void:
 			_was_killed = true
