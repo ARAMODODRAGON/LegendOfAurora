@@ -1,17 +1,32 @@
-[gd_scene load_steps=3 format=3 uid="uid://g35b8f04ibnc"]
+[gd_scene load_steps=5 format=3 uid="uid://g35b8f04ibnc"]
 
 [ext_resource type="Script" uid="uid://dp5qgjvlmaw78" path="res://entities/enemies/enemy_base/enemy_base.gd" id="1_varvw"]
+[ext_resource type="Script" uid="uid://ceb4u5be5p5rc" path="res://scripts/components/health_component.gd" id="2_1efpl"]
+[ext_resource type="Script" uid="uid://cuibbj013l7lr" path="res://scripts/components/statemachine/statemachine_component.gd" id="2_h6sbm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1f1uu"]
 size = Vector2(16, 16)
 
-[node name="EnemyBase" type="CharacterBody2D"]
+[node name="EnemyBase" type="CharacterBody2D" node_paths=PackedStringArray("body_sprite", "collider", "health_component", "statemachine")]
 collision_layer = 0
 motion_mode = 1
 platform_floor_layers = 0
 script = ExtResource("1_varvw")
-
-[node name="BodySprite" type="Sprite2D" parent="."]
+body_sprite = NodePath("BodySprite")
+collider = NodePath("Collider")
+health_component = NodePath("HealthComponent")
+statemachine = NodePath("StatemachineComponent")
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_1f1uu")
+
+[node name="BodySprite" type="Sprite2D" parent="."]
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("2_1efpl")
+metadata/_custom_type_script = "uid://ceb4u5be5p5rc"
+
+[node name="StatemachineComponent" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_h6sbm")
+initial_state = NodePath("")
+metadata/_custom_type_script = "uid://cuibbj013l7lr"

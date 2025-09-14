@@ -1,6 +1,7 @@
 extends CharacterBody2D
 class_name EnemyBase
 
-@onready var body_sprite: Sprite2D = $BodySprite
-@onready var collider: CollisionShape2D = $Collider
-@onready var health_component: HealthComponent = $HealthComponent
+@export var body_sprite: Sprite2D
+@export var collider: CollisionShape2D
+@export var health_component: HealthComponent
+@export var statemachine: StatemachineComponent

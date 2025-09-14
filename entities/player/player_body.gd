@@ -93,6 +93,8 @@ func attack() -> void:
 		Direction.DOWN, Direction.NONE, _:
 			play(&"attack_down")
 			_current_hitbox = sword_down_hitbox
+	
+	#_current_hitbox.visible = true
 
 
 func die() -> void:
@@ -159,13 +161,14 @@ func _update_walk_sprite(is_walking: bool) -> void:
 		frame = 0
 
 func _update_attack_hitbox() -> void:
-	if frame == 1 and not _has_dealt_damage:
-		_current_hitbox.trigger()
-		_has_dealt_damage = true
+	# if frame == 1 and not _has_dealt_damage:
+	# 	_current_hitbox.trigger()
+	# 	_has_dealt_damage = true
+	pass
 	
 func _on_animation_finished() -> void:
 	if _is_attacking and _current_hitbox:
-		_current_hitbox.visible = false
+		#_current_hitbox.visible = false
 		_is_attacking = false
 		_change_walk_animation_direction()
 		attack_end.emit()

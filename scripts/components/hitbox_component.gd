@@ -12,7 +12,8 @@ class_name HitboxComponent
 @export var _is_active: bool = true
 
 func _ready() -> void:
-	if _is_active: area_entered.connect(_on_area_entered)
+	if _is_active: 
+		area_entered.connect(_on_area_entered)
 
 ## forceably triggers this hitbox for one step
 func trigger() -> void:

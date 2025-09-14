@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://v8t7tbiqj50g"]
+[gd_scene load_steps=3 format=3 uid="uid://bie3h7fymfhju"]
 
-[ext_resource type="PackedScene" uid="uid://wv7w1f10535o" path="res://entities/enemies/scorpion/scorpion.tscn" id="1_mnocu"]
+[ext_resource type="PackedScene" uid="uid://cx7fmrchmuxkx" path="res://entities/enemies/scorpion/scorpion_base.tscn" id="1_mnocu"]
 [ext_resource type="Texture2D" uid="uid://cuggy0sxkuy0e" path="res://entities/enemies/scorpion/poisoned_scorpion.png" id="2_wwusx"]
 
 [node name="PoisonedScorpion" instance=ExtResource("1_mnocu")]

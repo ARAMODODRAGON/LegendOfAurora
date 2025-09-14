@@ -1,7 +1,22 @@
-[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://ddui8fdb7n3ii"]
+[gd_resource type="TileSet" load_steps=12 format=3 uid="uid://ddui8fdb7n3ii"]
 
+[ext_resource type="PackedScene" uid="uid://b4w5y4v2o51q1" path="res://objects/activators/boulder/blue_boulder.tscn" id="1_lr2xx"]
 [ext_resource type="Texture2D" uid="uid://glvy7kejajjm" path="res://tilesets/oasis_tileset/oasis_tileset.png" id="1_mxpfh"]
+[ext_resource type="PackedScene" uid="uid://cxjs236md4jv3" path="res://objects/activators/boulder/green_boulder.tscn" id="2_6lujp"]
 [ext_resource type="Texture2D" uid="uid://ecpyif0x1w0" path="res://tilesets/oasis_tileset/oasis_water.png" id="2_8u5ch"]
+[ext_resource type="PackedScene" uid="uid://fh0v05ikrckv" path="res://objects/activators/boulder/pink_boulder.tscn" id="3_d2csb"]
+[ext_resource type="PackedScene" uid="uid://d0rr4f5bovxpf" path="res://objects/activators/boulder/purple_boulder.tscn" id="4_ifimk"]
+[ext_resource type="PackedScene" uid="uid://bsxa6yg3wgdkg" path="res://objects/activators/boulder/red_boulder.tscn" id="5_8p7of"]
+[ext_resource type="PackedScene" uid="uid://bi1jyiicvyhg0" path="res://objects/activators/boulder/yellow_boulder.tscn" id="6_r384t"]
+
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_8u5ch"]
+resource_name = "objects"
+scenes/1/scene = ExtResource("1_lr2xx")
+scenes/2/scene = ExtResource("2_6lujp")
+scenes/3/scene = ExtResource("3_d2csb")
+scenes/4/scene = ExtResource("4_ifimk")
+scenes/5/scene = ExtResource("5_8p7of")
+scenes/6/scene = ExtResource("6_r384t")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8u5ch"]
 texture = ExtResource("1_mxpfh")
@@ -931,3 +946,4 @@ physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 0
 sources/1 = SubResource("TileSetAtlasSource_8u5ch")
 sources/2 = SubResource("TileSetAtlasSource_xfxol")
+sources/0 = SubResource("TileSetScenesCollectionSource_8u5ch")

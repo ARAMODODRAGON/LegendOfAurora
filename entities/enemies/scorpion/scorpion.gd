@@ -5,17 +5,15 @@ extends EnemyBase
 
 const Direction := Enum.Direction
 
-enum ActionState {
-	SPAWNING,
-	DEFAULT,
-	KNOCKBACK,
-	DYING,
-}
+const STATE_SPAWNING: StringName = &"Spawning"
+const STATE_DEFAULT: StringName = &"Default"
+const STATE_KNOCKBACK: StringName = &"Knockback"
+const STATE_DYING: StringName = &"Dying"
 
 
 ## defaults
 
-@export var spawn_time: float = 4.0 / 60.0
+@export var spawn_frames: float = 4.0
 @export var move_speed: float = 10.0
 @export var animation_fps: float = 5.0
 @export var knockback_speed: float = 30.0
@@ -24,7 +22,6 @@ enum ActionState {
 
 ## state
 
-var _action_state := ActionState.SPAWNING
 var _facing_state := Direction.DOWN
 var _first_frame: int = 0
 var _frame_timer: float = 0.0
@@ -40,9 +37,18 @@ func _ready() -> void:
 	_facing_state = (randi() % 4) as Direction
 	_screen = Util.screen_from_position(global_position)
 
+	_run_spawn_animation()
+
+
+func _run_spawn_animation() -> void:
+	if statemachine.set_active_state(STATE_SPAWNING) == false:
+		return
+
 	_tween = create_tween()
 
 	body_sprite.frame = 8
+
+	var spawn_time := spawn_frames / 60.0
 
 	_tween.tween_interval(spawn_time * 0.5)
 	_tween.tween_callback(
@@ -52,13 +58,14 @@ func _ready() -> void:
 	_tween.tween_interval(spawn_time * 0.5)
 	_tween.tween_callback(
 		func() -> void:
-			_action_state = ActionState.DEFAULT
+			statemachine.set_active_state(STATE_DEFAULT)
 	)
 
-
+	await _tween.finished
+	_tween = null
 
 func _process(delta: float) -> void:
-	if _action_state == ActionState.SPAWNING:
+	if statemachine.active_state == STATE_SPAWNING:
 		return
 	
 	match _facing_state:
@@ -88,8 +95,8 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	
-	match _action_state:
-		ActionState.DEFAULT:
+	match statemachine.active_state:
+		STATE_DEFAULT:
 			_detect_player()
 
 			var direction := Enum.vector_from_direction(_facing_state)
@@ -99,8 +106,7 @@ func _physics_process(delta: float) -> void:
 			if test_move(get_transform(), velocity * delta):
 				_change_direction((randi() % 2) == 1)
 				return
-		
-		ActionState.KNOCKBACK, ActionState.DYING, _:
+		_:
 			pass
 	
 	move_and_slide()
@@ -158,10 +164,10 @@ func _change_direction(turn_left: bool) -> void:
 
 
 func _on_die() -> void:
-	if _action_state == ActionState.DYING:
+	if statemachine.active_state == STATE_DYING:
 		return
 	
-	_action_state = ActionState.DYING
+	statemachine.active_state = STATE_DYING
 
 	_tween = create_tween()
 	_tween.tween_property(body_sprite, "modulate", Color.RED, knockback_time * 0.5)
@@ -170,18 +176,16 @@ func _on_die() -> void:
 
 	queue_free()
 
-	
-
-
 
 func _on_take_damage(damage: int, direction: Vector2) -> void:
 	if health_component.health == 0:
 		velocity = direction * knockback_speed
 
-	if _action_state != ActionState.DEFAULT or health_component.health == 0 or _tween != null:
+	# exit if not in default state
+	if statemachine.active_state != STATE_DEFAULT or health_component.health == 0 or _tween != null:
 		return
-	
-	_action_state = ActionState.KNOCKBACK
+
+	statemachine.active_state = STATE_KNOCKBACK
 	velocity = direction * knockback_speed
 	
 	_tween = create_tween()
@@ -192,6 +196,6 @@ func _on_take_damage(damage: int, direction: Vector2) -> void:
 	await _tween.finished
 	_tween = null
 
-	_action_state = ActionState.DEFAULT
+	statemachine.active_state = STATE_DEFAULT
 
 	_facing_state = Enum.flip_direction(Enum.direction_from_vector(direction))

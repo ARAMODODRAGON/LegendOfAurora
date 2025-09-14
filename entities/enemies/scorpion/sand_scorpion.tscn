@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1i52075fibfy"]
+
+[ext_resource type="PackedScene" uid="uid://cx7fmrchmuxkx" path="res://entities/enemies/scorpion/scorpion_base.tscn" id="1_35nd2"]
+[ext_resource type="Texture2D" uid="uid://c5352rsy4rcov" path="res://entities/enemies/scorpion/sand_scorpion.png" id="2_xml0v"]
+
+[node name="SandScorpion" instance=ExtResource("1_35nd2")]
+
+[node name="BodySprite" parent="." index="3"]
+texture = ExtResource("2_xml0v")

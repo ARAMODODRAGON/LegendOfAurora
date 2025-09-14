@@ -1,0 +1,70 @@
+[gd_scene load_steps=8 format=3 uid="uid://cx7fmrchmuxkx"]
+
+[ext_resource type="PackedScene" uid="uid://g35b8f04ibnc" path="res://entities/enemies/enemy_base/enemy_base.tscn" id="1_2nu2a"]
+[ext_resource type="Script" uid="uid://lksc557o3n7v" path="res://entities/enemies/scorpion/scorpion.gd" id="2_0nmlo"]
+[ext_resource type="Script" uid="uid://gfncyw3nx8wl" path="res://scripts/components/hurtbox_component.gd" id="2_exdqp"]
+[ext_resource type="Script" uid="uid://cn87jsyiisaxc" path="res://scripts/components/statemachine/state_component.gd" id="2_tftip"]
+[ext_resource type="Script" uid="uid://f2f56nmugjm4" path="res://scripts/components/hitbox_component.gd" id="3_03ca4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0nmlo"]
+size = Vector2(14, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qdr76"]
+size = Vector2(12, 12)
+
+[node name="ScorpionBase" instance=ExtResource("1_2nu2a")]
+script = ExtResource("2_0nmlo")
+spawn_frames = 20.0
+move_speed = 10.0
+animation_fps = 5.0
+knockback_speed = 100.0
+knockback_time = 0.3
+
+[node name="HurtboxComponent" type="Area2D" parent="." index="0" node_paths=PackedStringArray("root_node", "health_component")]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("2_exdqp")
+root_node = NodePath("..")
+health_component = NodePath("../HealthComponent")
+metadata/_custom_type_script = "uid://gfncyw3nx8wl"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" index="0"]
+shape = SubResource("RectangleShape2D_0nmlo")
+debug_color = Color(1.58831e-06, 0.621555, 0.553372, 0.42)
+
+[node name="HitboxComponent" type="Area2D" parent="." index="1" node_paths=PackedStringArray("root_node")]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_03ca4")
+root_node = NodePath("..")
+metadata/_custom_type_script = "uid://f2f56nmugjm4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" index="0"]
+shape = SubResource("RectangleShape2D_qdr76")
+debug_color = Color(0.999843, 0, 0.0991533, 0.42)
+
+[node name="BodySprite" parent="." index="3"]
+hframes = 2
+vframes = 5
+
+[node name="HealthComponent" parent="." index="4"]
+max_health = 4
+
+[node name="Spawning" type="Node" parent="StatemachineComponent" index="0"]
+script = ExtResource("2_tftip")
+metadata/_custom_type_script = "uid://cn87jsyiisaxc"
+
+[node name="Default" type="Node" parent="StatemachineComponent" index="1"]
+script = ExtResource("2_tftip")
+metadata/_custom_type_script = "uid://cn87jsyiisaxc"
+
+[node name="Knockback" type="Node" parent="StatemachineComponent" index="2"]
+script = ExtResource("2_tftip")
+metadata/_custom_type_script = "uid://cn87jsyiisaxc"
+
+[node name="Dying" type="Node" parent="StatemachineComponent" index="3"]
+script = ExtResource("2_tftip")
+metadata/_custom_type_script = "uid://cn87jsyiisaxc"
+
+[connection signal="take_damage" from="HurtboxComponent" to="." method="_on_take_damage"]
+[connection signal="die" from="HealthComponent" to="." method="_on_die"]
