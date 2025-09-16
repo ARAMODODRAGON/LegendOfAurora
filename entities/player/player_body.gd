@@ -41,7 +41,8 @@ func update_animation(delta: float, input_dir: Vector2) -> void:
 		return
 
 	if _is_attacking:
-		_update_attack_hitbox()
+		pass
+		#_update_attack_hitbox()
 	else:
 		var is_walking: bool = not _last_position.is_equal_approx(global_position)
 
@@ -94,7 +95,7 @@ func attack() -> void:
 			play(&"attack_down")
 			_current_hitbox = sword_down_hitbox
 	
-	#_current_hitbox.visible = true
+	_current_hitbox.visible = true
 
 
 func die() -> void:
@@ -160,15 +161,16 @@ func _update_walk_sprite(is_walking: bool) -> void:
 		speed_scale = 0.0
 		frame = 0
 
-func _update_attack_hitbox() -> void:
-	# if frame == 1 and not _has_dealt_damage:
-	# 	_current_hitbox.trigger()
-	# 	_has_dealt_damage = true
-	pass
+# func _update_attack_hitbox() -> void:
+# 	 if frame == 1 and not _has_dealt_damage:
+# 	 	_current_hitbox.trigger()
+# 	 	_has_dealt_damage = true
+# 	pass
 	
 func _on_animation_finished() -> void:
 	if _is_attacking and _current_hitbox:
-		#_current_hitbox.visible = false
+		_current_hitbox.visible = false
+		_current_hitbox = null
 		_is_attacking = false
 		_change_walk_animation_direction()
 		attack_end.emit()
