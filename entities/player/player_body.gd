@@ -7,17 +7,17 @@ const Direction := Enum.Direction
 signal death_animation_end()
 signal attack_end()
 
-@onready var sword_right_hitbox: HitboxComponent = $SwordRightHitbox
-@onready var sword_down_hitbox: HitboxComponent = $SwordDownHitbox
-@onready var sword_left_hitbox: HitboxComponent = $SwordLeftHitbox
-@onready var sword_up_hitbox: HitboxComponent = $SwordUpHitbox
+@export var _right_shape: CollisionShape2D = null
+@export var _down_shape: CollisionShape2D = null
+@export var _left_shape: CollisionShape2D = null
+@export var _up_shape: CollisionShape2D = null
 
 var _facing_direction: Direction = Direction.DOWN
 
 var _is_dead: bool = false
 var _is_attacking: bool = false
 var _last_position: Vector2 = Vector2.ZERO
-var _current_hitbox: HitboxComponent = null
+var _current_hitbox: CollisionShape2D = null
 var _has_dealt_damage: bool = false
 
 func is_attacking() -> bool:
@@ -81,21 +81,21 @@ func attack() -> void:
 	match _facing_direction:
 		Direction.RIGHT:
 			play(&"attack_right")
-			_current_hitbox = sword_right_hitbox
+			_current_hitbox = _right_shape
 
 		Direction.LEFT:
 			play(&"attack_left")
-			_current_hitbox = sword_left_hitbox
+			_current_hitbox = _left_shape
 
 		Direction.UP:
 			play(&"attack_up")
-			_current_hitbox = sword_up_hitbox
+			_current_hitbox = _up_shape
 
 		Direction.DOWN, Direction.NONE, _:
 			play(&"attack_down")
-			_current_hitbox = sword_down_hitbox
+			_current_hitbox = _down_shape
 	
-	_current_hitbox.visible = true
+	_current_hitbox.disabled = false
 
 
 func die() -> void:
@@ -111,10 +111,6 @@ func die() -> void:
 
 func _ready() -> void:
 	_last_position = global_position
-	sword_right_hitbox.visible = true
-	sword_down_hitbox.visible = true
-	sword_left_hitbox.visible = true
-	sword_up_hitbox.visible = true
 
 func _update_direction(input_dir: Vector2) -> void:
 	var _facingh: Direction = Direction.NONE
@@ -169,7 +165,7 @@ func _update_walk_sprite(is_walking: bool) -> void:
 	
 func _on_animation_finished() -> void:
 	if _is_attacking and _current_hitbox:
-		_current_hitbox.visible = false
+		_current_hitbox.disabled = true
 		_current_hitbox = null
 		_is_attacking = false
 		_change_walk_animation_direction()

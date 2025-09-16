@@ -22,7 +22,7 @@ size = Vector2(8, 8)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8fjmc"]
 size = Vector2(4, 4)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_26q78"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wvtmh"]
 size = Vector2(10, 10)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_26q78"]
@@ -89,7 +89,7 @@ autostart = true
 process_callback = 0
 wait_time = 0.2
 
-[node name="BodySprite" type="AnimatedSprite2D" parent="."]
+[node name="BodySprite" type="AnimatedSprite2D" parent="." node_paths=PackedStringArray("_right_shape", "_down_shape", "_left_shape", "_up_shape")]
 z_index = 1
 y_sort_enabled = true
 position = Vector2(0, -3)
@@ -97,50 +97,38 @@ sprite_frames = ExtResource("2_8fjmc")
 animation = &"walk_down"
 autoplay = "walk_down"
 script = ExtResource("3_sglur")
+_right_shape = NodePath("SwordHitbox/RightShape")
+_down_shape = NodePath("SwordHitbox/DownShape")
+_left_shape = NodePath("SwordHitbox/LeftShape")
+_up_shape = NodePath("SwordHitbox/UpShape")
 
-[node name="SwordRightHitbox" type="Area2D" parent="BodySprite" node_paths=PackedStringArray("root_node")]
-position = Vector2(10, 3)
+[node name="SwordHitbox" type="Area2D" parent="BodySprite" node_paths=PackedStringArray("root_node")]
+position = Vector2(0, 3)
 collision_layer = 0
 collision_mask = 4
 script = ExtResource("7_qiwj3")
 root_node = NodePath("../..")
 metadata/_custom_type_script = "uid://f2f56nmugjm4"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/SwordRightHitbox"]
-shape = SubResource("RectangleShape2D_26q78")
+[node name="RightShape" type="CollisionShape2D" parent="BodySprite/SwordHitbox"]
+position = Vector2(10, 0)
+shape = SubResource("RectangleShape2D_wvtmh")
+disabled = true
 
-[node name="SwordDownHitbox" type="Area2D" parent="BodySprite" node_paths=PackedStringArray("root_node")]
-position = Vector2(0, 13)
-collision_layer = 0
-collision_mask = 4
-script = ExtResource("7_qiwj3")
-root_node = NodePath("../..")
-metadata/_custom_type_script = "uid://f2f56nmugjm4"
+[node name="UpShape" type="CollisionShape2D" parent="BodySprite/SwordHitbox"]
+position = Vector2(0, -10)
+shape = SubResource("RectangleShape2D_wvtmh")
+disabled = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/SwordDownHitbox"]
-shape = SubResource("RectangleShape2D_26q78")
+[node name="DownShape" type="CollisionShape2D" parent="BodySprite/SwordHitbox"]
+position = Vector2(0, 10)
+shape = SubResource("RectangleShape2D_wvtmh")
+disabled = true
 
-[node name="SwordLeftHitbox" type="Area2D" parent="BodySprite" node_paths=PackedStringArray("root_node")]
-position = Vector2(-10, 3)
-collision_layer = 0
-collision_mask = 4
-script = ExtResource("7_qiwj3")
-root_node = NodePath("../..")
-metadata/_custom_type_script = "uid://f2f56nmugjm4"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/SwordLeftHitbox"]
-shape = SubResource("RectangleShape2D_26q78")
-
-[node name="SwordUpHitbox" type="Area2D" parent="BodySprite" node_paths=PackedStringArray("root_node")]
-position = Vector2(0, -7)
-collision_layer = 0
-collision_mask = 4
-script = ExtResource("7_qiwj3")
-root_node = NodePath("../..")
-metadata/_custom_type_script = "uid://f2f56nmugjm4"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/SwordUpHitbox"]
-shape = SubResource("RectangleShape2D_26q78")
+[node name="LeftShape" type="CollisionShape2D" parent="BodySprite/SwordHitbox"]
+position = Vector2(-10, 0)
+shape = SubResource("RectangleShape2D_wvtmh")
+disabled = true
 
 [node name="BongoShockwave" type="Area2D" parent="."]
 
