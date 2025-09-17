@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://glvy7kejajjm"
-path="res://.godot/imported/oasis_tileset.png-20110aa53b3b31dcb91c8408e5311095.ctex"
+uid="uid://d2fsld3vjl4vt"
+path="res://.godot/imported/something.png-c4849044ef59744a0afaa6b1e1e0c3d9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://tilesets/oasis_tileset/oasis_tileset.png"
-dest_files=["res://.godot/imported/oasis_tileset.png-20110aa53b3b31dcb91c8408e5311095.ctex"]
+source_file="res://entities/other/something.png"
+dest_files=["res://.godot/imported/something.png-c4849044ef59744a0afaa6b1e1e0c3d9.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://glvy7kejajjm"
-path="res://.godot/imported/oasis_tileset.png-20110aa53b3b31dcb91c8408e5311095.ctex"
+uid="uid://bblrf7iodrems"
+path="res://.godot/imported/blue_octopus.png-a2347e672d5425bb08931038dd87fe17.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://tilesets/oasis_tileset/oasis_tileset.png"
-dest_files=["res://.godot/imported/oasis_tileset.png-20110aa53b3b31dcb91c8408e5311095.ctex"]
+source_file="res://entities/enemies/river_octopus/blue_octopus.png"
+dest_files=["res://.godot/imported/blue_octopus.png-a2347e672d5425bb08931038dd87fe17.ctex"]
 
 [params]
 

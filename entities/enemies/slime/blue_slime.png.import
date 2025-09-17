@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://glvy7kejajjm"
-path="res://.godot/imported/oasis_tileset.png-20110aa53b3b31dcb91c8408e5311095.ctex"
+uid="uid://dma4clhqvtone"
+path="res://.godot/imported/blue_slime.png-9e689f67a925a7db72e07b47dcb46333.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://tilesets/oasis_tileset/oasis_tileset.png"
-dest_files=["res://.godot/imported/oasis_tileset.png-20110aa53b3b31dcb91c8408e5311095.ctex"]
+source_file="res://entities/enemies/slime/blue_slime.png"
+dest_files=["res://.godot/imported/blue_slime.png-9e689f67a925a7db72e07b47dcb46333.ctex"]
 
 [params]
 

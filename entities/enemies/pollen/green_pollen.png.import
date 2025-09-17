@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://glvy7kejajjm"
-path="res://.godot/imported/oasis_tileset.png-20110aa53b3b31dcb91c8408e5311095.ctex"
+uid="uid://bjuo7lbqvs6re"
+path="res://.godot/imported/green_pollen.png-f59443124ea5105097607e34c0d7db99.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://tilesets/oasis_tileset/oasis_tileset.png"
-dest_files=["res://.godot/imported/oasis_tileset.png-20110aa53b3b31dcb91c8408e5311095.ctex"]
+source_file="res://entities/enemies/pollen/green_pollen.png"
+dest_files=["res://.godot/imported/green_pollen.png-f59443124ea5105097607e34c0d7db99.ctex"]
 
 [params]
 
