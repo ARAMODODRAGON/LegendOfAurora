@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cs8i1ro7fg0rd"]
+
+[ext_resource type="PackedScene" uid="uid://ddc0b5e0eke6e" path="res://objects/activators/gated_door/gated_door.tscn" id="1_4sir8"]
+
+[node name="YellowGatedDoor" instance=ExtResource("1_4sir8")]
+
+[node name="Sprite2D" parent="." index="1"]
+frame = 2

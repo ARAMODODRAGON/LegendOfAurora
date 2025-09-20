@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://qyujhghgq40p"]
+
+[ext_resource type="PackedScene" uid="uid://ddc0b5e0eke6e" path="res://objects/activators/gated_door/gated_door.tscn" id="1_wl86q"]
+
+[node name="PurpleGatedDoor" instance=ExtResource("1_wl86q")]
+
+[node name="Sprite2D" parent="." index="1"]
+frame = 14

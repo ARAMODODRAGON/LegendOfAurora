@@ -7,3 +7,6 @@
 
 [node name="BodySprite" parent="." index="3"]
 texture = ExtResource("2_wwusx")
+
+[node name="HealthComponent" parent="." index="4"]
+max_health = 1
