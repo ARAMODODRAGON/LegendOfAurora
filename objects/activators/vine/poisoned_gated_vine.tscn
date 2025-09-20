@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://n53g6aywohpn"]
+
+[ext_resource type="PackedScene" uid="uid://p8egekly8ga7" path="res://objects/activators/vine/vine.tscn" id="1_purih"]
+
+[node name="PoisonedGatedVine" instance=ExtResource("1_purih")]
+
+[node name="Sprite2D" parent="." index="1"]
+frame = 3

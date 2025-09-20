@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqvk0khw4h608"]
+
+[ext_resource type="PackedScene" uid="uid://p8egekly8ga7" path="res://objects/activators/vine/vine.tscn" id="1_3q5pn"]
+
+[node name="GatedVine" instance=ExtResource("1_3q5pn")]
