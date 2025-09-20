@@ -64,6 +64,7 @@ folder_colors={
 
 warp_point="a location that the player can warp to"
 room_objects="Objects within rooms that can reset "
+enemies=""
 
 [input]
 

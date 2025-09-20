@@ -4,6 +4,7 @@ extends TriggerRule
 ## exports
 
 @export var activation_object_references: Array[ActivationObject] = []
+@export var reverse_output: bool = false
 
 
 ## virtual functions
@@ -16,12 +17,15 @@ func _update_state(state: TriggerState) -> void:
 		_state = state
 
 		# DIFF
+		if reverse_output:
+			state = Enum.reverse_trigger_state(state)
+			
 		for obj in activation_object_references:
 			if obj:
 				obj._update_state(state)
 		# DIFF END
 
-		if _state:
+		if state:
 			_on_triggered_on()
 		else:
 			_on_triggered_off()

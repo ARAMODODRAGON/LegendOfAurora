@@ -38,4 +38,6 @@ func _process(delta: float) -> void:
 ## signal connections
 
 func _on_bongo_listener_component_bongo_hit(direction:Vector2) -> void:
+	if not enabled:
+		return
 	update_state.call_deferred(TriggerState.OFF)

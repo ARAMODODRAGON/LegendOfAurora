@@ -9,6 +9,13 @@ signal on_state_change(state: TriggerState)
 
 ## default state
 
+@export var enabled: bool = true:
+	get: 
+		return enabled
+	set(value):
+		enabled = value
+		_update_enabled_state()
+
 @export var default_state: TriggerState
 @export var reset_on_room_load: bool = true
 @export var reverse_trigger_output: bool = false
@@ -72,5 +79,10 @@ func _ready() -> void:
 		if child is TriggerRule:
 			trigger_rules.push_back(child as TriggerRule)
 	_reset()
+	_update_enabled_state()
 
-
+func _update_enabled_state() -> void:
+	if enabled:
+		process_mode = Node.PROCESS_MODE_INHERIT
+	else:
+		process_mode = Node.PROCESS_MODE_DISABLED

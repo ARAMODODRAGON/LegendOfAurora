@@ -4,8 +4,12 @@ extends TriggerBase
 
 
 func _room_object_load(object_layer: Node) -> void:
+	if not enabled:
+		return
 	update_state(TriggerState.ON)
 
 
 func _room_object_unload(object_layer: Node) -> void:
+	if not enabled:
+		return
 	update_state(TriggerState.OFF)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://cncnj5s7ny43e"]
+[gd_scene load_steps=24 format=4 uid="uid://cncnj5s7ny43e"]
 
 [ext_resource type="PackedScene" uid="uid://d3qdgxm5s7pas" path="res://maps/map_base/map_base.tscn" id="1_3u02f"]
 [ext_resource type="TileSet" uid="uid://ddui8fdb7n3ii" path="res://tilesets/oasis_tileset/oasis_tileset.tres" id="2_r5h15"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://dne7bdh40747l" path="res://scripts/triggers_rules/spawn_trigger_rule.gd" id="5_drbcl"]
 [ext_resource type="Script" uid="uid://b5mw8qf2obiw8" path="res://scripts/triggers_rules/object_activation_trigger_rule.gd" id="7_jnxdq"]
 [ext_resource type="Script" uid="uid://qmsjh5dnaw3j" path="res://objects/triggers/area_trigger/area_trigger.gd" id="7_pow3h"]
+[ext_resource type="Script" uid="uid://bdwfftk7elhip" path="res://scripts/triggers_rules/trigger_enable_trigger_rule.gd" id="8_8aas3"]
 [ext_resource type="PackedScene" uid="uid://bie3h7fymfhju" path="res://entities/enemies/scorpion/poisoned_scorpion.tscn" id="8_aexjn"]
 [ext_resource type="PackedScene" uid="uid://fh0v05ikrckv" path="res://objects/activators/boulder/pink_boulder.tscn" id="8_pow3h"]
 [ext_resource type="Script" uid="uid://lksc557o3n7v" path="res://entities/enemies/scorpion/scorpion.gd" id="9_0kmqp"]
@@ -15,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://c5352rsy4rcov" path="res://entities/enemies/scorpion/sand_scorpion.png" id="12_b4vbq"]
 [ext_resource type="Script" uid="uid://ceb4u5be5p5rc" path="res://scripts/components/health_component.gd" id="13_eg6ue"]
 [ext_resource type="Texture2D" uid="uid://cuggy0sxkuy0e" path="res://entities/enemies/scorpion/poisoned_scorpion.png" id="14_pnooj"]
+[ext_resource type="Script" uid="uid://cpp5junjrrsi" path="res://scripts/trigger/group_trigger.gd" id="16_a75he"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_85nn0"]
 size = Vector2(208, 176)
@@ -71,7 +73,27 @@ scale = Vector2(2, 1)
 target_map_index = 1
 target_warp_name = "BlueDungeonEntrance"
 
-[node name="AreaTrigger" type="Node2D" parent="Layers/Objects Layer" index="1"]
+[node name="SpawnTriggerRule2" type="Node" parent="Layers/Objects Layer" index="1" node_paths=PackedStringArray("position_override")]
+script = ExtResource("5_drbcl")
+enemy_scene = ExtResource("8_aexjn")
+position_override = NodePath("Marker2D")
+metadata/_custom_type_script = "uid://dne7bdh40747l"
+
+[node name="Marker2D" type="Marker2D" parent="Layers/Objects Layer/SpawnTriggerRule2" index="0"]
+position = Vector2(-40, 40)
+gizmo_extents = 8.0
+
+[node name="SpawnTriggerRule3" type="Node" parent="Layers/Objects Layer" index="2" node_paths=PackedStringArray("position_override")]
+script = ExtResource("5_drbcl")
+enemy_scene = ExtResource("8_aexjn")
+position_override = NodePath("Marker2D")
+metadata/_custom_type_script = "uid://dne7bdh40747l"
+
+[node name="Marker2D" type="Marker2D" parent="Layers/Objects Layer/SpawnTriggerRule3" index="0"]
+position = Vector2(-80, 176)
+gizmo_extents = 8.0
+
+[node name="AreaTrigger" type="Node2D" parent="Layers/Objects Layer" index="3"]
 position = Vector2(-128, 112)
 script = ExtResource("7_pow3h")
 collision_mask = 2
@@ -88,35 +110,33 @@ position_override = NodePath("Marker2D")
 metadata/_custom_type_script = "uid://dne7bdh40747l"
 
 [node name="Marker2D" type="Marker2D" parent="Layers/Objects Layer/AreaTrigger/SpawnTriggerRule" index="0"]
-position = Vector2(-216, 40)
+position = Vector2(-96, 112)
 gizmo_extents = 8.0
 
-[node name="SpawnTriggerRule2" type="Node" parent="Layers/Objects Layer/AreaTrigger" index="2" node_paths=PackedStringArray("position_override")]
-script = ExtResource("5_drbcl")
-enemy_scene = ExtResource("8_aexjn")
-position_override = NodePath("Marker2D")
-metadata/_custom_type_script = "uid://dne7bdh40747l"
-
-[node name="Marker2D" type="Marker2D" parent="Layers/Objects Layer/AreaTrigger/SpawnTriggerRule2" index="0"]
-position = Vector2(-40, 40)
-gizmo_extents = 8.0
-
-[node name="SpawnTriggerRule3" type="Node" parent="Layers/Objects Layer/AreaTrigger" index="3" node_paths=PackedStringArray("position_override")]
-script = ExtResource("5_drbcl")
-enemy_scene = ExtResource("8_aexjn")
-position_override = NodePath("Marker2D")
-metadata/_custom_type_script = "uid://dne7bdh40747l"
-
-[node name="Marker2D" type="Marker2D" parent="Layers/Objects Layer/AreaTrigger/SpawnTriggerRule3" index="0"]
-position = Vector2(-80, 176)
-gizmo_extents = 8.0
-
-[node name="ObjectActivationTriggerRule" type="Node" parent="Layers/Objects Layer/AreaTrigger" index="4" node_paths=PackedStringArray("activation_object_references")]
+[node name="ObjectActivationTriggerRule" type="Node" parent="Layers/Objects Layer/AreaTrigger" index="2" node_paths=PackedStringArray("activation_object_references")]
 script = ExtResource("7_jnxdq")
 activation_object_references = [NodePath("../../PinkBoulder"), NodePath("../../PinkBoulder2"), NodePath("../../PinkBoulder3"), NodePath("../../PinkBoulder4")]
 metadata/_custom_type_script = "uid://b5mw8qf2obiw8"
 
-[node name="TorchTrigger" parent="Layers/Objects Layer" index="2" instance=ExtResource("9_pow3h")]
+[node name="TriggerEnableTriggerRule" type="Node" parent="Layers/Objects Layer/AreaTrigger" index="3" node_paths=PackedStringArray("target_triggers")]
+script = ExtResource("8_8aas3")
+target_triggers = [NodePath("AllEnemiesDead")]
+metadata/_custom_type_script = "uid://bdwfftk7elhip"
+
+[node name="AllEnemiesDead" type="Node2D" parent="Layers/Objects Layer/AreaTrigger/TriggerEnableTriggerRule" index="0"]
+position = Vector2(-128, 112)
+script = ExtResource("16_a75he")
+group_name = &"enemies"
+enabled = false
+metadata/_custom_type_script = "uid://cpp5junjrrsi"
+
+[node name="ObjectActivationTriggerRule" type="Node" parent="Layers/Objects Layer/AreaTrigger/TriggerEnableTriggerRule/AllEnemiesDead" index="0" node_paths=PackedStringArray("activation_object_references")]
+script = ExtResource("7_jnxdq")
+activation_object_references = [NodePath("../../../../PinkBoulder"), NodePath("../../../../PinkBoulder2"), NodePath("../../../../PinkBoulder3"), NodePath("../../../../PinkBoulder4")]
+reverse_output = true
+metadata/_custom_type_script = "uid://b5mw8qf2obiw8"
+
+[node name="TorchTrigger" parent="Layers/Objects Layer" index="4" instance=ExtResource("9_pow3h")]
 position = Vector2(88, 152)
 default_state = 1
 reverse_trigger_output = true
@@ -130,19 +150,19 @@ metadata/_custom_type_script = "uid://dne7bdh40747l"
 [node name="Marker2D" type="Marker2D" parent="Layers/Objects Layer/TorchTrigger/SpawnTriggerRule" index="0"]
 position = Vector2(128, 120)
 
-[node name="PinkBoulder" parent="Layers/Objects Layer" index="3" instance=ExtResource("8_pow3h")]
+[node name="PinkBoulder" parent="Layers/Objects Layer" index="5" instance=ExtResource("8_pow3h")]
 position = Vector2(-8, 88)
 start_despawned = true
 
-[node name="PinkBoulder2" parent="Layers/Objects Layer" index="4" instance=ExtResource("8_pow3h")]
+[node name="PinkBoulder2" parent="Layers/Objects Layer" index="6" instance=ExtResource("8_pow3h")]
 position = Vector2(-8, 104)
 start_despawned = true
 
-[node name="PinkBoulder3" parent="Layers/Objects Layer" index="5" instance=ExtResource("8_pow3h")]
+[node name="PinkBoulder3" parent="Layers/Objects Layer" index="7" instance=ExtResource("8_pow3h")]
 position = Vector2(-8, 120)
 start_despawned = true
 
-[node name="PinkBoulder4" parent="Layers/Objects Layer" index="6" instance=ExtResource("8_pow3h")]
+[node name="PinkBoulder4" parent="Layers/Objects Layer" index="8" instance=ExtResource("8_pow3h")]
 position = Vector2(-8, 136)
 start_despawned = true
 
