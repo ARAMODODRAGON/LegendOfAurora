@@ -1,10 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://c1bcsql36d8di"]
+[gd_scene load_steps=3 format=3 uid="uid://c1bcsql36d8di"]
 
 [ext_resource type="Script" uid="uid://tocnhxc35aui" path="res://objects/game_camera/game_camera.gd" id="1_cyajk"]
+[ext_resource type="PackedScene" uid="uid://uwifqmmgx22d" path="res://ui/game_ui/game_ui.tscn" id="2_uemgy"]
 
 [node name="GameCamera" type="Camera2D"]
 anchor_mode = 0
 script = ExtResource("1_cyajk")
+
+[node name="GameUI" parent="." instance=ExtResource("2_uemgy")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

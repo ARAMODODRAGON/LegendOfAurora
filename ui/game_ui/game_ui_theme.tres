@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dkeya8j78y12r"]
+
+[ext_resource type="FontFile" uid="uid://c4mf6glabfm5w" path="res://ui/fonts/fs-ti-92-eno-c.ttf" id="1_k2cap"]
+
+[resource]
+default_font = ExtResource("1_k2cap")

@@ -1,0 +1,49 @@
+[gd_scene load_steps=3 format=3 uid="uid://uwifqmmgx22d"]
+
+[ext_resource type="Texture2D" uid="uid://boom70du30yoc" path="res://ui/game_ui/key_ui.png" id="1_5rq5h"]
+[ext_resource type="Theme" uid="uid://dkeya8j78y12r" path="res://ui/game_ui/game_ui_theme.tres" id="1_6u1yh"]
+
+[node name="GameUI" type="CanvasLayer"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 16.0
+theme = ExtResource("1_6u1yh")
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Container" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="Control/Container"]
+layout_mode = 2
+texture = ExtResource("1_5rq5h")
+stretch_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/Container"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/Container/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 8
+text = "x0"
+scroll_active = false
+shortcut_keys_enabled = false
+vertical_alignment = 1
