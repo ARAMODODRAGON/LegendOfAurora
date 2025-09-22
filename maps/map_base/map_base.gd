@@ -2,12 +2,13 @@ extends Node
 class_name MapBase
 
 @export var player_scene : PackedScene
+@export var camera_scene : PackedScene
 
 @export_category("Screen Transitions")
 @export var TRANSITION_TIME: float
 
 ## base map references
-@onready var camera: GameCamera = $GameCamera
+@onready var camera: GameCamera = null
 #@onready var entities_layer: Node = $"Layers/Entities Layer"
 @onready var objects_layer: Node = $"Layers/Objects Layer"
 @onready var default_spawn_point: Node2D = $DefaultSpawnPoint
@@ -20,7 +21,11 @@ var _room_objects: Array[Node2D]
 
 
 func _ready() -> void:
-	camera.visible = true
+	camera = camera_scene.instantiate() as GameCamera
+	if camera == null:
+		printerr("could not instance camera")
+		return
+	add_child(camera)
 	
 	## spawn player (TODO: check if there is a targeted spawn point for this map)
 	player = player_scene.instantiate()

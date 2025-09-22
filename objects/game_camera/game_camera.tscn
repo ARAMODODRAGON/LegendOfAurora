@@ -4,7 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://uwifqmmgx22d" path="res://ui/game_ui/game_ui.tscn" id="2_uemgy"]
 
 [node name="GameCamera" type="Camera2D"]
+offset = Vector2(0, -16)
 anchor_mode = 0
+limit_enabled = false
 script = ExtResource("1_cyajk")
 
 [node name="GameUI" parent="." instance=ExtResource("2_uemgy")]

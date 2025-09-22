@@ -1,18 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://uwifqmmgx22d"]
+[gd_scene load_steps=4 format=3 uid="uid://uwifqmmgx22d"]
 
-[ext_resource type="Texture2D" uid="uid://boom70du30yoc" path="res://ui/game_ui/key_ui.png" id="1_5rq5h"]
+[ext_resource type="Texture2D" uid="uid://boom70du30yoc" path="res://ui/game_ui/textures/key_ui.png" id="1_5rq5h"]
 [ext_resource type="Theme" uid="uid://dkeya8j78y12r" path="res://ui/game_ui/game_ui_theme.tres" id="1_6u1yh"]
+[ext_resource type="Script" uid="uid://dkw4hoc3e1giv" path="res://ui/game_ui/game_ui.gd" id="1_xlhta"]
 
 [node name="GameUI" type="CanvasLayer"]
+script = ExtResource("1_xlhta")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
+anchors_preset = 10
+anchor_right = 1.0
 offset_bottom = 16.0
+grow_horizontal = 2
 theme = ExtResource("1_6u1yh")
 
-[node name="ColorRect" type="ColorRect" parent="Control"]
+[node name="BlackBackground" type="ColorRect" parent="Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,7 +24,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Container" type="HBoxContainer" parent="Control"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,17 +33,17 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="TextureRect" type="TextureRect" parent="Control/Container"]
+[node name="TextureRect" type="TextureRect" parent="Control/HBoxContainer"]
 layout_mode = 2
 texture = ExtResource("1_5rq5h")
 stretch_mode = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/Container"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/HBoxContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 theme_override_constants/margin_left = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Control/Container/MarginContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/HBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 8
 text = "x0"

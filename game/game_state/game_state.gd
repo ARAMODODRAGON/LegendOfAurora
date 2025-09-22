@@ -1,10 +1,32 @@
 ## GameState autoload
 extends Node
 
+signal update_ui(state: LevelState)
+
 ## state stored for the specific level
 class LevelState extends RefCounted:
-	var key_count: int = 0
+
+	var _key_count: int = 0
 	var state_dict: Dictionary[StringName, Variant] = {}
+
+
+	func get_key_count() -> int:
+		return _key_count
+	
+
+	func add_key() -> void:
+		_key_count += 1
+		GameState.update_ui.emit(self)
+	
+
+	func use_key() -> bool:
+		if _key_count <= 0:
+			return false
+		else:
+			_key_count -= 1
+			GameState.update_ui.emit(self)
+			return true
+
 
 ## class used to represent one time unlocks
 class UnlockState extends RefCounted:

@@ -239,7 +239,7 @@ position = Vector2(344, 8)
 tile_set = ExtResource("2_r5h15")
 
 [node name="DefaultSpawnPoint" parent="." index="2"]
-position = Vector2(288, 336)
+position = Vector2(128, 120)
 
 [node name="ReferenceRect" parent="DefaultSpawnPoint" index="0"]
 metadata/_edit_use_anchors_ = true

@@ -224,6 +224,9 @@ func _on_bongo_shockwave_area_entered(area: Area2D) -> void:
 		bongo_listener.bongo_hit.emit(area.global_position - global_position)
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not Engine.is_editor_hint():
+		return
+	
 	var key_event := event as InputEventKey
 	if key_event:
 		match key_event.keycode:
@@ -235,3 +238,9 @@ func _unhandled_input(event: InputEvent) -> void:
 				if GameState.bongo_unlock.is_unlocked() == false:
 					print("Unlocked bongo!")
 				GameState.bongo_unlock.unlock()
+			KEY_1:
+				var level := GameState.level_state()
+				level.add_key()
+			KEY_2:
+				var level := GameState.level_state()
+				level.use_key()
