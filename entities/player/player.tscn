@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://h3rrw4kqycjq"]
+[gd_scene load_steps=16 format=3 uid="uid://h3rrw4kqycjq"]
 
 [ext_resource type="Script" uid="uid://deelqijiqnh24" path="res://entities/player/player.gd" id="1_abrql"]
 [ext_resource type="SpriteFrames" uid="uid://djnpafkyppc4w" path="res://entities/player/player_sprite_frames.tres" id="2_8fjmc"]
@@ -23,6 +23,9 @@ size = Vector2(4, 4)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8fjmc"]
 size = Vector2(10, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wvtmh"]
+size = Vector2(16, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bectd"]
 size = Vector2(4, 4)
@@ -95,7 +98,7 @@ wait_time = 0.2
 z_index = 1
 y_sort_enabled = true
 sprite_frames = ExtResource("2_8fjmc")
-animation = &"walk_up"
+animation = &"walk_down"
 autoplay = "walk_down"
 offset = Vector2(0, -3)
 script = ExtResource("3_sglur")
@@ -137,6 +140,7 @@ scale = Vector2(0.99999994, 0.99999994)
 gizmo_extents = 3.0
 
 [node name="SwordHitbox" type="Area2D" parent="BodySprite"]
+position = Vector2(0, 10)
 collision_layer = 0
 collision_mask = 4
 monitorable = false
@@ -149,6 +153,17 @@ metadata/_custom_type_script = "uid://cc8th08wmoicd"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/SwordHitbox"]
 shape = SubResource("RectangleShape2D_8fjmc")
+
+[node name="ShockwaveHitbox" type="Area2D" parent="BodySprite"]
+z_index = 3
+position = Vector2(0, 13)
+collision_layer = 0
+monitorable = false
+script = ExtResource("6_qiwj3")
+metadata/_custom_type_script = "uid://cfk1c6xttch42"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodySprite/ShockwaveHitbox"]
+shape = SubResource("RectangleShape2D_wvtmh")
 
 [node name="CrushOverlapBox" type="Area2D" parent="."]
 collision_layer = 0

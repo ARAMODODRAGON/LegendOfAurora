@@ -2,5 +2,9 @@
 extends Node
 
 
-## must be overridden
-@abstract func _trigger(parent: Hitbox, target: Hitbox) -> void
+## override to provide a reaction to touching another hitbox
+func _trigger(parent: Hitbox, target: Hitbox) -> void: pass
+
+
+## override to provide a reaction to touching a body
+func _interact(parent: Hitbox, body: Node2D) -> void: pass

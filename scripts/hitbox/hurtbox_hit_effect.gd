@@ -14,7 +14,3 @@ func take_damage(damage: int, direction: Vector2) -> void:
 		health_component._take_damage(damage)
 	
 	damage_taken.emit(damage, direction)
-
-
-## do nothing as all interaction logic is in other classes
-func _trigger(parent: Hitbox, target: Hitbox) -> void: pass
