@@ -11,8 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://fh0v05ikrckv" path="res://objects/activators/boulder/pink_boulder.tscn" id="8_pow3h"]
 [ext_resource type="Script" uid="uid://lksc557o3n7v" path="res://entities/enemies/scorpion/scorpion.gd" id="9_0kmqp"]
 [ext_resource type="PackedScene" uid="uid://b0p0qw7nvak0h" path="res://objects/triggers/torch_trigger/torch_trigger.tscn" id="9_pow3h"]
-[ext_resource type="Script" uid="uid://gfncyw3nx8wl" path="res://scripts/components/hurtbox_component.gd" id="10_a75he"]
-[ext_resource type="Script" uid="uid://f2f56nmugjm4" path="res://scripts/components/hitbox_component.gd" id="11_8aas3"]
 [ext_resource type="Texture2D" uid="uid://c5352rsy4rcov" path="res://entities/enemies/scorpion/sand_scorpion.png" id="12_b4vbq"]
 [ext_resource type="Script" uid="uid://ceb4u5be5p5rc" path="res://scripts/components/health_component.gd" id="13_eg6ue"]
 [ext_resource type="Texture2D" uid="uid://cuggy0sxkuy0e" path="res://entities/enemies/scorpion/poisoned_scorpion.png" id="14_pnooj"]
@@ -30,8 +28,14 @@ size = Vector2(208, 176)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xnpgg"]
 size = Vector2(14, 14)
 
+[sub_resource type="Resource" id="Resource_6iykl"]
+metadata/__load_path__ = "res://scripts/components/hurtbox_component.gd"
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ab28n"]
 size = Vector2(14, 14)
+
+[sub_resource type="Resource" id="Resource_qc613"]
+metadata/__load_path__ = "res://scripts/components/hitbox_component.gd"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rrhao"]
 size = Vector2(12, 12)
@@ -45,7 +49,7 @@ _bundled = {
 "node_count": 8,
 "node_paths": [NodePath("."), NodePath("."), NodePath("./HurtboxComponent"), NodePath("."), NodePath("./HitboxComponent"), NodePath("."), NodePath("."), NodePath("."), NodePath("HurtboxComponent"), NodePath("."), NodePath("HealthComponent")],
 "nodes": PackedInt32Array(-1, -1, 1, 0, -1, 5, 2, 0, 3, 1, 4, 2, 5, 3, 6, 4, 0, 1073741824, 0, 8, 7, -1, 1, 9, 5, 0, 1073741825, 0, 11, 10, -1, 6, 12, 6, 13, 7, 14, 8, 1073741839, 9, 1073741840, 10, 17, 11, 0, 1073741826, 0, 19, 18, -1, 2, 20, 12, 21, 13, 0, 1073741827, 0, 23, 22, -1, 5, 24, 14, 25, 15, 26, 16, 1073741851, 17, 28, 18, 0, 1073741828, 0, 30, 29, -1, 2, 31, 19, 32, 20, 0, 1073741829, 0, 34, 33, -1, 3, 35, 21, 36, 22, 37, 23, 0, 1073741830, 0, 39, 38, -1, 3, 40, 24, 41, 25, 42, 26, 0),
-"variants": [0, ExtResource("9_0kmqp"), 100.0, 0.3, "uid://dp5qgjvlmaw78", SubResource("RectangleShape2D_xnpgg"), 4, 0, ExtResource("10_a75he"), NodePath(".."), NodePath("../HealthComponent"), "uid://gfncyw3nx8wl", SubResource("RectangleShape2D_ab28n"), Color(1.58831e-06, 0.621555, 0.553372, 0.42), 0, 2, ExtResource("11_8aas3"), NodePath(".."), "uid://f2f56nmugjm4", SubResource("RectangleShape2D_rrhao"), Color(0.999843, 0, 0.0991533, 0.42), ExtResource("12_b4vbq"), 2, 5, ExtResource("13_eg6ue"), 4, "uid://ceb4u5be5p5rc"],
+"variants": [0, ExtResource("9_0kmqp"), 100.0, 0.3, "uid://dp5qgjvlmaw78", SubResource("RectangleShape2D_xnpgg"), 4, 0, SubResource("Resource_6iykl"), NodePath(".."), NodePath("../HealthComponent"), "uid://gfncyw3nx8wl", SubResource("RectangleShape2D_ab28n"), Color(1.58831e-06, 0.621555, 0.553372, 0.42), 0, 2, SubResource("Resource_qc613"), NodePath(".."), "uid://f2f56nmugjm4", SubResource("RectangleShape2D_rrhao"), Color(0.999843, 0, 0.0991533, 0.42), ExtResource("12_b4vbq"), 2, 5, ExtResource("13_eg6ue"), 4, "uid://ceb4u5be5p5rc"],
 "version": 3
 }
 

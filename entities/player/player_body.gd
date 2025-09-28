@@ -8,7 +8,7 @@ signal death_animation_end()
 signal attack_end()
 
 @export_subgroup("Sword")
-@export var _sword_hitbox: HitboxComponent = null
+@export var _sword_hitbox: Hitbox = null
 @export var _sword_box_offset := Vector2.ZERO
 
 #@export_subgroup("")
