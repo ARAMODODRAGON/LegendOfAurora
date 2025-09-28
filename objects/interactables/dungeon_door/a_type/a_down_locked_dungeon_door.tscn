@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://fm0g7lkwpugy"]
+
+[ext_resource type="PackedScene" uid="uid://dyklmrnyc0uku" path="res://objects/interactables/dungeon_door/locked_dungeon_door.tscn" id="1_vc2d7"]
+
+[node name="AUpLockedDungeonDoor" instance=ExtResource("1_vc2d7")]
+
+[node name="Sprite2D" parent="." index="2"]
+rotation = 3.1415927

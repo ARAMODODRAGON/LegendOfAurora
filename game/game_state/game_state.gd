@@ -1,14 +1,31 @@
 ## GameState autoload
 extends Node
 
+
 signal update_ui(state: LevelState)
 
+
+## class used to represent one time unlocks
+class UnlockState extends RefCounted:
+	var _is_unlocked: bool = false
+
+
+	func _init(is_unlocked_: bool = false) -> void:
+		_is_unlocked = is_unlocked_
+
+	func is_unlocked() -> bool:
+		return _is_unlocked
+
+
+	func unlock() -> void:
+		_is_unlocked = true
+
+	
 ## state stored for the specific level
 class LevelState extends RefCounted:
 
 	var _key_count: int = 0
-	var state_dict: Dictionary[StringName, Variant] = {}
-
+	var _unlocks: Dictionary[StringName, UnlockState] = {}
 
 	func get_key_count() -> int:
 		return _key_count
@@ -26,21 +43,18 @@ class LevelState extends RefCounted:
 			_key_count -= 1
 			GameState.update_ui.emit(self)
 			return true
-
-
-## class used to represent one time unlocks
-class UnlockState extends RefCounted:
-	var _is_unlocked: bool = false
-
-
-	func is_unlocked() -> bool:
-		return _is_unlocked
-
-
-	func unlock() -> void:
-		_is_unlocked = true
-
 	
+	func is_unlocked(name: StringName) -> bool:
+		var unlockstate := _unlocks[name]
+		if unlockstate == null:
+			return false
+		else:
+			return unlockstate.is_unlocked()
+	
+	func unlock(name: StringName) -> void:
+		_unlocks[name] = UnlockState.new(true)
+
+
 
 ## static one time unlocks
 

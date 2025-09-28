@@ -92,7 +92,11 @@ func _handle_action() -> void:
 					body_sprite.attack()
 					_move_state = MoveState.ATTACKING
 					velocity = Vector2.ZERO
-				
+			elif primary_action:
+				interactor_component.trigger_interaction(
+					body_sprite.get_facing_vector(),
+					_on_interactable_triggered
+				)
 			elif secondary_action and not body_sprite.is_attacking() and GameState.bongo_unlock.is_unlocked():
 				_trigger_shockwave()
 			

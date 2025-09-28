@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://c4j5yvg3637vg"]
+
+[ext_resource type="Texture2D" uid="uid://e8gx34tdqedv" path="res://objects/interactables/chest/chest.png" id="1_11ljx"]
+[ext_resource type="Script" uid="uid://d1qd3gux3pa4o" path="res://objects/interactables/chest/treasure_chest.gd" id="1_nocnq"]
+[ext_resource type="Script" uid="uid://cahae22p3lom2" path="res://scripts/components/interactable_component.gd" id="2_tucvx"]
+[ext_resource type="Texture2D" uid="uid://c7djkwr3chbpo" path="res://objects/interactables/key/key.png" id="4_xhjgo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_11ljx"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nocnq"]
+size = Vector2(10, 10)
+
+[node name="TreasureChest" type="CharacterBody2D" node_paths=PackedStringArray("_sprite", "_key_sprite")]
+collision_mask = 0
+motion_mode = 1
+script = ExtResource("1_nocnq")
+_sprite = NodePath("Sprite")
+_key_sprite = NodePath("KeySprite")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_11ljx")
+
+[node name="InteractableComponent" type="Area2D" parent="."]
+script = ExtResource("2_tucvx")
+metadata/_custom_type_script = "uid://cahae22p3lom2"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractableComponent"]
+shape = SubResource("RectangleShape2D_nocnq")
+debug_color = Color(0.98322886, 0, 0.3592717, 0.41960785)
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_11ljx")
+hframes = 2
+
+[node name="KeySprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -8)
+texture = ExtResource("4_xhjgo")
+hframes = 2
+
+[connection signal="interact" from="InteractableComponent" to="." method="_on_interactable_component_interact"]

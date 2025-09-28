@@ -25,6 +25,7 @@ func trigger_interaction(facing: Vector2, callback: Callable = Callable()) -> bo
 				# count and invoke interaction
 				count += 1
 				interactable._on_interact()
+				interactable.interact.emit()
 				if callback.is_valid():
 					callback.call(interactable)
 	

@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=4 uid="uid://jjsrdqk1gcw4"]
+[gd_scene load_steps=5 format=4 uid="uid://jjsrdqk1gcw4"]
 
 [ext_resource type="PackedScene" uid="uid://d3qdgxm5s7pas" path="res://maps/map_base/map_base.tscn" id="1_5wta1"]
 [ext_resource type="TileSet" uid="uid://ddxmv8ngd7pgo" path="res://tilesets/dungeon_tileset/dungeon_tileset.tres" id="2_ekcgv"]
+[ext_resource type="PackedScene" uid="uid://c4j5yvg3637vg" path="res://objects/interactables/chest/treasure_chest.tscn" id="3_7x6qh"]
+[ext_resource type="PackedScene" uid="uid://d0ebxp6e8vr4l" path="res://objects/interactables/dungeon_door/a_type/a_up_locked_dungeon_door.tscn" id="3_d0vy3"]
 
 [node name="DemoDungeon" instance=ExtResource("1_5wta1")]
 
@@ -16,6 +18,9 @@ tile_set = ExtResource("2_ekcgv")
 tile_map_data = PackedByteArray("AAAGAAwAAAACAAgAAAAGAA0AAAACAAkAAAAJAAwAAAADAAgAAAAJAA0AAAADAAkAAAAIAA0AAAAFAAcAAAAHAA0AAAAFAAcAAAAHAAAAAAAAAAYAAAAHAAEAAAAAAAcAAAAIAAAAAAABAAYAAAAIAAEAAAABAAcAAAA=")
 tile_set = ExtResource("2_ekcgv")
 
+[node name="AUpLockedDungeonDoor" parent="Layers/Objects Layer" index="0" instance=ExtResource("3_d0vy3")]
+position = Vector2(128, 16)
+
 [node name="Foreground Layer" parent="Layers" index="4"]
 tile_set = ExtResource("2_ekcgv")
 
@@ -24,3 +29,6 @@ offset_left = 120.0
 offset_top = 152.0
 offset_right = 136.0
 offset_bottom = 168.0
+
+[node name="TreasureChest" parent="." index="2" instance=ExtResource("3_7x6qh")]
+position = Vector2(128, 112)
