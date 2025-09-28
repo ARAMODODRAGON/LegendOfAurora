@@ -10,8 +10,8 @@ class_name MapBase
 ## base map references
 @onready var camera: GameCamera = null
 #@onready var entities_layer: Node = $"Layers/Entities Layer"
-@onready var objects_layer: Node = $"Layers/Objects Layer"
-@onready var default_spawn_point: Node2D = $DefaultSpawnPoint
+@export var objects_layer: Node = null
+@export var default_spawn_point: Control = null
 
 ## state
 var player: Player = null
@@ -33,7 +33,7 @@ func _ready() -> void:
 		assert(false, "player scene did not instantiate player")
 
 	objects_layer.add_child(player)
-	player.position = default_spawn_point.position
+	player.position = (default_spawn_point.position + default_spawn_point.pivot_offset)
 
 	player.entered_warp.connect(_on_player_warp)
 	player.death_animation_end.connect(_on_player_dead)

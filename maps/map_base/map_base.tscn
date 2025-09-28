@@ -4,30 +4,36 @@
 [ext_resource type="PackedScene" uid="uid://h3rrw4kqycjq" path="res://entities/player/player.tscn" id="2_7j02g"]
 [ext_resource type="PackedScene" uid="uid://c1bcsql36d8di" path="res://objects/game_camera/game_camera.tscn" id="3_7j02g"]
 
-[node name="MapBase" type="Node"]
+[node name="MapBase" type="Node" node_paths=PackedStringArray("objects_layer", "default_spawn_point")]
 script = ExtResource("1_4du5l")
 player_scene = ExtResource("2_7j02g")
 camera_scene = ExtResource("3_7j02g")
 TRANSITION_TIME = 0.7
+objects_layer = NodePath("Layers/Objects Layer")
+default_spawn_point = NodePath("DefaultSpawnPoint")
 
 [node name="Layers" type="Node" parent="."]
 
-[node name="Background Layer" type="TileMapLayer" parent="Layers"]
+[node name="Solid Layer" type="TileMapLayer" parent="Layers"]
+editor_description = "One of two layers with physics enabled"
 
-[node name="Dungon Walls Layer" type="TileMapLayer" parent="Layers"]
+[node name="Non-Solid Layer" type="TileMapLayer" parent="Layers"]
+collision_enabled = false
 
-[node name="Overlay Layer" type="TileMapLayer" parent="Layers"]
+[node name="Overlay Solid Layer" type="TileMapLayer" parent="Layers"]
+editor_description = "One of two layers with physics enabled"
+z_index = 3
 
 [node name="Objects Layer" type="Node" parent="Layers"]
 
 [node name="Foreground Layer" type="TileMapLayer" parent="Layers"]
 z_index = 3
+collision_enabled = false
 
-[node name="DefaultSpawnPoint" type="Node2D" parent="." groups=["warp_point"]]
-
-[node name="ReferenceRect" type="ReferenceRect" parent="DefaultSpawnPoint"]
+[node name="DefaultSpawnPoint" type="ReferenceRect" parent="." groups=["warp_point"]]
 offset_left = -8.0
 offset_top = -8.0
 offset_right = 8.0
 offset_bottom = 8.0
+pivot_offset = Vector2(8, 8)
 border_color = Color(0, 0.746321, 0.760015, 1)

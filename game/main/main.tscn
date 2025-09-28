@@ -1,9 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://davrpc2xpv3b6"]
+[gd_scene load_steps=3 format=3 uid="uid://davrpc2xpv3b6"]
 
 [ext_resource type="Script" uid="uid://b0cdimkkykxno" path="res://game/main/main.gd" id="1_53q0u"]
-[ext_resource type="PackedScene" uid="uid://cncnj5s7ny43e" path="res://maps/demo_maps/demo_map_3.tscn" id="5_tkdpa"]
-[ext_resource type="PackedScene" uid="uid://b702ra7yiyoax" path="res://maps/demo_maps/demo_map_4.tscn" id="6_yymkh"]
+[ext_resource type="PackedScene" uid="uid://jjsrdqk1gcw4" path="res://maps/demo_dungeon/demo_dungeon.tscn" id="2_psm6y"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_53q0u")
-BUILD_INDEX = Array[PackedScene]([ExtResource("5_tkdpa"), ExtResource("6_yymkh")])
+BUILD_INDEX = Array[PackedScene]([ExtResource("2_psm6y")])
