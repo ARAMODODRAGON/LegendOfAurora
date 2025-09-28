@@ -7,17 +7,24 @@ const Direction := Enum.Direction
 signal death_animation_end()
 signal attack_end()
 
-@export var _right_shape: CollisionShape2D = null
-@export var _down_shape: CollisionShape2D = null
-@export var _left_shape: CollisionShape2D = null
-@export var _up_shape: CollisionShape2D = null
+@export_subgroup("Sword")
+@export var _sword_hitbox: HitboxComponent = null
+@export var _sword_box_offset := Vector2.ZERO
+
+#@export_subgroup("")
+
+@export_subgroup("Expand Markers")
+@export var _up_marker: Marker2D = null
+@export var _down_marker: Marker2D = null
+@export var _left_marker: Marker2D = null
+@export var _right_marker: Marker2D = null
 
 var _facing_direction: Direction = Direction.DOWN
 
 var _is_dead: bool = false
 var _is_attacking: bool = false
 var _last_position: Vector2 = Vector2.ZERO
-var _current_hitbox: CollisionShape2D = null
+#var _current_hitbox: CollisionShape2D = null
 var _has_dealt_damage: bool = false
 
 func is_attacking() -> bool:
@@ -72,30 +79,28 @@ func take_damage(time: float) -> void:
 func attack() -> void:
 	if _is_attacking or _is_dead:
 		return
-	
+
 	_is_attacking = true
 	_has_dealt_damage = false
 
 	speed_scale = 1.0
 	
+	var _expand_marker := _get_expand_marker(_facing_direction)
+
 	match _facing_direction:
 		Direction.RIGHT:
 			play(&"attack_right")
-			_current_hitbox = _right_shape
-
 		Direction.LEFT:
 			play(&"attack_left")
-			_current_hitbox = _left_shape
-
 		Direction.UP:
 			play(&"attack_up")
-			_current_hitbox = _up_shape
-
 		Direction.DOWN, Direction.NONE, _:
 			play(&"attack_down")
-			_current_hitbox = _down_shape
 	
-	_current_hitbox.disabled = false
+	var _offset := Enum.vector_from_direction(_facing_direction) * _sword_box_offset
+
+	_sword_hitbox.monitoring = true
+	_sword_hitbox.position = _expand_marker.position + _offset
 
 
 func die() -> void:
@@ -164,11 +169,22 @@ func _update_walk_sprite(is_walking: bool) -> void:
 # 	pass
 	
 func _on_animation_finished() -> void:
-	if _is_attacking and _current_hitbox:
-		_current_hitbox.disabled = true
-		_current_hitbox = null
+	if _is_attacking:
+		_sword_hitbox.monitoring = false
 		_is_attacking = false
 		_change_walk_animation_direction()
 		attack_end.emit()
 	
 
+func _get_expand_marker(direction: Direction) -> Marker2D:
+	match direction:
+		Direction.UP:
+			return _up_marker
+		Direction.DOWN:
+			return _down_marker
+		Direction.LEFT:
+			return _left_marker
+		Direction.RIGHT:
+			return _right_marker
+		_:
+			return null

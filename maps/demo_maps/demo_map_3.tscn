@@ -238,7 +238,7 @@ position = Vector2(344, 8)
 [node name="Foreground Layer" parent="Layers" index="4"]
 tile_set = ExtResource("2_r5h15")
 
-[node name="DefaultSpawnPoint" parent="." index="2"]
+[node name="DefaultSpawnPoint" parent="." index="1"]
 position = Vector2(128, 120)
 
 [node name="ReferenceRect" parent="DefaultSpawnPoint" index="0"]

@@ -16,9 +16,9 @@ signal shake_screen(scale: float, duration: float)
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var interactor_component: InteractorComponent = $InteractorComponent
 
-@onready var shockwave_pivot: Node2D = $BongoShockwave/ShockwavePivot
-@onready var shockwave_shape: CollisionShape2D = $BongoShockwave/ShockwaveShape
-@onready var bongo_hit_sound: AudioStreamPlayer = $BongoShockwave/BongoHitSound
+#@onready var shockwave_pivot: Node2D = $BongoShockwave/ShockwavePivot
+#@onready var shockwave_shape: CollisionShape2D = $BongoShockwave/ShockwaveShape
+#@onready var bongo_hit_sound: AudioStreamPlayer = $BongoShockwave/BongoHitSound
 @onready var _crush_overlap_box: Area2D = $CrushOverlapBox
 
 enum MoveState {
@@ -103,26 +103,26 @@ func _trigger_shockwave() -> void:
 	if _action_state == ActionState.SHOCKWAVE:
 		return
 
-	bongo_hit_sound.play()
-	_action_state = ActionState.SHOCKWAVE
-	shockwave_shape.set_deferred("disabled", false)
-	shake_screen.emit(0.6, SHOCKWAVE_TIME * 0.2)
-
-	var tween0: Tween = create_tween()
-
-	shockwave_pivot.modulate = Color.TRANSPARENT
-	tween0.tween_property(shockwave_pivot, "modulate", Color.WHITE, SHOCKWAVE_TIME * 0.5)
-	tween0.tween_property(shockwave_pivot, "modulate", Color.TRANSPARENT, SHOCKWAVE_TIME * 0.5)
-
-	tween0.tween_callback(
-		func() -> void:
-			_action_state = ActionState.DEFAULT
-			shockwave_shape.set_deferred("disabled", true)
-	)
-
-	var tween1: Tween = create_tween()
-	shockwave_pivot.scale = Vector2.ZERO
-	tween1.tween_property(shockwave_pivot, "scale", Vector2.ONE, SHOCKWAVE_TIME)
+	# bongo_hit_sound.play()
+	# _action_state = ActionState.SHOCKWAVE
+	# shockwave_shape.set_deferred("disabled", false)
+	# shake_screen.emit(0.6, SHOCKWAVE_TIME * 0.2)
+	#
+	# var tween0: Tween = create_tween()
+	#
+	# shockwave_pivot.modulate = Color.TRANSPARENT
+	# tween0.tween_property(shockwave_pivot, "modulate", Color.WHITE, SHOCKWAVE_TIME * 0.5)
+	# tween0.tween_property(shockwave_pivot, "modulate", Color.TRANSPARENT, SHOCKWAVE_TIME * 0.5)
+	#
+	# tween0.tween_callback(
+	# 	func() -> void:
+	# 		_action_state = ActionState.DEFAULT
+	# 		shockwave_shape.set_deferred("disabled", true)
+	# )
+	#
+	# var tween1: Tween = create_tween()
+	# shockwave_pivot.scale = Vector2.ZERO
+	# tween1.tween_property(shockwave_pivot, "scale", Vector2.ONE, SHOCKWAVE_TIME)
 
 
 func _on_interactable_triggered(interactable: InteractableComponent) -> void:
@@ -224,8 +224,8 @@ func _on_bongo_shockwave_area_entered(area: Area2D) -> void:
 		bongo_listener.bongo_hit.emit(area.global_position - global_position)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not Engine.is_editor_hint():
-		return
+	#if not Engine.is_editor_hint():
+	#	return
 	
 	var key_event := event as InputEventKey
 	if key_event:
