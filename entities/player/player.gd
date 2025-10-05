@@ -1,11 +1,20 @@
 extends CharacterBody2D
 class_name Player
 
+## enum reference
+const Direction := Enum.Direction
+
+
 signal entered_warp(warp: WarpPoint)
 signal death_animation_end()
 signal shake_screen(scale: float, duration: float)
 
-@export var WALK_SPEED: float
+
+var primary_ability: Ability = null
+var secondary_ability: Ability = null
+
+@export var default_stats: PlayerStats
+
 @export var KNOCKBACK_SPEED: float
 @export var SHOCKWAVE_TIME: float
 
@@ -21,21 +30,27 @@ signal shake_screen(scale: float, duration: float)
 #@onready var bongo_hit_sound: AudioStreamPlayer = $BongoShockwave/BongoHitSound
 @onready var _crush_overlap_box: Area2D = $CrushOverlapBox
 
+
 enum MoveState {
 	DEFAULT,
 	KNOCKBACK,
-	ATTACKING,
 }
+
 
 enum ActionState {
 	DEFAULT,
-	SHOCKWAVE,
+	ACTIONING,
 	DEAD,
 }
+
 
 var _move_state: MoveState = MoveState.DEFAULT
 var _action_state: ActionState = ActionState.DEFAULT
 var _overlapping_solid_frame_count: int = 0
+var _commanded_ability: Ability = null
+var _facing_direction: Direction = Direction.DOWN
+var _last_position: Vector2
+
 
 func is_dead() -> bool:
 	return _action_state == ActionState.DEAD
@@ -56,11 +71,7 @@ func _exit_tree() -> void:
 
 func _ready() -> void:
 	body_sprite.death_animation_end.connect(death_animation_end.emit)
-	body_sprite.attack_end.connect(
-		func() -> void:
-			if _move_state == MoveState.ATTACKING:
-				_move_state = MoveState.DEFAULT
-	)
+	_last_position = global_position
 
 
 func _get_input_dir() -> Vector2:
@@ -73,68 +84,97 @@ func _get_input_dir() -> Vector2:
 
 
 func _process(delta: float) -> void:
-	body_sprite.update_animation(delta, _get_input_dir())
+	var input_dir: Vector2 = _get_input_dir()
+	var is_walking: bool = not _last_position.is_equal_approx(global_position)
+
+	_update_direction(input_dir)
+
+	if _commanded_ability and not _commanded_ability.is_done():
+		pass
+	else:
+		body_sprite.update_animation(delta, is_walking, _facing_direction)
+
+	_last_position = global_position
 
 
-func _handle_action() -> void:
+func _update_direction(input_dir: Vector2) -> void:
+	if _commanded_ability and not _commanded_ability.should_rotate():
+		return
+
+	var _facingh: Direction = Direction.NONE
+	var _facingv: Direction = Direction.NONE
+	
+	if abs(input_dir.x) > 0.001:
+		if input_dir.x > 0.0:
+			_facingh = Direction.RIGHT
+		else:
+			_facingh = Direction.LEFT
+	
+	if abs(input_dir.y) > 0.001:
+		if input_dir.y > 0.0:
+			_facingv = Direction.DOWN
+		else:
+			_facingv = Direction.UP
+	
+	var last_facing_direction: Direction = _facing_direction
+
+	if _facing_direction != _facingh && _facing_direction != _facingv:
+		if _facingh != Direction.NONE:
+			_facing_direction = _facingh
+		elif _facingv != Direction.NONE:
+			_facing_direction = _facingv
+	
+
+func _handle_action(delta: float) -> void:
 	var primary_action: bool = Input.is_action_just_pressed("PRIMARY")
 	var secondary_action: bool = Input.is_action_just_pressed("SECONDARY")
 
 	match _action_state:
 		ActionState.DEFAULT:
-			if primary_action and not body_sprite.is_attacking() and GameState.white_sword_unlock.is_unlocked():
-				var did_interact: bool = interactor_component.trigger_interaction(
-					body_sprite.get_facing_vector(),
-					_on_interactable_triggered
+			var did_interact: bool = false
+
+			if primary_action:
+				did_interact = interactor_component.trigger_interaction(
+					Enum.vector_from_direction(_facing_direction)
+					## TODO: add in the interaction callback
 				)
 
-				if !did_interact:
-					body_sprite.attack()
-					_move_state = MoveState.ATTACKING
-					velocity = Vector2.ZERO
-			elif primary_action:
-				interactor_component.trigger_interaction(
-					body_sprite.get_facing_vector(),
-					_on_interactable_triggered
-				)
-			elif secondary_action and not body_sprite.is_attacking() and GameState.bongo_unlock.is_unlocked():
-				_trigger_shockwave()
+			if not did_interact:
+				_handle_abilities(primary_action, secondary_action)
 			
+			
+		ActionState.ACTIONING:
+
+			if not _commanded_ability:
+				_action_state = ActionState.DEFAULT
+				return
+			
+			_commanded_ability.process(delta, _facing_direction)
+
+			if _commanded_ability.is_done():
+				body_sprite.reset_animation(_facing_direction)
+				_action_state = ActionState.DEFAULT
+				_commanded_ability = null
+
 		_: pass
 
 
-func _trigger_shockwave() -> void:
-	if _action_state == ActionState.SHOCKWAVE:
+func _handle_abilities(primary_action: bool, secondary_action: bool) -> void:
+
+	if primary_action and primary_ability:
+		_commanded_ability = primary_ability
+	elif secondary_action and secondary_ability:
+		_commanded_ability = secondary_ability
+	else:
+		## exit early because we did not enter actioning state
 		return
 
-	# bongo_hit_sound.play()
-	# _action_state = ActionState.SHOCKWAVE
-	# shockwave_shape.set_deferred("disabled", false)
-	# shake_screen.emit(0.6, SHOCKWAVE_TIME * 0.2)
-	#
-	# var tween0: Tween = create_tween()
-	#
-	# shockwave_pivot.modulate = Color.TRANSPARENT
-	# tween0.tween_property(shockwave_pivot, "modulate", Color.WHITE, SHOCKWAVE_TIME * 0.5)
-	# tween0.tween_property(shockwave_pivot, "modulate", Color.TRANSPARENT, SHOCKWAVE_TIME * 0.5)
-	#
-	# tween0.tween_callback(
-	# 	func() -> void:
-	# 		_action_state = ActionState.DEFAULT
-	# 		shockwave_shape.set_deferred("disabled", true)
-	# )
-	#
-	# var tween1: Tween = create_tween()
-	# shockwave_pivot.scale = Vector2.ZERO
-	# tween1.tween_property(shockwave_pivot, "scale", Vector2.ONE, SHOCKWAVE_TIME)
-
-
-func _on_interactable_triggered(interactable: InteractableComponent) -> void:
-	pass
-
+	var extent_offset: Vector2 = body_sprite.get_marker_position(_facing_direction)
+	_commanded_ability.commanded(_facing_direction, self, body_sprite, extent_offset)
+	_action_state = ActionState.ACTIONING
 
 func _physics_process(delta: float) -> void:
-	_handle_action()
+	_handle_action(delta)
 	_handle_physics(delta)
 	_handle_crush()
 
@@ -143,15 +183,27 @@ func _handle_physics(delta: float) -> void:
 	var input_dir: Vector2 = Util.restrict_vector_four_directional(_get_input_dir())
 
 	match _move_state:
-		MoveState.KNOCKBACK, MoveState.ATTACKING:
+		MoveState.KNOCKBACK:
 			# run the set velocity
 			move_and_slide()
 		MoveState.DEFAULT, _:
-			## determine the movement speed and apply it to velocity
-			var speed: float = WALK_SPEED
-			velocity = input_dir * speed
+
+			var stats: PlayerStats = null
+			var can_move: bool = true
+
+			if _commanded_ability:
+				stats = _commanded_ability.player_stat_override()
+				can_move = _commanded_ability.should_move()
 			
-			move_and_slide()
+			if stats == null:
+				stats = default_stats
+
+			if can_move:		
+				## determine the movement speed and apply it to velocity
+				var speed: float = stats.walk_speed
+				velocity = input_dir * speed
+				
+				move_and_slide()
 
 
 func _handle_crush() -> void:
@@ -173,6 +225,10 @@ func _apply_regular_knockback(direction: Vector2) -> void:
 		return
 	
 	_move_state = MoveState.KNOCKBACK
+
+	if _commanded_ability:
+		_commanded_ability.interrupt()
+		_commanded_ability = null
 
 	knockback_timer.start()
 	velocity = direction * KNOCKBACK_SPEED
@@ -222,11 +278,6 @@ func _on_die() -> void:
 	body_sprite.die()
 
 
-func _on_bongo_shockwave_area_entered(area: Area2D) -> void:
-	var bongo_listener := area as BongoListenerComponent
-	if bongo_listener:
-		bongo_listener.bongo_hit.emit(area.global_position - global_position)
-
 func _unhandled_input(event: InputEvent) -> void:
 	#if not Engine.is_editor_hint():
 	#	return
@@ -238,6 +289,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				if GameState.white_sword_unlock.is_unlocked() == false:
 					print("Unlocked white sword!")
 				GameState.white_sword_unlock.unlock()
+				primary_ability = WhiteSwordAbility.new()
+				primary_ability.setup(body_sprite)
 			KEY_F2:
 				if GameState.bongo_unlock.is_unlocked() == false:
 					print("Unlocked bongo!")

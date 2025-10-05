@@ -7,24 +7,32 @@ signal update_ui(state: LevelState)
 
 ## class used to represent one time unlocks
 class UnlockState extends RefCounted:
+
 	var _is_unlocked: bool = false
+
+	signal unlocked()
 
 
 	func _init(is_unlocked_: bool = false) -> void:
 		_is_unlocked = is_unlocked_
+
 
 	func is_unlocked() -> bool:
 		return _is_unlocked
 
 
 	func unlock() -> void:
+		if _is_unlocked:
+			return
 		_is_unlocked = true
+		unlocked.emit()
 
 	
 ## state stored for the specific level
 class LevelState extends RefCounted:
 
 	var _key_count: int = 0
+	
 	var _unlocks: Dictionary[StringName, UnlockState] = {}
 
 	func get_key_count() -> int:

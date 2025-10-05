@@ -5,8 +5,6 @@ class_name InteractorComponent
 
 ## checks for interactables in the area
 func trigger_interaction(facing: Vector2, callback: Callable = Callable()) -> bool:
-	if callback == null:
-		return false
 
 	if !has_overlapping_areas():
 		return false

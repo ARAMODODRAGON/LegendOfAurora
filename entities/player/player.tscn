@@ -1,13 +1,19 @@
-[gd_scene load_steps=16 format=3 uid="uid://h3rrw4kqycjq"]
+[gd_scene load_steps=18 format=3 uid="uid://h3rrw4kqycjq"]
 
 [ext_resource type="Script" uid="uid://deelqijiqnh24" path="res://entities/player/player.gd" id="1_abrql"]
 [ext_resource type="SpriteFrames" uid="uid://djnpafkyppc4w" path="res://entities/player/player_sprite_frames.tres" id="2_8fjmc"]
+[ext_resource type="Script" uid="uid://ddrrwv7qjb3ie" path="res://entities/player/player_stats.gd" id="2_bectd"]
 [ext_resource type="Script" uid="uid://i5cow50xxsu4" path="res://entities/player/player_body.gd" id="3_sglur"]
 [ext_resource type="Script" uid="uid://b331sfd7tl0cg" path="res://scripts/hitbox/hurtbox_hit_effect.gd" id="5_26q78"]
 [ext_resource type="Script" uid="uid://ceb4u5be5p5rc" path="res://scripts/components/health_component.gd" id="5_fkugw"]
 [ext_resource type="Script" uid="uid://ctdaf0ke7ms68" path="res://scripts/components/interactor_component.gd" id="6_8fjmc"]
 [ext_resource type="Script" uid="uid://cfk1c6xttch42" path="res://scripts/hitbox/hitbox.gd" id="6_qiwj3"]
 [ext_resource type="Script" uid="uid://cc8th08wmoicd" path="res://scripts/hitbox/damage_hit_effect.gd" id="7_qiwj3"]
+
+[sub_resource type="Resource" id="Resource_wvtmh"]
+script = ExtResource("2_bectd")
+walk_speed = 60.0
+metadata/_custom_type_script = "uid://ddrrwv7qjb3ie"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fkugw"]
 size = Vector2(2, 2)
@@ -35,7 +41,7 @@ collision_layer = 2
 motion_mode = 1
 platform_floor_layers = 0
 script = ExtResource("1_abrql")
-WALK_SPEED = 60.0
+default_stats = SubResource("Resource_wvtmh")
 KNOCKBACK_SPEED = 120.0
 SHOCKWAVE_TIME = 0.2
 

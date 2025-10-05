@@ -2,6 +2,8 @@
 class_name RoomEnteredTrigger
 extends TriggerBase
 
+func _init() -> void:
+	add_to_group("room_objects")
 
 func _room_object_load(object_layer: Node) -> void:
 	if not enabled:
