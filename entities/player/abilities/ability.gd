@@ -19,7 +19,7 @@ const Direction := Enum.Direction
 
 
 ## called to update this ability only after commanded is called
-@abstract func process(delta: float, facing: Direction) -> void 
+@abstract func process(delta: float, facing: Direction) -> void
 
 
 ## if this ability gets interrupted then this ability gets called

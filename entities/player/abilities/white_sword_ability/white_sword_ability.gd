@@ -6,6 +6,7 @@ extends Ability
 
 
 var _hitbox: Hitbox = null
+var _shape: RectangleShape2D = null
 var _running: bool = false
 var _sprite: AnimatedSprite2D = null
 
@@ -15,10 +16,12 @@ var _sprite: AnimatedSprite2D = null
 func setup(sprite_root: Node2D) -> void:
 	## node should already exist
 	_hitbox = sprite_root.get_node("SwordHitbox") as Hitbox
+	_shape = (_hitbox.get_node("CollisionShape2D") as CollisionShape2D).shape as RectangleShape2D
 
 
 func commanded(facing: Direction, root: Node2D, sprite: AnimatedSprite2D, extent_offset: Vector2) -> void:
 	_hitbox.position = sprite.position + extent_offset
+	_hitbox.position += Enum.vector_from_direction(facing) * _shape.size * 0.5
 	_hitbox.monitoring = true
 	_sprite = sprite
 
